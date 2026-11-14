@@ -1,57 +1,730 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f6f7f2">
-<title>Pet Pals — Pet Shop Simulator</title>
-<style>
-:root{--ink:#24382e;--muted:#718078;--green:#287653;--green2:#e8f3eb;--paper:#fff;--bg:#f6f7f2;--line:#e4e9e2;--gold:#e5a92f;--shadow:0 10px 28px #203b2810}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #65a982;outline-offset:2px}.wrap{max-width:1120px;margin:auto;padding:22px 22px 56px}header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px}.brand{display:flex;align-items:center;gap:11px}.logo{width:45px;height:45px;border-radius:15px;background:var(--green2);display:grid;place-items:center;font-size:25px}.brand h1{font-size:21px;line-height:1.15;margin:0}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}.wallet{display:flex;align-items:center;gap:9px}.coin{border:1px solid #f0dfb8;background:#fff8e9;color:#76510f;border-radius:12px;padding:8px 12px;font-weight:800}.level{color:var(--muted);font-size:13px;font-weight:700}.hero{position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(120deg,#dff0e3,#eff6db);padding:24px 25px;margin-bottom:19px;display:flex;justify-content:space-between;align-items:center;gap:20px}.hero h2{margin:0 0 5px;font-size:23px;letter-spacing:-.4px}.hero p{margin:0;color:#52675a;max-width:570px}.hero-art{font-size:54px;white-space:nowrap;filter:drop-shadow(0 5px 3px #385d3420)}.button{border:1px solid var(--line);border-radius:11px;background:white;color:var(--ink);padding:9px 13px;font-weight:700}.button:hover{background:#f1f6f1}.button.primary{background:var(--green);border-color:var(--green);color:white}.button.primary:hover{background:#1e5d40}.button.gold{background:#fff5df;border-color:#f0dfb8;color:#76510f}.button.small{font-size:12px;padding:6px 9px}.tabs{display:flex;gap:8px;margin:17px 0}.tab{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:99px;padding:8px 16px;font-weight:700}.tab.active{background:#253d30;color:white;border-color:#253d30}.view[hidden]{display:none}.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:23px 0 12px}.section-head h2{font-size:18px;margin:0}.section-head p{margin:3px 0 0;color:var(--muted);font-size:13px}.habitat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.habitat{overflow:hidden;background:var(--paper);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow)}.habitat-head{padding:14px 15px 9px;display:flex;align-items:center;justify-content:space-between;gap:8px}.habitat-title{font-weight:800}.habitat-sub{font-size:12px;color:var(--muted)}.habitat-world{height:160px;position:relative;overflow:hidden;margin:0 10px;border-radius:13px;background:linear-gradient(180deg,var(--sky,#d8eff1) 0%,var(--sky,#d8eff1) 67%,var(--ground,#9ab987) 68%,var(--ground,#9ab987) 100%)}.habitat[data-kind="fish"] .habitat-world{--sky:#aee0e7;--ground:#4b9d91}.habitat[data-kind="hamster"] .habitat-world{--sky:#f4dfb8;--ground:#c79960}.habitat[data-kind="bird"] .habitat-world{--sky:#d5edc7;--ground:#84aa66}.world-decor{position:absolute;inset:0;pointer-events:none;opacity:.72}.habitat[data-kind="fish"] .world-decor:before{content:"◌　◦　　 ◌　　　◦";position:absolute;top:17px;left:15px;color:#fff;font-size:20px;letter-spacing:13px}.habitat[data-kind="hamster"] .world-decor:before{content:"🌿　　　　　　　　　🌿";position:absolute;bottom:32px;left:7px;font-size:24px}.habitat[data-kind="bird"] .world-decor:before{content:"☁️　　　　　☁️";position:absolute;top:10px;left:20px;font-size:24px}.critter{position:absolute;left:0;top:0;font-size:34px;line-height:1;filter:drop-shadow(0 3px 2px #23362825);user-select:none;will-change:transform;transition:filter .2s}.critter.boop{animation:boop .5s ease-in-out 2}@keyframes boop{50%{filter:drop-shadow(0 0 12px #fff46a);scale:1.22}}.habitat-foot{padding:10px 13px 13px}.habitat-footline{display:flex;justify-content:space-between;align-items:center;gap:8px}.statline{color:var(--muted);font-size:12px}.cleanbar{height:6px;border-radius:99px;background:#edf0e9;margin-top:8px;overflow:hidden}.cleanbar span{display:block;height:100%;border-radius:99px;background:#75ae73;transition:width .25s}.pet-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:15px}.pet-card{border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px}.pet-card-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.pet-card-name{font-weight:800}.pet-card-kind{color:var(--muted);font-size:11px}.meter{margin-top:9px}.meter-label{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-bottom:4px}.meter-track{height:6px;border-radius:99px;background:#eef0ec;overflow:hidden}.meter-track span{height:100%;display:block;background:#70ad77;border-radius:99px}.meter-track span.low{background:#e8a43a}.pet-actions{display:flex;gap:7px;margin-top:10px}.pet-actions button{flex:1}.store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.store-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}.store-emoji{font-size:48px}.store-card h3{margin:4px 0 3px}.store-card p{color:var(--muted);font-size:13px;margin:0 0 12px}.alert{display:none;margin:12px 0 0;padding:10px 13px;background:#fff0dd;border:1px solid #f0d7b3;border-radius:12px;color:#80520e;font-weight:700;font-size:13px}.alert.show{display:block}.note{font-size:12px;color:var(--muted);margin:14px 0}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,12px);background:#20352c;color:#fff;padding:11px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.2s;z-index:8;max-width:min(90vw,520px);text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.cutscene{position:fixed;inset:0;z-index:10;background:#17241dcc;display:none;align-items:center;justify-content:center;padding:18px}.cutscene.show{display:flex}.cutscene-box{width:min(920px,100%);background:#fff;border-radius:22px;padding:22px;box-shadow:0 25px 90px #0005;text-align:center}.cutscene-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.cutscene-head h2{margin:0;font-size:20px}.scene-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.scene-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:#f8faf6}.scene-card h3{margin:4px 0 0;font-size:14px}.scene-card p{margin:2px 0 0;color:var(--muted);font-size:12px}.scene-stage{height:105px;border-radius:11px;background:linear-gradient(#e0f0dc 0 69%,#a7c58c 70%);display:grid;place-items:center;position:relative;overflow:hidden}.scene-stage .food{position:absolute;bottom:17px;left:20%;font-size:23px;animation:food-hop .9s ease-in-out infinite alternate}.scene-stage .eater{font-size:48px;animation:eat .5s ease-in-out infinite alternate}.scene-card[data-kind="fish"] .scene-stage{background:linear-gradient(#b8e4ed 0 69%,#509b92 70%)}.scene-card[data-kind="hamster"] .scene-stage{background:linear-gradient(#f3e2be 0 69%,#be9258 70%)}@keyframes eat{to{transform:translateY(-8px) rotate(8deg)}}@keyframes food-hop{to{transform:translate(24px,-5px) rotate(35deg)}}.cutscene-foot{margin:14px 0 0;color:var(--muted);font-size:13px}.cutscene-foot .button{margin-top:10px}.empty{padding:24px;text-align:center;color:var(--muted);border:1px dashed #cbd6cc;border-radius:14px;grid-column:1/-1}
-@media(max-width:780px){.habitat-grid{grid-template-columns:1fr}.habitat-world{height:185px}.pet-list{grid-template-columns:repeat(2,1fr)}}@media(max-width:540px){.wrap{padding:15px 13px 40px}.brand p{display:none}.hero{align-items:flex-start;padding:18px}.hero h2{font-size:20px}.hero-art{font-size:42px}.wallet{gap:5px}.level{font-size:11px}.coin{padding:7px 9px}.pet-list{grid-template-columns:1fr 1fr}.scene-grid{grid-template-columns:1fr}.cutscene{overflow:auto;align-items:flex-start}.cutscene-box{margin:auto;padding:15px}.scene-stage{height:78px}.scene-card{display:grid;grid-template-columns:84px 1fr;align-items:center;text-align:left;gap:9px}.scene-card h3,.scene-card p{grid-column:2}.scene-card .scene-stage{grid-row:1/3}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet Pals Simulator</title>
+  <style>
+    :root {
+      --bg: #f5f7f1;
+      --paper: #ffffff;
+      --ink: #21382d;
+      --muted: #62766b;
+      --line: #dfe7df;
+      --green: #2a785a;
+      --green-dark: #1d5a40;
+      --mint: #eaf6ef;
+      --yellow: #f5d76a;
+      --gold: #e4a60d;
+      --shadow: 0 16px 40px rgba(26, 40, 32, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: var(--bg); color: var(--ink); }
+    body { padding: 22px; }
+    button { font: inherit; }
+    .app { max-width: 1180px; margin: 0 auto; }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 46px; height: 46px; border-radius: 16px; background: var(--mint); display: grid; place-items: center; font-size: 26px; }
+    .brand h1 { margin: 0; font-size: 1.7rem; }
+    .brand p { margin: 2px 0 0; color: var(--muted); font-size: 0.8rem; }
+    .coinbox {
+      background: #fff8e4; border: 1px solid #f3df9b; color: #704d03; border-radius: 12px; padding: 8px 12px; font-weight: 800;
+    }
+
+    .hero {
+      margin-bottom: 18px; padding: 22px 24px; border-radius: 22px; background: linear-gradient(135deg, #e1f1e6, #edf9d9);
+      border: 1px solid #d9ead8; display: flex; justify-content: space-between; align-items: center; gap: 20px;
+    }
+    .hero h2 { margin: 0 0 6px; font-size: clamp(1.4rem, 3vw, 2.1rem); }
+    .hero p { margin: 0; color: var(--muted); max-width: 640px; }
+    .hero-icon { font-size: clamp(2.5rem, 7vw, 4rem); }
+
+    .tabs {
+      display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;
+    }
+    .tab {
+      background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 9px 16px; font-weight: 700; color: var(--muted); cursor: pointer;
+    }
+    .tab.active {
+      background: var(--ink); color: #fff; border-color: var(--ink);
+    }
+
+    .view[hidden] { display: none; }
+
+    .section-head {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 20px 0 12px; flex-wrap: wrap;
+    }
+    .section-head h3 { margin: 0; font-size: 1.2rem; }
+    .section-head p { margin: 3px 0 0; color: var(--muted); font-size: 0.85rem; }
+
+    .primary-btn {
+      background: var(--green); color: #fff; border: 1px solid var(--green); border-radius: 12px; padding: 10px 14px; cursor: pointer; font-weight: 800;
+    }
+    .primary-btn:hover { background: var(--green-dark); }
+
+    .alert {
+      display: none; padding: 10px 12px; margin-bottom: 12px; background: #fff2d6; border: 1px solid #efd9a5; border-radius: 12px; color: #7c5a0c; font-weight: 700;
+    }
+    .alert.show { display: block; }
+
+    .habitat-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+    }
+
+    .habitat-card {
+      background: var(--paper); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow);
+    }
+    .habitat-header {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 15px 8px;
+    }
+    .habitat-header h4 { margin: 0; font-size: 1rem; }
+    .habitat-sub { color: var(--muted); font-size: 0.75rem; }
+    .tiny-btn {
+      background: #f1f5f1; border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; cursor: pointer; font-size: 0.8rem;
+    }
+
+    .world {
+      position: relative; height: 170px; margin: 0 10px 12px; border-radius: 14px; overflow: hidden; background: linear-gradient(180deg, #dfeef3 0%, #dfeef3 68%, #9ec0a1 69%, #9ec0a1 100%);
+    }
+    .world.bird { background: linear-gradient(180deg, #d9f1d1 0%, #d9f1d1 68%, #8dbb6d 69%, #8dbb6d 100%); }
+    .world.hamster { background: linear-gradient(180deg, #f6e8c5 0%, #f6e8c5 68%, #caa178 69%, #caa178 100%); }
+    .world.fish { background: linear-gradient(180deg, #bfeaf3 0%, #bfeaf3 68%, #6ca9a5 69%, #6ca9a5 100%); }
+
+    .pet {
+      position: absolute; left: 0; top: 0; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; font-size: 1.8rem; user-select: none; filter: drop-shadow(0 6px 10px rgba(20,20,20,0.14));
+      transform: translate3d(0,0,0);
+      transition: transform 0.1s linear;
+      cursor: pointer;
+    }
+    .pet:active { transform: scale(1.08); }
+
+    .habitat-footer {
+      padding: 0 15px 14px;
+    }
+    .status-row {
+      display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--muted); font-size: 0.79rem;
+    }
+    .cleanbar {
+      width: 100%; height: 8px; background: #edf0ed; border-radius: 999px; overflow: hidden; margin-top: 8px;
+    }
+    .cleanbar span {
+      display: block; height: 100%; background: linear-gradient(90deg, #7cc375, #2d835a); border-radius: inherit;
+    }
+
+    .pet-list {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;
+    }
+
+    .pet-card {
+      background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 12px 12px 10px; box-shadow: var(--shadow);
+    }
+    .pet-top {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    }
+    .pet-name { font-weight: 800; }
+    .pet-kind { color: var(--muted); font-size: 0.72rem; margin-top: 2px; }
+    .pet-face { font-size: 1.8rem; }
+    .stat {
+      margin-top: 10px;
+    }
+    .stat-label {
+      display: flex; justify-content: space-between; color: var(--muted); font-size: 0.72rem; margin-bottom: 5px;
+    }
+    .stat-bar {
+      width: 100%; height: 7px; background: #edf0ed; border-radius: 99px; overflow: hidden;
+    }
+    .stat-bar span {
+      display: block; height: 100%; background: linear-gradient(90deg, #8fcb82, #3b8761); border-radius: inherit;
+    }
+    .stat-bar span.low { background: linear-gradient(90deg, #f6ba5d, #f07d2a); }
+    .pet-actions {
+      display: flex; gap: 8px; margin-top: 12px;
+    }
+    .pet-actions button {
+      flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px; cursor: pointer; font-weight: 700;
+    }
+
+    .store-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px;
+    }
+    .store-card {
+      background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 16px; text-align: center; box-shadow: var(--shadow);
+    }
+    .store-card .emoji { font-size: 3rem; }
+    .store-card h4 { margin: 8px 0 4px; }
+    .store-card p { margin: 0 0 12px; color: var(--muted); font-size: 0.85rem; }
+    .buy-btn {
+      background: #fff3da; color: #745101; border: 1px solid #f0d79a; border-radius: 12px; padding: 9px 12px; cursor: pointer; font-weight: 800;
+    }
+    .buy-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+
+    .toast {
+      position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: rgba(29, 41, 35, 0.95); color: white; padding: 10px 14px; border-radius: 12px; opacity: 0; pointer-events: none; transition: 0.2s ease; z-index: 50; max-width: calc(100vw - 32px);
+    }
+    .toast.show { opacity: 1; }
+
+    .cutscene {
+      position: fixed; inset: 0; background: rgba(18, 30, 25, 0.6); display: none; align-items: center; justify-content: center; padding: 14px; z-index: 60;
+    }
+    .cutscene.show { display: flex; }
+    .cutscene-panel {
+      width: min(100%, 940px); background: #fff; border-radius: 24px; box-shadow: 0 40px 120px rgba(0,0,0,0.38); padding: 18px 20px 16px;
+    }
+    .cutscene-header {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px;
+    }
+    .cutscene-header h3 { margin: 0; font-size: 1.3rem; }
+    .scene-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+    }
+    .scene-card {
+      border: 1px solid var(--line); border-radius: 16px; padding: 12px; background: #f9faf7;
+    }
+    .scene-stage {
+      position: relative; height: 110px; border-radius: 12px; background: linear-gradient(180deg, #d6ecdc 0%, #d6ecdc 68%, #a5bf97 69%, #a5bf97 100%);
+      overflow: hidden; margin-bottom: 8px;
+    }
+    .scene-card.fish .scene-stage { background: linear-gradient(180deg, #c0edf2 0%, #c0edf2 68%, #7aa9a5 69%, #7aa9a5 100%); }
+    .scene-card.bird .scene-stage { background: linear-gradient(180deg, #deefcf 0%, #deefcf 68%, #8ab770 69%, #8ab770 100%); }
+    .scene-card.hamster .scene-stage { background: linear-gradient(180deg, #f3e6bf 0%, #f3e6bf 68%, #d0a36d 69%, #d0a36d 100%); }
+    .scene-food, .scene-pet {
+      position: absolute; left: 50%; transform: translateX(-50%); bottom: 18px; font-size: 2rem; }
+    .scene-pet { font-size: 2.8rem; bottom: 26px; animation: bounce 0.8s ease-in-out infinite alternate; }
+    .scene-food { bottom: 16px; left: 18%; animation: float 1s ease-in-out infinite alternate; }
+    @keyframes bounce { from { transform: translateX(-50%) translateY(0px); } to { transform: translateX(-50%) translateY(-8px); } }
+    @keyframes float { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-7px) rotate(16deg); } }
+
+    .cutscene-footer {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap;
+      color: var(--muted); font-size: 0.85rem;
+    }
+
+    @media (max-width: 860px) {
+      .habitat-grid, .store-grid, .pet-list { grid-template-columns: 1fr 1fr; }
+      .scene-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 14px; }
+      .topbar, .hero { flex-direction: column; align-items: flex-start; }
+      .habitat-grid, .store-grid, .pet-list { grid-template-columns: 1fr; }
+      .world { height: 150px; }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <header><div class="brand"><div class="logo" aria-hidden="true">🐾</div><div><h1>Pet Pals Simulator</h1><p>Your cozy little digital pet shop</p></div></div><div class="wallet"><span class="level" id="level">Level 1</span><span class="coin">🪙 <span id="coins">0</span></span></div></header>
-  <section class="hero"><div><h2>Welcome to your pet shop!</h2><p>Meet your lively residents, keep their habitats happy, and grow your collection. These are digital game pets—no real-life care reminders.</p></div><div class="hero-art" aria-hidden="true">🐹 🐦 🐟</div></section>
-  <div class="tabs" role="tablist" aria-label="Shop pages"><button class="tab active" role="tab" aria-selected="true" data-view="habitats">🏡 Habitats</button><button class="tab" role="tab" aria-selected="false" data-view="store">🛍️ Pet shop</button></div>
-  <section class="view" id="habitats-view"><div class="section-head"><div><h2>Your habitats</h2><p>Every pet wanders and bounces on its own. Tap a pet to say hello.</p></div><button class="button primary" id="feed-all">🍽️ Feed all pets</button></div><div class="alert" id="game-alert" role="status"></div><div class="habitat-grid" id="habitats"></div><div class="section-head"><div><h2>Your residents</h2><p>Play with a pet to cheer them up and earn shop coins.</p></div></div><div class="pet-list" id="pet-list"></div><p class="note">Game progress saves automatically in this browser. Pet needs change gradually while you play.</p></section>
-  <section class="view" id="store-view" hidden><div class="section-head"><div><h2>Welcome a new resident</h2><p>Buy more digital pets to grow your shop.</p></div></div><div class="store-grid" id="store-grid"></div><p class="note">Each new resident gets their own independent movement, name, and stats.</p></section>
-</div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="cutscene" id="feeding-scene" role="dialog" aria-modal="true" aria-labelledby="scene-title"><div class="cutscene-box"><div class="cutscene-head"><h2 id="scene-title">Everyone's getting a snack! 🍽️</h2><button class="button small" id="close-scene" aria-label="Close feeding scene">✕</button></div><div class="scene-grid" id="scene-grid"></div><div class="cutscene-foot"><span id="scene-summary">All three kinds of pets are enjoying their treats together.</span><br><button class="button primary" id="scene-done">Back to the shop</button></div></div></div>
-<script>
-(()=>{'use strict';
-const KEY='petpals.simulator.v2',OLD='petpals.dailycare.v1',LEGACY='petshop.save.v1';
-const TYPES={hamster:{label:'Hamster habitat',singular:'Hamster',emoji:'🐹',food:'🥕',foodLabel:'tiny veggie bites',names:['Hazel','Nibbles','Poppy']},bird:{label:'Bird aviary',singular:'Bird',emoji:'🐦',food:'🌻',foodLabel:'sunflower seeds',names:['Sunny','Pip','Feather']},fish:{label:'Fish tank',singular:'Fish',emoji:'🐟',food:'🫧',foodLabel:'fish flakes',names:['Bubbles','Goldie','Ripple']}};
-const kinds=Object.keys(TYPES),now=()=>Date.now(),makePet=(kind,name,id)=>({id:id||`pet-${now()}-${Math.random().toString(36).slice(2,8)}`,kind,name,hunger:20,happy:78,age:0});
-function starter(){return kinds.flatMap(k=>TYPES[k].names.map(n=>makePet(k,n)))}
-function importPets(){try{const old=JSON.parse(localStorage.getItem(OLD)||'null');if(old&&Array.isArray(old.pets)&&old.pets.length)return old.pets.filter(p=>p&&TYPES[p.kind]).map(p=>makePet(p.kind,String(p.name||TYPES[p.kind].singular).slice(0,24),String(p.id||`old-${Math.random()}`)));const legacy=JSON.parse(localStorage.getItem(LEGACY)||'null');const found=[];for(const [hid,h] of Object.entries(legacy?.habitats||{})){if(!TYPES[h?.kind])continue;for(const a of Object.values(h.animals||{}))found.push(makePet(h.kind,String(a?.name||TYPES[h.kind].names[found.length%3]).slice(0,24),`legacy-${hid}-${a?.id||found.length}`))}if(found.length){for(const k of kinds)while(found.filter(p=>p.kind===k).length<3)found.push(makePet(k,TYPES[k].names[found.filter(p=>p.kind===k).length%3]));return found}}catch{}return starter()}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(x?.version===2&&Array.isArray(x.pets))return {version:2,pets:x.pets.filter(p=>TYPES[p.kind]).map(p=>({...makePet(p.kind,String(p.name||TYPES[p.kind].singular).slice(0,24),String(p.id||'')),hunger:clamp(p.hunger,0,100,20),happy:clamp(p.happy,0,100,75),age:Math.max(0,Number(p.age)||0)})),coins:Math.max(0,Number(x.coins)||0),xp:Math.max(0,Number(x.xp)||0),clean:x.clean&&typeof x.clean==='object'?x.clean:{},last:Math.min(now(),Number(x.last)||now())}}catch{}return {version:2,pets:importPets(),coins:250,xp:0,clean:{hamster:90,bird:90,fish:90},last:now()}}
-function clamp(v,min,max,fallback){v=Number(v);return Number.isFinite(v)?Math.max(min,Math.min(max,v)):fallback}
-const state=load(),$=id=>document.getElementById(id);let toastTimer,sceneTimer;
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{notify('Could not save your game in this browser.')}}
-function notify(text){const el=$('toast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2500)}
-function level(){return 1+Math.floor(state.xp/25)}function reward(x){state.xp+=x;state.coins+=Math.max(1,Math.floor(x/2))}
-function renderHeader(){$('coins').textContent=state.coins;$('level').textContent=`Level ${level()}`}
-function status(p){return p.hunger>70?'hungry':p.happy<35?'needs cheering':'happy'}
-function drawHabitats(){const root=$('habitats');root.replaceChildren();for(const kind of kinds){const type=TYPES[kind],pets=state.pets.filter(p=>p.kind===kind),card=document.createElement('article');card.className='habitat';card.dataset.kind=kind;const head=document.createElement('div');head.className='habitat-head';const title=document.createElement('div');title.innerHTML=`<div class="habitat-title">${type.label}</div><div class="habitat-sub">${pets.length} resident${pets.length===1?'':'s'}</div>`;const cleanBtn=document.createElement('button');cleanBtn.className='button small';cleanBtn.textContent='✨ Tidy';cleanBtn.title=`Tidy ${type.label}`;cleanBtn.addEventListener('click',()=>tidy(kind));head.append(title,cleanBtn);const world=document.createElement('div');world.className='habitat-world';world.dataset.kind=kind;const decor=document.createElement('div');decor.className='world-decor';world.append(decor);for(const p of pets){const critter=document.createElement('span');critter.className='critter';critter.textContent=type.emoji;critter.title=`${p.name} — ${status(p)}. Tap to play.`;critter.setAttribute('role','button');critter.setAttribute('tabindex','0');critter.setAttribute('aria-label',`Play with ${p.name}`);critter.dataset.petId=p.id;critter.addEventListener('click',()=>play(p.id));critter.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();play(p.id)}});world.append(critter)}const foot=document.createElement('div');foot.className='habitat-foot';const line=document.createElement('div');line.className='habitat-footline';const text=document.createElement('span');text.className='statline';text.textContent=pets.length?`${pets.filter(p=>p.hunger<70).length} feeling good`:'A cozy space ready for a pet';line.append(text);const bar=document.createElement('div');bar.className='cleanbar';const fill=document.createElement('span');fill.style.width=`${clamp(state.clean[kind],0,100,90)}%`;bar.append(fill);foot.append(line,bar);card.append(head,world,foot);root.append(card)}
-const list=$('pet-list');list.replaceChildren();if(!state.pets.length){const e=document.createElement('div');e.className='empty';e.textContent='Your shop is waiting for its first resident.';list.append(e)}for(const p of state.pets){const type=TYPES[p.kind],card=document.createElement('article');card.className='pet-card';const top=document.createElement('div');top.className='pet-card-top';const n=document.createElement('div');n.innerHTML=`<div class="pet-card-name"></div><div class="pet-card-kind">${type.singular}</div>`;n.querySelector('.pet-card-name').textContent=p.name;const face=document.createElement('span');face.textContent=type.emoji;face.style.fontSize='24px';top.append(n,face);card.append(top,meter('Fullness',100-p.hunger),meter('Happiness',p.happy));const actions=document.createElement('div');actions.className='pet-actions';const playBtn=document.createElement('button');playBtn.className='button small';playBtn.textContent='🎾 Play';playBtn.addEventListener('click',()=>play(p.id));const feedBtn=document.createElement('button');feedBtn.className='button small';feedBtn.textContent='🍽️ Snack';feedBtn.addEventListener('click',()=>feedPets([p]));actions.append(playBtn,feedBtn);card.append(actions);list.append(card)}
-const needs=state.pets.filter(p=>p.hunger>=70||p.happy<30);const alert=$('game-alert');alert.classList.toggle('show',needs.length>0);alert.textContent=needs.length?`🚨 Shop alert: ${needs.slice(0,3).map(p=>p.name).join(', ')}${needs.length>3?' and more':''} ${needs.length===1?'needs':'need'} a little attention!`:'';renderHeader();drawStore()}
-function meter(label,value){const wrap=document.createElement('div');wrap.className='meter';const cap=document.createElement('div');cap.className='meter-label';const a=document.createElement('span');a.textContent=label;const b=document.createElement('span');b.textContent=`${Math.round(value)}%`;cap.append(a,b);const track=document.createElement('div');track.className='meter-track';const fill=document.createElement('span');fill.style.width=`${value}%`;if(value<30)fill.className='low';track.append(fill);wrap.append(cap,track);return wrap}
-function drawStore(){const root=$('store-grid');root.replaceChildren();for(const kind of kinds){const t=TYPES[kind],card=document.createElement('article');card.className='store-card';const emoji=document.createElement('div');emoji.className='store-emoji';emoji.textContent=t.emoji;const h=document.createElement('h3');h.textContent=t.singular;const p=document.createElement('p');p.textContent=`A new ${t.singular.toLowerCase()} resident for your ${t.label.toLowerCase()}.`;const btn=document.createElement('button');btn.className='button gold';btn.textContent='🪙 60 — Adopt';btn.disabled=state.coins<60;btn.addEventListener('click',()=>adopt(kind));card.append(emoji,h,p,btn);root.append(card)}}
-function adopt(kind){if(state.coins<60){notify('Earn a few more coins by playing with your pets!');return}const name=prompt(`Name your new ${TYPES[kind].singular.toLowerCase()}:`,TYPES[kind].names[state.pets.filter(p=>p.kind===kind).length%3]);if(name===null)return;const clean=name.trim().slice(0,24);if(!clean){notify('Give your new pet a name first.');return}state.coins-=60;state.pets.push(makePet(kind,clean));save();render();notify(`${clean} joined your pet shop!`)}
-function play(id){const p=state.pets.find(x=>x.id===id);if(!p)return;p.happy=clamp(p.happy+24,0,100,80);p.hunger=clamp(p.hunger+3,0,100,20);reward(4);save();render();document.querySelectorAll(`.critter[data-pet-id="${CSS.escape(id)}"]`).forEach(el=>{el.classList.remove('boop');void el.offsetWidth;el.classList.add('boop')});notify(`${p.name} had a lovely playtime! +2 coins`)}
-function tidy(kind){const pets=state.pets.filter(p=>p.kind===kind);if(!pets.length){notify('Adopt a resident before tidying this habitat.');return}if(state.coins<3){notify('You need 3 coins to tidy this habitat. Play with a pet to earn coins.');return}state.coins-=3;state.clean[kind]=100;state.xp+=2;save();render();notify(`${TYPES[kind].label} is sparkling clean!`)}
-function feedPets(pets){if(!pets.length){notify('Adopt some pets before serving snacks!');return}const cost=pets.length*2;if(state.coins<cost){notify(`Feeding this group costs ${cost} coins. Play with pets to earn more.`);return}state.coins-=cost;for(const p of pets){p.hunger=clamp(p.hunger-62,0,100,0);p.happy=clamp(p.happy+12,0,100,80)}state.xp+=pets.length;save();render();showFeedingScene(pets)}
-function showFeedingScene(pets){const scene=$('feeding-scene'),root=$('scene-grid');root.replaceChildren();for(const kind of kinds){const type=TYPES[kind],count=pets.filter(p=>p.kind===kind).length,card=document.createElement('article');card.className='scene-card';card.dataset.kind=kind;const stage=document.createElement('div');stage.className='scene-stage';const food=document.createElement('span');food.className='food';food.textContent=type.food;const eater=document.createElement('span');eater.className='eater';eater.textContent=type.emoji;stage.append(food,eater);const title=document.createElement('h3');title.textContent=type.label;const description=document.createElement('p');description.textContent=count?`${count} ${count===1?'resident':'residents'} enjoying ${type.foodLabel}`:'All set for the next resident!';card.append(stage,title,description);root.append(card)}const countByKind=k=>pets.filter(p=>p.kind===k).length;$('scene-summary').textContent=`${pets.length} ${pets.length===1?'pet':'pets'} fed • Hamsters ${countByKind('hamster')} · Birds ${countByKind('bird')} · Fish ${countByKind('fish')} • All three feeding scenes play together!`;scene.classList.add('show');clearTimeout(sceneTimer);sceneTimer=setTimeout(()=>scene.classList.remove('show'),12000)}
-$('feed-all').addEventListener('click',()=>feedPets(state.pets));$('close-scene').addEventListener('click',()=>{$('feeding-scene').classList.remove('show');clearTimeout(sceneTimer)});$('scene-done').addEventListener('click',()=>{$('feeding-scene').classList.remove('show');clearTimeout(sceneTimer)});$('feeding-scene').addEventListener('click',e=>{if(e.target===$('feeding-scene')){$('feeding-scene').classList.remove('show');clearTimeout(sceneTimer)}});
-document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>{const active=t===btn;t.classList.toggle('active',active);t.setAttribute('aria-selected',String(active))});document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!==`${btn.dataset.view}-view`)}));
-// Every critter gets its own speed, phase, direction changes, and gentle bobbing.
-const walkers=new Map();function syncWalkers(){document.querySelectorAll('.critter').forEach(el=>{const id=el.dataset.petId;if(!walkers.has(id))walkers.set(id,{x:Math.random()*.72+.08,y:Math.random()*.48+.25,vx:(Math.random()*.0009+.00025)*(Math.random()<.5?-1:1),phase:Math.random()*6.28,turn:now()+Math.random()*2500})});for(const id of walkers.keys())if(!document.querySelector(`.critter[data-pet-id="${CSS.escape(id)}"]`))walkers.delete(id)}function animate(){syncWalkers();for(const [id,m]of walkers){const el=document.querySelector(`.critter[data-pet-id="${CSS.escape(id)}"]`);if(!el)continue;const world=el.parentElement,w=Math.max(1,world.clientWidth-38),h=Math.max(1,world.clientHeight-45);if(now()>m.turn){m.vx*=-1;m.turn=now()+1300+Math.random()*3000}m.x+=m.vx*16;if(m.x<.02||m.x>.9)m.vx*=-1;m.phase+=.025+Math.random()*.004;el.style.transform=`translate(${m.x*w}px,${(0.25+m.y*.45+Math.sin(m.phase)*.055)*h}px) scaleX(${m.vx<0?-1:1}) translateY(${Math.sin(m.phase*1.7)*3}px)`}requestAnimationFrame(animate)}
-let last=now();setInterval(()=>{const t=now(),elapsed=Math.min((t-last)/1000,30);last=t;const drift=elapsed*.018;for(const p of state.pets){p.hunger=clamp(p.hunger+drift,0,100,20);p.happy=clamp(p.happy-(p.hunger>68?drift*.36:drift*.06),0,100,75);p.age+=elapsed}for(const k of kinds)if(state.pets.some(p=>p.kind===k))state.clean[k]=clamp((state.clean[k]??90)-elapsed*.006,0,100,90);save();render()},5000);
-render();requestAnimationFrame(animate);
-})();
-</script>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">🐾</div>
+        <div>
+          <h1>Pet Pals Simulator</h1>
+          <p>Your cozy digital pet shop</p>
+        </div>
+      </div>
+      <div class="coinbox">🪙 <span id="coins">0</span></div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Welcome to your pet shop!</h2>
+        <p>Each pet is alive and moves on its own. Keep the habitats happy, adopt new friends, and feed everyone together with a full shop-wide snack break.</p>
+      </div>
+      <div class="hero-icon" aria-hidden="true">🐹🐦🐟</div>
+    </section>
+
+    <nav class="tabs" aria-label="Pet shop sections">
+      <button class="tab active" data-view="habitats" type="button">🏡 Habitats</button>
+      <button class="tab" data-view="shop" type="button">🛍️ Pet shop</button>
+    </nav>
+
+    <div class="view" id="habitats-view">
+      <div class="section-head">
+        <div>
+          <h3>Your habitats</h3>
+          <p>Every animal wanders and bounces on its own.</p>
+        </div>
+        <button class="primary-btn" id="feed-all" type="button">🍽️ Feed all pets</button>
+      </div>
+
+      <div id="alert" class="alert" role="status" aria-live="polite"></div>
+      <div id="habitat-grid" class="habitat-grid"></div>
+
+      <div class="section-head">
+        <div>
+          <h3>Pet roster</h3>
+          <p>Tap a pet to cheer them up or feed them.</p>
+        </div>
+      </div>
+      <div id="pet-list" class="pet-list"></div>
+    </div>
+
+    <div class="view" id="shop-view" hidden>
+      <div class="section-head">
+        <div>
+          <h3>Adopt a new friend</h3>
+          <p>Buy more pets to grow your shop.</p>
+        </div>
+      </div>
+      <div id="shop-grid" class="store-grid"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="cutscene" class="cutscene" aria-modal="true" role="dialog" aria-labelledby="cutscene-title">
+    <div class="cutscene-panel">
+      <div class="cutscene-header">
+        <h3 id="cutscene-title">All pets are eating together</h3>
+        <button id="close-scene" class="tiny-btn" type="button">✕</button>
+      </div>
+      <div id="scene-grid" class="scene-grid"></div>
+      <div class="cutscene-footer">
+        <span id="scene-summary">Everyone is enjoying a snack break.</span>
+        <button id="done-scene" class="primary-btn" type="button">Back to the shop</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const STORAGE_KEY = 'petpals-sim-v1';
+      const TYPES = {
+        hamster: { label: 'Hamster Habitat', singular: 'Hamster', emoji: '🐹', food: '🥕', foodLabel: 'tiny veggie bites', names: ['Hazel', 'Nibbles', 'Poppy'] },
+        bird: { label: 'Bird Aviary', singular: 'Bird', emoji: '🐦', food: '🌾', foodLabel: 'sunflower seeds', names: ['Sunny', 'Pip', 'Feather'] },
+        fish: { label: 'Fish Tank', singular: 'Fish', emoji: '🐟', food: '🦐', foodLabel: 'fish flakes', names: ['Bubbles', 'Goldie', 'Ripple'] }
+      };
+
+      const state = loadState();
+      const toastEl = document.getElementById('toast');
+      const habitatGrid = document.getElementById('habitat-grid');
+      const petList = document.getElementById('pet-list');
+      const shopGrid = document.getElementById('shop-grid');
+      let toastTimer = null;
+      let sceneTimer = null;
+
+      function safeNumber(value, fallback) {
+        const n = Number(value);
+        return Number.isFinite(n) ? n : fallback;
+      }
+
+      function clamp(value, min, max) {
+        return Math.min(max, Math.max(min, value));
+      }
+
+      function makePet(kind, name, id) {
+        return {
+          id: id || `pet-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+          kind,
+          name: String(name || TYPES[kind].names[0]),
+          hunger: 24,
+          mood: 78,
+          x: Math.random() * 0.8 + 0.08,
+          y: Math.random() * 0.7 + 0.12,
+          dx: (Math.random() > 0.5 ? 1 : -1) * (0.0018 + Math.random() * 0.0018),
+          dy: (Math.random() > 0.5 ? 1 : -1) * (0.001 + Math.random() * 0.0018),
+          phase: Math.random() * Math.PI * 2,
+          seed: Math.random() * 1000
+        };
+      }
+
+      function createStarterPets() {
+        const pets = [];
+        Object.keys(TYPES).forEach((kind) => {
+          for (let i = 0; i < 3; i++) {
+            pets.push(makePet(kind, TYPES[kind].names[i % TYPES[kind].names.length], `starter-${kind}-${i}`));
+          }
+        });
+        return pets;
+      }
+
+      function importLegacyPets() {
+        try {
+          const old = JSON.parse(localStorage.getItem('petpals.dailycare.v1') || 'null');
+          if (old && Array.isArray(old.pets)) {
+            return old.pets.filter((p) => p && TYPES[p.kind]).map((p, index) => makePet(p.kind, p.name || TYPES[p.kind].names[0], `legacy-${index}-${p.kind}`));
+          }
+        } catch (e) {}
+        return [];
+      }
+
+      function loadState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          if (saved && Array.isArray(saved.pets)) {
+            return {
+              coins: safeNumber(saved.coins, 220),
+              pets: saved.pets.filter((p) => p && TYPES[p.kind]).map((p) => ({
+                ...makePet(p.kind, p.name || TYPES[p.kind].names[0], p.id || `save-${Math.random()}`),
+                hunger: clamp(safeNumber(p.hunger, 25), 0, 100),
+                mood: clamp(safeNumber(p.mood, 80), 0, 100),
+                x: clamp(safeNumber(p.x, Math.random() * 0.8 + 0.08), 0.08, 0.92),
+                y: clamp(safeNumber(p.y, Math.random() * 0.7 + 0.12), 0.08, 0.9),
+                dx: safeNumber(p.dx, (Math.random() > 0.5 ? 1 : -1) * 0.0018),
+                dy: safeNumber(p.dy, (Math.random() > 0.5 ? 1 : -1) * 0.0018),
+                phase: safeNumber(p.phase, Math.random() * Math.PI * 2),
+                seed: safeNumber(p.seed, Math.random() * 1000)
+              }))
+            };
+          }
+        } catch (e) {}
+
+        const imported = importLegacyPets();
+        const fallback = imported.length ? imported : createStarterPets();
+        return {
+          coins: 220,
+          pets: fallback
+        };
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+          showToast('Could not save the game in this browser.');
+        }
+      }
+
+      function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+      }
+
+      function getCounts() {
+        const counts = {};
+        Object.keys(TYPES).forEach((kind) => counts[kind] = state.pets.filter((pet) => pet.kind === kind).length);
+        return counts;
+      }
+
+      function renderCoins() {
+        document.getElementById('coins').textContent = state.coins;
+      }
+
+      function renderTabs() {
+        const current = document.querySelector('.tab.active')?.dataset.view || 'habitats';
+        document.getElementById('habitats-view').hidden = current !== 'habitats';
+        document.getElementById('shop-view').hidden = current !== 'shop';
+      }
+
+      function renderHabitats() {
+        habitatGrid.innerHTML = '';
+
+        Object.keys(TYPES).forEach((kind) => {
+          const type = TYPES[kind];
+          const pets = state.pets.filter((pet) => pet.kind === kind);
+          const card = document.createElement('article');
+          card.className = 'habitat-card';
+
+          const header = document.createElement('div');
+          header.className = 'habitat-header';
+          header.innerHTML = `
+            <div>
+              <h4>${type.label}</h4>
+              <div class="habitat-sub">${pets.length} resident${pets.length === 1 ? '' : 's'}</div>
+            </div>
+            <button class="tiny-btn" type="button">✨ Tidy</button>
+          `;
+          header.querySelector('button').addEventListener('click', () => tidyHabitat(kind));
+
+          const world = document.createElement('div');
+          world.className = `world ${kind}`;
+
+          pets.forEach((pet) => {
+            const critter = document.createElement('button');
+            critter.type = 'button';
+            critter.className = 'pet';
+            critter.title = `${pet.name} • ${pet.mood >= 70 ? 'happy' : 'needs attention'}`;
+            critter.textContent = type.emoji;
+            critter.setAttribute('aria-label', `Play with ${pet.name}`);
+            critter.addEventListener('click', () => petInteraction(pet.id));
+            critter.dataset.petId = pet.id;
+            world.appendChild(critter);
+          });
+
+          const footer = document.createElement('div');
+          footer.className = 'habitat-footer';
+          const cleanLevel = 75 + (pets.length > 0 ? Math.round((pets.reduce((sum, pet) => sum + pet.mood, 0) / pets.length) / 2) : 0);
+          footer.innerHTML = `
+            <div class="status-row">
+              <span>${pets.length ? `${pets.filter((pet) => pet.mood > 60).length} feeling good` : 'Ready for pets'}</span>
+              <span>${Math.min(100, cleanLevel)}%</span>
+            </div>
+            <div class="cleanbar"><span style="width:${Math.min(100, cleanLevel)}%"></span></div>
+          `;
+
+          card.appendChild(header);
+          card.appendChild(world);
+          card.appendChild(footer);
+          habitatGrid.appendChild(card);
+        });
+      }
+
+      function renderPetList() {
+        petList.innerHTML = '';
+
+        if (!state.pets.length) {
+          petList.innerHTML = '<div class="pet-card" style="grid-column:1 / -1; text-align:center; color: var(--muted);">No pets yet. Adopt one from the shop.</div>';
+          return;
+        }
+
+        state.pets.forEach((pet) => {
+          const type = TYPES[pet.kind];
+          const card = document.createElement('article');
+          card.className = 'pet-card';
+
+          const hunger = clamp(pet.hunger, 0, 100);
+          const mood = clamp(pet.mood, 0, 100);
+
+          card.innerHTML = `
+            <div class="pet-top">
+              <div>
+                <div class="pet-name">${pet.name}</div>
+                <div class="pet-kind">${type.singular}</div>
+              </div>
+              <div class="pet-face">${type.emoji}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label"><span>Fullness</span><span>${Math.round(hunger)}%</span></div>
+              <div class="stat-bar"><span class="${hunger < 35 ? 'low' : ''}" style="width:${hunger}%"></span></div>
+            </div>
+            <div class="stat">
+              <div class="stat-label"><span>Happiness</span><span>${Math.round(mood)}%</span></div>
+              <div class="stat-bar"><span class="${mood < 35 ? 'low' : ''}" style="width:${mood}%"></span></div>
+            </div>
+            <div class="pet-actions">
+              <button type="button">🎾 Play</button>
+              <button type="button">🍽️ Feed</button>
+            </div>
+          `;
+
+          const [playBtn, feedBtn] = card.querySelectorAll('button');
+          playBtn.addEventListener('click', () => petInteraction(pet.id));
+          feedBtn.addEventListener('click', () => feedGroup([pet]));
+          petList.appendChild(card);
+        });
+      }
+
+      function renderShop() {
+        shopGrid.innerHTML = '';
+        Object.keys(TYPES).forEach((kind) => {
+          const type = TYPES[kind];
+          const card = document.createElement('article');
+          card.className = 'store-card';
+          card.innerHTML = `
+            <div class="emoji">${type.emoji}</div>
+            <h4>${type.singular}</h4>
+            <p>Bright, playful, and full of personality.</p>
+            <button class="buy-btn" type="button" ${state.coins < 60 ? 'disabled' : ''}>🪙 60 Adopt</button>
+          `;
+          card.querySelector('button').addEventListener('click', () => adoptPet(kind));
+          shopGrid.appendChild(card);
+        });
+      }
+
+      function renderAlert() {
+        const needy = state.pets.filter((pet) => pet.hunger > 65 || pet.mood < 38);
+        const alert = document.getElementById('alert');
+        if (!needy.length) {
+          alert.classList.remove('show');
+          alert.textContent = '';
+          return;
+        }
+        const names = needy.slice(0, 3).map((pet) => pet.name).join(', ');
+        alert.textContent = `⚠️ ${names}${needy.length > 3 ? ' and more' : ''} need attention.`;
+        alert.classList.add('show');
+      }
+
+      function refreshRender() {
+        renderCoins();
+        renderHabitats();
+        renderPetList();
+        renderShop();
+        renderAlert();
+      }
+
+      function adoptPet(kind) {
+        if (state.coins < 60) {
+          showToast('Need 60 coins first. Play with pets to earn more!');
+          return;
+        }
+
+        const name = prompt(`Name your new ${TYPES[kind].singular.toLowerCase()}:`, TYPES[kind].names[0]);
+        if (name === null) return;
+        const trimmed = name.trim();
+        if (!trimmed) {
+          showToast('Give your pet a name!');
+          return;
+        }
+
+        state.coins -= 60;
+        state.pets.push(makePet(kind, trimmed));
+        saveState();
+        refreshRender();
+        showToast(`${trimmed} joined the shop!`);
+      }
+
+      function petInteraction(id) {
+        const pet = state.pets.find((item) => item.id === id);
+        if (!pet) return;
+        pet.mood = clamp(pet.mood + 18, 0, 100);
+        pet.hunger = clamp(pet.hunger + 4, 0, 100);
+        state.coins += 3;
+        saveState();
+        refreshRender();
+        showToast(`${pet.name} is happy and playful.`);
+      }
+
+      function feedGroup(pets) {
+        if (!pets || pets.length === 0) return;
+
+        const cost = pets.length * 2;
+        if (state.coins < cost) {
+          showToast(`Feeding costs ${cost} coins. Play more to earn extra.`);
+          return;
+        }
+
+        state.coins -= cost;
+        pets.forEach((pet) => {
+          pet.hunger = clamp(pet.hunger - 60, 0, 100);
+          pet.mood = clamp(pet.mood + 12, 0, 100);
+        });
+        saveState();
+        refreshRender();
+        showFeedingScene(pets);
+      }
+
+      function tidyHabitat(kind) {
+        const pets = state.pets.filter((pet) => pet.kind === kind);
+        if (!pets.length) {
+          showToast('Adopt a pet before tidying this habitat.');
+          return;
+        }
+        if (state.coins < 4) {
+          showToast('Need 4 coins to tidy this habitat.');
+          return;
+        }
+        state.coins -= 4;
+        pets.forEach((pet) => pet.mood = clamp(pet.mood + 10, 0, 100));
+        saveState();
+        refreshRender();
+        showToast(`${TYPES[kind].label} is now sparkling clean.`);
+      }
+
+      function showFeedingScene(pets) {
+        const scene = document.getElementById('cutscene');
+        const grid = document.getElementById('scene-grid');
+        grid.innerHTML = '';
+
+        Object.keys(TYPES).forEach((kind) => {
+          const type = TYPES[kind];
+          const selected = pets.filter((pet) => pet.kind === kind);
+          const card = document.createElement('div');
+          card.className = `scene-card ${kind}`;
+          card.innerHTML = `
+            <div class="scene-stage">
+              <span class="scene-food">${type.food}</span>
+              <span class="scene-pet">${type.emoji}</span>
+            </div>
+            <div><strong>${type.label}</strong></div>
+            <div style="color: var(--muted); font-size: 0.8rem;">${selected.length} pet${selected.length === 1 ? '' : 's'} eating</div>
+          `;
+          grid.appendChild(card);
+        });
+
+        const counts = getCounts();
+        document.getElementById('scene-summary').textContent = `Feeding all ${state.pets.length} pets • Hamsters ${counts.hamster} • Birds ${counts.bird} • Fish ${counts.fish}`;
+        scene.classList.add('show');
+        clearTimeout(sceneTimer);
+        sceneTimer = setTimeout(() => scene.classList.remove('show'), 5000);
+      }
+
+      function setupEvents() {
+        document.querySelectorAll('.tab').forEach((button) => {
+          button.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach((tab) => tab.classList.toggle('active', tab === button));
+            document.getElementById('habitats-view').hidden = button.dataset.view !== 'habitats';
+            document.getElementById('shop-view').hidden = button.dataset.view !== 'shop';
+          });
+        });
+
+        document.getElementById('feed-all').addEventListener('click', () => {
+          const allPets = [...state.pets];
+          if (!allPets.length) {
+            showToast('Adopt some pets before feeding everyone.');
+            return;
+          }
+          feedGroup(allPets);
+        });
+
+        document.getElementById('close-scene').addEventListener('click', () => {
+          document.getElementById('cutscene').classList.remove('show');
+          clearTimeout(sceneTimer);
+        });
+
+        document.getElementById('done-scene').addEventListener('click', () => {
+          document.getElementById('cutscene').classList.remove('show');
+          clearTimeout(sceneTimer);
+        });
+      }
+
+      function updateAnimals() {
+        state.pets.forEach((pet) => {
+          pet.phase += 0.03 + (pet.seed % 10) * 0.001;
+          pet.x += pet.dx;
+          pet.y += pet.dy;
+
+          if (pet.x < 0.08 || pet.x > 0.92) pet.dx *= -1;
+          if (pet.y < 0.12 || pet.y > 0.82) pet.dy *= -1;
+
+          pet.hunger = clamp(pet.hunger + 0.06, 0, 100);
+          pet.mood = clamp(pet.mood - (pet.hunger > 65 ? 0.12 : 0.03), 0, 100);
+        });
+      }
+
+      function animateCritters() {
+        const petElements = document.querySelectorAll('.pet');
+        petElements.forEach((element) => {
+          const pet = state.pets.find((item) => item.id === element.dataset.petId);
+          if (!pet) return;
+
+          const world = element.parentElement;
+          const worldWidth = world.clientWidth || 240;
+          const worldHeight = world.clientHeight || 170;
+          const x = pet.x * worldWidth;
+          const y = pet.y * worldHeight;
+          const wobbleX = Math.sin(pet.phase) * 7;
+          const wobbleY = Math.cos(pet.phase * 1.7) * 7;
+          const flip = pet.dx < 0 ? -1 : 1;
+          element.style.transform = `translate(${x}px, ${y + wobbleY}px) scaleX(${flip})`;
+          element.style.filter = `drop-shadow(0 6px 10px rgba(20,20,20,0.14)) ${pet.mood < 30 ? 'brightness(0.92)' : ''}`;
+        });
+        requestAnimationFrame(animateCritters);
+      }
+
+      function tick() {
+        updateAnimals();
+        refreshRender();
+      }
+
+      document.getElementById('cutscene').addEventListener('click', (event) => {
+        if (event.target.id === 'cutscene') {
+          document.getElementById('cutscene').classList.remove('show');
+          clearTimeout(sceneTimer);
+        }
+      });
+
+      setupEvents();
+      refreshRender();
+      animateCritters();
+      setInterval(tick, 5000);
+    })();
+  </script>
 </body>
 </html>
