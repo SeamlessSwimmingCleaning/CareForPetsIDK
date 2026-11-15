@@ -75,8 +75,11 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 .world.fish,.world.pufferfish,.world.turtle,.world.frog,.world.snake,.world.spider,.world.pig,.world.cow{background:linear-gradient(#bfeaf3 0 68%,#6ca9a5 69%)}
 .world.dog{background:linear-gradient(#e9e9d4 0 68%,#a9be83 69%)}
 .world.cat{background:linear-gradient(#e9e1ef 0 68%,#b5a1c4 69%)}
+.habitat-card.editing .world { box-shadow: inset 0 0 0 2px rgba(42,120,90,.3); }
 .decor-layer{position:absolute;inset:0;pointer-events:none}
-.decor{position:absolute;font-size:25px;filter:drop-shadow(0 3px 2px #24382d22);animation:decorFloat 3s ease-in-out infinite alternate}
+.decor{position:absolute;font-size:25px;filter:drop-shadow(0 3px 2px #24382d22);animation:decorFloat 3s ease-in-out infinite alternate;pointer-events:none}
+.decor.editable{pointer-events:auto;cursor:grab}
+.decor.dragging{cursor:grabbing;z-index:30;opacity:.9;filter:drop-shadow(0 0 12px rgba(42,120,90,.7))}
 .decor:nth-child(even){animation-delay:-1.3s}
 @keyframes decorFloat{to{transform:translateY(-3px)}}
 .pet{position:absolute;z-index:2;left:0;top:0;width:44px;height:44px;border:0;background:transparent;font-size:29px;filter:drop-shadow(0 5px 6px #24382d26);padding:0;will-change:transform;transition:filter .2s}
@@ -102,6 +105,7 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 .pet-name-btn:hover{text-decoration:underline}
 .pet-kind{font-size:11px;color:var(--muted)}
 .pet-face{font-size:28px}
+.rarity-badge{display:inline-flex;align-items:center;gap:5px;margin-top:4px;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.04em;border:1px solid rgba(0,0,0,.08)}
 .meter-title{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:8px}
 .pet-actions{display:flex;gap:7px;margin-top:10px}
 .pet-actions button{flex:1;background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 5px;font-size:12px;font-weight:700}
@@ -112,6 +116,7 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 .store-card .emoji{font-size:44px}
 .store-card h4{margin:6px 0 3px}
 .store-card p{font-size:12px;color:var(--muted);margin:0 0 10px}
+.store-card .rarity-preview{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin:5px auto 10px;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.04em;border:1px solid rgba(0,0,0,.08)}
 .decoration-shop{margin-top:24px}
 .note{font-size:12px;color:var(--muted);margin:12px 0}
 .toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,10px);background:#20352c;color:#fff;padding:10px 15px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;z-index:30;max-width:90vw;text-align:center}
@@ -342,7 +347,37 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 
 <script>
 (()=>{'use strict';
-const KEY='petpals-sim-v1', CARE_KEY='petpals-care-additions.v1', DAY=86400000, HOUR=3600000;
+
+const KEY='petpals-sim-v1';
+const CARE_KEY='petpals-care-additions.v1';
+const DAY=86400000;
+const HOUR=3600000;
+
+const RARITIES = [
+  { name:'Common', emoji:'✨', color:'#7dc9b4', weight:56, bonus:0 },
+  { name:'Rare', emoji:'💎', color:'#5ca7ff', weight:25, bonus:1 },
+  { name:'Legendary', emoji:'👑', color:'#f2b84b', weight:12, bonus:2 },
+  { name:'Mythical', emoji:'🌙', color:'#b68cff', weight:4, bonus:3 },
+  { name:'Exotic', emoji:'🦄', color:'#ff7ec7', weight:2, bonus:4 },
+  { name:'Godly', emoji:'☄️', color:'#ff8b42', weight:1, bonus:5 }
+];
+
+const MOVEABLE_FURNITURE_KINDS = new Set(['hamster','bird','fish','pufferfish','dog','cat']);
+
+const HABITAT_THEMES = {
+  hamster:{primary:'#f6e8c5', secondary:'#caa178', accent:'#8f5f2c'},
+  bird:{primary:'#d9f1d1', secondary:'#8dbb6d', accent:'#3a7d47'},
+  fish:{primary:'#bfeaf3', secondary:'#6ca9a5', accent:'#295d5c'},
+  pufferfish:{primary:'#bfeaf3', secondary:'#6ca9a5', accent:'#2c5c8a'},
+  dog:{primary:'#e9e9d4', secondary:'#a9be83', accent:'#5e7b2a'},
+  cat:{primary:'#e9e1ef', secondary:'#b5a1c4', accent:'#755e9c'},
+  pig:{primary:'#dfeef3', secondary:'#9ec0a1', accent:'#5b7c61'},
+  cow:{primary:'#dfeef3', secondary:'#9ec0a1', accent:'#62885c'},
+  frog:{primary:'#bfeaf3', secondary:'#6ca9a5', accent:'#1d776b'},
+  turtle:{primary:'#bfeaf3', secondary:'#6ca9a5', accent:'#376b57'},
+  snake:{primary:'#bfeaf3', secondary:'#6ca9a5', accent:'#5d6b33'},
+  spider:{primary:'#bfeaf3', secondary:'#6ca9a5', accent:'#4d4f7e'}
+};
 
 const TYPES={
   hamster:{label:'Hamster Habitat',singular:'Hamster',emoji:'🐹',food:'🥕',foodType:'scoop',qty:3,names:['Hazel','Nibbles','Poppy'],price:0,playable:true},
@@ -377,15 +412,37 @@ const DECOR=[
   {id:'puffcoral',name:'Pufferfish coral',emoji:'🪸',kind:'pufferfish',price:35}
 ];
 
+const COLOR_SWATCHES = [
+  '#dfeef3','#d9f1d1','#f6e8c5','#e9e1ef','#bfeaf3','#f9d7d0','#d6e8d9','#d7d9ef'
+];
+
 const $=id=>document.getElementById(id),
 clamp=(n,a,b)=>Math.max(a,Math.min(b,Number.isFinite(Number(n))?Number(n):a)),
 today=()=>{const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 
-function makePet(kind,name,id){
+function rollRarity(){
+  const roll = Math.random() * RARITIES.reduce((sum,r)=>sum+r.weight,0);
+  let total = 0;
+  for(const rarity of RARITIES){
+    total += rarity.weight;
+    if(roll <= total) return rarity;
+  }
+  return RARITIES[0];
+}
+
+function getRarityByName(name){
+  return RARITIES.find(r => r.name === name) || RARITIES[0];
+}
+
+function makePet(kind,name,id, rarityName='Common'){
+  const rarity = getRarityByName(rarityName);
   return {
     id:id||`pet-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
     kind,
     name:String(name||TYPES[kind].names[0]),
+    rarity: rarity.name,
+    rarityEmoji: rarity.emoji,
+    rarityColor: rarity.color,
     hunger:24,
     mood:78,
     health:100,
@@ -397,14 +454,14 @@ function makePet(kind,name,id){
   }
 }
 
-function starters(){ return STARTER.flatMap(k=>TYPES[k].names.map((n,i)=>makePet(k,n,`starter-${k}-${i}`))) }
+function starters(){ return STARTER.flatMap(k=>TYPES[k].names.map((n,i)=>makePet(k,n,`starter-${k}-${i}`, 'Common'))) }
 
 function load(){
   let old={}, add={};
   try { old=JSON.parse(localStorage.getItem(KEY)||'{}')||{} } catch {}
   try { add=JSON.parse(localStorage.getItem(CARE_KEY)||'{}')||{} } catch {}
 
-  let pets = Array.isArray(old.pets) ? old.pets.filter(p=>p&&TYPES[p.kind]).map(p => ({...makePet(p.kind,p.name,p.id), ...p, health:clamp(p.health??100,0,100), hunger:clamp(p.hunger,0,100), mood:clamp(p.mood,0,100), x:clamp(p.x,.04,.9), y:clamp(p.y,.1,.8)})) : null;
+  let pets = Array.isArray(old.pets) ? old.pets.filter(p=>p&&TYPES[p.kind]).map(p => ({...makePet(p.kind,p.name,p.id, p.rarity || 'Common'), ...p, rarity:(p.rarity||'Common'), rarityEmoji:getRarityByName(p.rarity||'Common').emoji, rarityColor:getRarityByName(p.rarity||'Common').color, health:clamp(p.health??100,0,100), hunger:clamp(p.hunger,0,100), mood:clamp(p.mood,0,100), x:clamp(p.x,.04,.9), y:clamp(p.y,.1,.8)})) : null;
   if(!pets){
     try {
       const legacy = JSON.parse(localStorage.getItem('petpals.dailycare.v1') || 'null');
@@ -417,6 +474,9 @@ function load(){
     pets: pets?.length ? pets : starters(),
     care: add.care && typeof add.care==='object' ? add.care : {},
     decor: add.decor && typeof add.decor==='object' ? add.decor : {hamster:[],bird:[],fish:[],pufferfish:[],dog:[],cat:[],pig:[],cow:[],frog:[],turtle:[],snake:[],spider:[]},
+    habitatThemes: add.habitatThemes && typeof add.habitatThemes==='object' ? add.habitatThemes : {},
+    habitatEditMode: add.habitatEditMode && typeof add.habitatEditMode==='object' ? add.habitatEditMode : {},
+    decorPositions: add.decorPositions && typeof add.decorPositions==='object' ? add.decorPositions : {},
     wheelLastRepair:Number(add.wheelLastRepair)||Date.now(),
     notifications:add.notifications===true,
     lastReminder:Number(add.lastReminder)||0,
@@ -428,8 +488,10 @@ function load(){
 }
 
 const state=load();
+
 let toastTimer, feedMode='all', feedTargetIds=[], sceneTimer, summaryToShow=null, lastDay=today();
 const walkers=new Map();
+let dragState = null;
 
 function save(){
   try{
@@ -437,6 +499,9 @@ function save(){
     localStorage.setItem(CARE_KEY, JSON.stringify({
       care:state.care,
       decor:state.decor,
+      habitatThemes:state.habitatThemes,
+      habitatEditMode:state.habitatEditMode,
+      decorPositions:state.decorPositions,
       wheelLastRepair:state.wheelLastRepair,
       notifications:state.notifications,
       lastReminder:state.lastReminder,
@@ -479,6 +544,39 @@ function healthReason(p){
 }
 function needsAttention(p){ return Boolean(healthReason(p)) }
 
+function getHabitatTheme(kind){
+  const preset = HABITAT_THEMES[kind] || {primary:'#dfeef3',secondary:'#9ec0a1',accent:'#2a785a'};
+  const custom = state.habitatThemes[kind] || {};
+  return {
+    primary: custom.primary || preset.primary,
+    secondary: custom.secondary || preset.secondary,
+    accent: custom.accent || preset.accent
+  };
+}
+
+function setHabitatTheme(kind, theme){
+  state.habitatThemes[kind] = { ...getHabitatTheme(kind), ...theme };
+  save();
+}
+
+function canMoveFurniture(kind){
+  return MOVEABLE_FURNITURE_KINDS.has(kind);
+}
+
+function getDecorPos(kind, itemId, index){
+  const stored = state.decorPositions?.[kind]?.[itemId];
+  if(stored && Number.isFinite(stored.left) && Number.isFinite(stored.top)){
+    return { left: clamp(stored.left, 5, 82), top: clamp(stored.top, 8, 72) };
+  }
+  const topValue = (kind==='fish'||kind==='pufferfish'||kind==='frog'||kind==='turtle'||kind==='snake'||kind==='spider'||kind==='pig'||kind==='cow')
+    ? `${12+(index%3)*16}%`
+    : `${8+(index%3)*13}%`;
+  return {
+    left: 7 + ((index * 23) % 82),
+    top: parseFloat(topValue)
+  };
+}
+
 function render(){
   pruneCare();
   $('coins').textContent = state.coins;
@@ -500,6 +598,7 @@ function renderHabitats(){
     const card = document.createElement('article');
     card.className='habitat-card';
     card.dataset.habitat = kind;
+    if(state.habitatEditMode[kind]) card.classList.add('editing');
 
     const header = document.createElement('div');
     header.className='habitat-header';
@@ -512,17 +611,82 @@ function renderHabitats(){
     sub.textContent = `${pets.length} resident${pets.length===1?'':'s'}`;
     title.append(h,sub);
 
+    const toolbar = document.createElement('div');
+    toolbar.style.display='flex';
+    toolbar.style.gap='8px';
+    toolbar.style.alignItems='center';
+
+    const editBtn = document.createElement('button');
+    editBtn.className='tiny-btn';
+    editBtn.type='button';
+    editBtn.textContent = state.habitatEditMode[kind] ? '✓ Editing' : '✏️ Edit';
+    editBtn.addEventListener('click',()=>toggleHabitatEdit(kind));
+
     const clean = document.createElement('button');
     clean.className='tiny-btn';
     clean.type='button';
     clean.textContent = '🧼 Clean';
     clean.addEventListener('click',()=>cleanHabitat(kind));
 
-    header.append(title,clean);
+    toolbar.append(editBtn, clean);
+    header.append(title,toolbar);
 
     const world = document.createElement('div');
     world.className = `world ${kind}`;
     world.dataset.kind = kind;
+
+    const theme = getHabitatTheme(kind);
+    world.style.background = `linear-gradient(${theme.primary} 0 68%, ${theme.secondary} 69%)`;
+    world.style.border = `1px solid ${theme.accent}22`;
+
+    if(state.habitatEditMode[kind]){
+      const panel = document.createElement('div');
+      panel.className='habitat-edit-panel';
+      panel.style.position='absolute';
+      panel.style.left='10px';
+      panel.style.right='10px';
+      panel.style.bottom='10px';
+      panel.style.display='flex';
+      panel.style.flexWrap='wrap';
+      panel.style.gap='6px';
+      panel.style.zIndex='12';
+      panel.style.padding='6px';
+      panel.style.background='rgba(255,255,255,.47)';
+      panel.style.backdropFilter='blur(4px)';
+      panel.style.border='1px solid rgba(0,0,0,.05)';
+      panel.style.borderRadius='10px';
+
+      COLOR_SWATCHES.forEach(color=>{
+        const swatch = document.createElement('button');
+        swatch.type='button';
+        swatch.title='Change habitat color';
+        swatch.style.width='20px';
+        swatch.style.height='20px';
+        swatch.style.borderRadius='50%';
+        swatch.style.border='2px solid rgba(0,0,0,.15)';
+        swatch.style.background=color;
+        swatch.style.cursor='pointer';
+        swatch.addEventListener('click',()=>{
+          setHabitatTheme(kind,{primary:color, secondary:adjustColor(color, -18), accent:adjustColor(color, -42)});
+          render();
+        });
+        panel.appendChild(swatch);
+      });
+
+      const reset = document.createElement('button');
+      reset.type='button';
+      reset.className='tiny-btn';
+      reset.textContent='Reset';
+      reset.style.marginLeft='auto';
+      reset.addEventListener('click',()=>{
+        delete state.habitatThemes[kind];
+        save();
+        render();
+      });
+      panel.appendChild(reset);
+
+      world.appendChild(panel);
+    }
 
     const layer = document.createElement('div');
     layer.className='decor-layer';
@@ -530,11 +694,20 @@ function renderHabitats(){
     (state.decor[kind] || []).forEach((id,index)=>{
       const d = DECOR.find(x=>x.id===id);
       if(!d) return;
+      const pos = getDecorPos(kind, id, index);
       const item = document.createElement('span');
       item.className='decor';
+      item.dataset.decorId = id;
+      item.dataset.kind = kind;
       item.textContent = d.emoji;
-      item.style.left = `${7+(index*23)%82}%`;
-      item.style.top = (kind==='fish'||kind==='pufferfish'||kind==='frog'||kind==='turtle'||kind==='snake'||kind==='spider'||kind==='pig'||kind==='cow') ? `${12+(index%3)*16}%` : `${8+(index%3)*13}%`;
+      item.style.left = `${pos.left}%`;
+      item.style.top = `${pos.top}%`;
+
+      if(canMoveFurniture(kind) && state.habitatEditMode[kind]){
+        item.classList.add('editable');
+        item.addEventListener('pointerdown', onDecorPointerDown);
+      }
+
       layer.append(item);
     });
 
@@ -606,6 +779,73 @@ function renderHabitats(){
   }
 }
 
+function adjustColor(hex, delta){
+  const clean = hex.replace('#','');
+  const num = Number.parseInt(clean, 16);
+  let r = (num >> 16) + delta;
+  let g = ((num >> 8) & 0x00FF) + delta;
+  let b = (num & 0x0000FF) + delta;
+  r = clamp(r, 0, 255);
+  g = clamp(g, 0, 255);
+  b = clamp(b, 0, 255);
+  return `#${[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('')}`;
+}
+
+function toggleHabitatEdit(kind){
+  state.habitatEditMode[kind] = !state.habitatEditMode[kind];
+  save();
+  render();
+}
+
+function onDecorPointerDown(event){
+  const item = event.currentTarget;
+  const kind = item.dataset.kind;
+  if(!state.habitatEditMode[kind] || !canMoveFurniture(kind)) return;
+
+  const world = item.parentElement?.parentElement;
+  if(!world) return;
+
+  const rect = world.getBoundingClientRect();
+  dragState = {
+    kind,
+    id: item.dataset.decorId,
+    startX: event.clientX,
+    startY: event.clientY,
+    startLeft: parseFloat(item.style.left),
+    startTop: parseFloat(item.style.top),
+    rect
+  };
+
+  item.classList.add('dragging');
+  event.preventDefault();
+}
+
+document.addEventListener('pointermove', (event)=>{
+  if(!dragState) return;
+  const item = document.querySelector(`.decor[data-kind="${CSS.escape(dragState.kind)}"][data-decor-id="${CSS.escape(dragState.id)}"]`);
+  if(!item) return;
+
+  const dx = event.clientX - dragState.startX;
+  const dy = event.clientY - dragState.startY;
+
+  const newLeft = clamp(dragState.startLeft + (dx / dragState.rect.width) * 100, 5, 82);
+  const newTop = clamp(dragState.startTop + (dy / dragState.rect.height) * 100, 8, 72);
+
+  item.style.left = `${newLeft}%`;
+  item.style.top = `${newTop}%`;
+
+  if(!state.decorPositions[dragState.kind]) state.decorPositions[dragState.kind] = {};
+  state.decorPositions[dragState.kind][dragState.id] = { left:newLeft, top:newTop };
+});
+
+document.addEventListener('pointerup', ()=>{
+  if(!dragState) return;
+  const item = document.querySelector(`.decor[data-kind="${CSS.escape(dragState.kind)}"][data-decor-id="${CSS.escape(dragState.id)}"]`);
+  if(item) item.classList.remove('dragging');
+  dragState = null;
+  save();
+});
+
 function meter(label,value,key){
   const wrap=document.createElement('div');
   const cap=document.createElement('div');
@@ -665,7 +905,14 @@ function renderPets(){
       render();
     });
 
-    nameWrap.append(nameBtn);
+    const rarityBadge = document.createElement('div');
+    rarityBadge.className='rarity-badge';
+    rarityBadge.textContent = `${p.rarityEmoji || '✨'} ${p.rarity || 'Common'}`;
+    rarityBadge.style.background = `${p.rarityColor || '#7dc9b4'}15`;
+    rarityBadge.style.color = p.rarityColor || '#7dc9b4';
+    rarityBadge.style.borderColor = `${p.rarityColor || '#7dc9b4'}40`;
+
+    nameWrap.append(nameBtn, rarityBadge);
     kind.className='pet-kind';
     kind.textContent = t.singular;
     face.className='pet-face';
@@ -798,11 +1045,12 @@ function adopt(kind){
   if(name===null) return;
   if(!name.trim()){toast('Please give your pet a name.'); return;}
 
+  const earnedRarity = rollRarity();
   state.coins -= price;
-  state.pets.push(makePet(kind, name.trim().slice(0,30)));
+  state.pets.push(makePet(kind, name.trim().slice(0,30), null, earnedRarity.name));
   save();
   render();
-  toast(`${name.trim()} joined the shop!`);
+  toast(`${name.trim()} joined the shop as ${earnedRarity.emoji} ${earnedRarity.name}!`);
 }
 
 function buyDecor(d){
