@@ -1,72 +1,1295 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f7f1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7f1">
 <title>Pet Pals Simulator</title>
 <style>
-:root{--bg:#f5f7f1;--paper:#fff;--ink:#21382d;--muted:#62766b;--line:#dfe7df;--green:#2a785a;--green-dark:#1d5a40;--mint:#eaf6ef;--gold:#e4a60d;--shadow:0 12px 32px #1a28200f}*{box-sizing:border-box}body{margin:0;padding:20px;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #65a982;outline-offset:2px}.app{max-width:1180px;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:16px;background:var(--mint);display:grid;place-items:center;font-size:26px}.brand h1{margin:0;font-size:1.55rem}.brand p{margin:2px 0 0;color:var(--muted);font-size:.8rem}.wallet{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.coinbox{background:#fff8e4;border:1px solid #f3df9b;color:#704d03;border-radius:12px;padding:8px 12px;font-weight:800}.hero{padding:21px 23px;margin-bottom:17px;border-radius:21px;background:linear-gradient(135deg,#e1f1e6,#edf9d9);border:1px solid #d9ead8;display:flex;align-items:center;justify-content:space-between;gap:16px}.hero h2{margin:0 0 5px;font-size:clamp(1.35rem,3vw,2rem)}.hero p{margin:0;color:var(--muted);max-width:700px}.hero-icon{font-size:clamp(2.5rem,7vw,4rem)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}.tab,.button{border:1px solid var(--line);border-radius:11px;background:white;color:var(--muted);padding:9px 14px;font-weight:700}.tab{border-radius:99px}.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}.button.primary{background:var(--green);border-color:var(--green);color:white}.button.primary:hover{background:var(--green-dark)}.button.gold{background:#fff3da;border-color:#f0d79a;color:#745101}.button.small{font-size:12px;padding:6px 9px}.button:disabled{opacity:.55;cursor:not-allowed}.view[hidden]{display:none}.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 12px}.section-head h3{margin:0;font-size:1.15rem}.section-head p{margin:3px 0 0;color:var(--muted);font-size:.84rem}.alert{display:none;padding:10px 12px;margin-bottom:12px;background:#fff2d6;border:1px solid #efd9a5;border-radius:12px;color:#7c5a0c;font-weight:700}.alert.show{display:block}.alert.critical{background:#fff0ee;border-color:#f1c8c0;color:#9a3828}.habitat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.habitat-card,.pet-card,.store-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:var(--shadow)}.habitat-card{transition:box-shadow .25s,border-color .25s}.habitat-card.tidy-glow{animation:tidyGlow 1.15s ease-out}@keyframes tidyGlow{0%{box-shadow:0 0 0 0 #77c982aa;border-color:#62a968}55%{box-shadow:0 0 0 9px #77c98222;border-color:#86c58a}100%{box-shadow:var(--shadow);border-color:var(--line)}}.habitat-header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 14px 8px}.habitat-header h4{margin:0;font-size:1rem}.habitat-sub,.muted{color:var(--muted);font-size:.76rem}.tiny-btn{background:#f1f5f1;border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:.78rem}.world{height:170px;margin:0 10px 10px;border-radius:13px;overflow:hidden;position:relative;background:linear-gradient(#dfeef3 0 68%,#9ec0a1 69%)}.world.bird{background:linear-gradient(#d9f1d1 0 68%,#8dbb6d 69%)}.world.hamster{background:linear-gradient(#f6e8c5 0 68%,#caa178 69%)}.world.fish,.world.pufferfish{background:linear-gradient(#bfeaf3 0 68%,#6ca9a5 69%)}.world.dog{background:linear-gradient(#e9e9d4 0 68%,#a9be83 69%)}.world.cat{background:linear-gradient(#e9e1ef 0 68%,#b5a1c4 69%)}.decor-layer{position:absolute;inset:0;pointer-events:none}.decor{position:absolute;font-size:25px;filter:drop-shadow(0 3px 2px #24382d22);animation:decorFloat 3s ease-in-out infinite alternate}.decor:nth-child(even){animation-delay:-1.3s}@keyframes decorFloat{to{transform:translateY(-3px)}}.pet{position:absolute;z-index:2;left:0;top:0;width:44px;height:44px;border:0;background:transparent;font-size:29px;filter:drop-shadow(0 5px 6px #24382d26);padding:0;will-change:transform;transition:filter .2s}.pet:hover{z-index:3;filter:drop-shadow(0 0 8px #fff46a)}.pet.play-bounce{animation:playBounce .55s ease-in-out 2}@keyframes playBounce{50%{filter:drop-shadow(0 0 11px #ffd65a);scale:1.18}}.habitat-footer{padding:0 14px 12px}.status-row{display:flex;justify-content:space-between;color:var(--muted);font-size:.78rem}.cleanbar,.meter{height:7px;background:#edf0ed;border-radius:99px;overflow:hidden;margin-top:7px}.cleanbar span,.meter span{display:block;height:100%;background:linear-gradient(90deg,#7cc375,#2d835a);border-radius:inherit;transition:width .35s ease}.meter span.low{background:#f0a143}.maintenance{font-size:11px;color:#84530e;background:#fff4db;border:1px solid #f2dfb6;border-radius:9px;padding:6px 8px;margin:8px 10px 10px}.pet-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.pet-card{padding:12px}.pet-top{display:flex;justify-content:space-between;align-items:center}.pet-name{font-weight:800}.pet-kind{font-size:11px;color:var(--muted)}.pet-face{font-size:28px}.meter-title{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:8px}.pet-actions{display:flex;gap:7px;margin-top:10px}.pet-actions button{flex:1;background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 5px;font-size:12px;font-weight:700}.pet-actions button:disabled{color:#64846e;background:#f1f8f2;cursor:default}.health-note{font-size:11px;color:#9a3828;font-weight:700;margin-top:7px}.store-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.store-card{padding:16px;text-align:center}.store-card .emoji{font-size:44px}.store-card h4{margin:6px 0 3px}.store-card p{font-size:12px;color:var(--muted);margin:0 0 10px}.decoration-shop{margin-top:24px}.note{font-size:12px;color:var(--muted);margin:12px 0}.toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,10px);background:#20352c;color:#fff;padding:10px 15px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;z-index:30;max-width:90vw;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.modal-backdrop{position:fixed;inset:0;display:none;place-items:center;padding:14px;background:#12201db3;z-index:40}.modal-backdrop.show{display:grid}.modal{width:min(650px,100%);max-height:92vh;overflow:auto;background:white;border-radius:20px;padding:18px;box-shadow:0 30px 90px #0005}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.modal-head h2{margin:0;font-size:20px}.modal-copy{color:var(--muted);font-size:13px;margin:5px 0 14px}.feed-progress{display:grid;gap:9px}.feed-row{display:grid;grid-template-columns:minmax(105px,1fr) auto;align-items:center;gap:9px;border:1px solid var(--line);border-radius:12px;padding:10px;animation:rowIn .25s ease both}@keyframes rowIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}.feed-name{font-weight:700}.feed-instruction{font-size:11px;color:var(--muted)}.feed-control{display:flex;align-items:center;gap:7px}.feed-count{font-size:12px;font-weight:700;min-width:76px;text-align:center}.feed-btn{border:1px solid #b6d5bd;background:#edf7ef;color:#235d3b;border-radius:9px;padding:7px 10px;font-weight:800;min-width:80px;transition:transform .12s,background .15s}.feed-btn:active:not(:disabled){transform:scale(.94)}.feed-btn:disabled{opacity:.5;cursor:default}.progress-track{height:5px;background:#edf0ed;border-radius:9px;margin-top:6px;overflow:hidden}.progress-track span{display:block;height:100%;background:#48a267;transition:width .2s}.modal-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}.modal-footer p{margin:0;color:var(--muted);font-size:12px}.cutscene{position:fixed;inset:0;display:none;place-items:center;padding:14px;background:#12201db3;z-index:50}.cutscene.show{display:grid}.cutscene-panel{width:min(920px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;padding:18px;box-shadow:0 30px 90px #0005}.scene-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.scene-card{background:#f8faf6;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;animation:sceneIn .4s ease both}.scene-card:nth-child(2){animation-delay:.08s}.scene-card:nth-child(3){animation-delay:.16s}@keyframes sceneIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}.scene-stage{height:95px;border-radius:11px;position:relative;overflow:hidden;background:linear-gradient(#d6ecdc 0 68%,#a5bf97 69%)}.scene-card.fish .scene-stage,.scene-card.pufferfish .scene-stage{background:linear-gradient(#c0edf2 0 68%,#7aa9a5 69%)}.scene-card.bird .scene-stage{background:linear-gradient(#deefcf 0 68%,#8ab770 69%)}.scene-card.hamster .scene-stage{background:linear-gradient(#f3e6bf 0 68%,#d0a36d 69%)}.scene-pet,.scene-food{position:absolute;bottom:15px;font-size:32px}.scene-pet{left:50%;transform:translateX(-50%);animation:bounce .5s ease-in-out infinite alternate}.scene-food{left:18%;animation:sprinkle .45s ease-in-out infinite alternate}@keyframes bounce{to{transform:translate(-50%,-7px)}}@keyframes sprinkle{to{transform:translate(20px,-5px) rotate(25deg)}}.summary-list{display:grid;gap:9px;margin:12px 0}.summary-row{border:1px solid var(--line);border-radius:12px;background:#f8faf6;padding:10px 12px}.summary-row strong{display:block}.summary-row span{font-size:13px;color:var(--muted)}.summary-highlight{background:#eaf6ef;border-color:#d6e9db}.reminder-help{color:var(--muted);font-size:11px;margin-top:6px}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}@media(max-width:850px){.habitat-grid,.pet-list,.store-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){body{padding:13px}.topbar,.hero{align-items:flex-start;flex-direction:column}.wallet{justify-content:flex-start}.habitat-grid,.pet-list,.store-grid,.scene-grid{grid-template-columns:1fr}.world{height:150px}.feed-row{grid-template-columns:1fr}.feed-control{justify-content:space-between}}
+:root{
+  --bg:#f5f7f1;
+  --paper:#fff;
+  --ink:#21382d;
+  --muted:#62766b;
+  --line:#dfe7df;
+  --green:#2a785a;
+  --green-dark:#1d5a40;
+  --mint:#eaf6ef;
+  --gold:#e4a60d;
+  --shadow:0 12px 32px #1a28200f;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding:20px;
+  background:var(--bg);
+  color:var(--ink);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
+.app{max-width:1180px;margin:auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:16px;background:var(--mint);display:grid;place-items:center;font-size:26px}
+.brand h1{margin:0;font-size:1.55rem}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.8rem}
+.wallet{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.coinbox{background:#fff8e4;border:1px solid #f3df9b;color:#704d03;border-radius:12px;padding:8px 12px;font-weight:800}
+.hero{padding:21px 23px;margin-bottom:17px;border-radius:21px;background:linear-gradient(135deg,#e1f1e6,#edf9d9);border:1px solid #d9ead8;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.hero h2{margin:0 0 5px;font-size:clamp(1.35rem,3vw,2rem)}
+.hero p{margin:0;color:var(--muted);max-width:700px}
+.hero-icon{font-size:clamp(2.5rem,7vw,4rem)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}
+.tab,.button{border:1px solid var(--line);border-radius:11px;background:white;color:var(--muted);padding:9px 14px;font-weight:700}
+.tab{border-radius:99px}
+.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.button.primary{background:var(--green);border-color:var(--green);color:white}
+.button.primary:hover{background:var(--green-dark)}
+.button.gold{background:#fff3da;border-color:#f0d79a;color:#745101}
+.button.small{font-size:12px;padding:6px 9px}
+.button:disabled{opacity:.55;cursor:not-allowed}
+.view[hidden]{display:none}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 12px}
+.section-head h3{margin:0;font-size:1.15rem}
+.section-head p{margin:3px 0 0;color:var(--muted);font-size:.84rem}
+.alert{display:none;padding:10px 12px;margin-bottom:12px;background:#fff2d6;border:1px solid #efd9a5;border-radius:12px;color:#7c5a0c;font-weight:700}
+.alert.show{display:block}
+.alert.critical{background:#fff0ee;border-color:#f1c8c0;color:#9a3828}
+.habitat-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.habitat-card,.pet-card,.store-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:var(--shadow)}
+.habitat-card{transition:box-shadow .25s,border-color .25s}
+.habitat-card.tidy-glow{animation:tidyGlow 1.15s ease-out}
+@keyframes tidyGlow{
+  0%{box-shadow:0 0 0 0 #77c982aa;border-color:#62a968}
+  55%{box-shadow:0 0 0 9px #77c98222;border-color:#86c58a}
+  100%{box-shadow:var(--shadow);border-color:var(--line)}
+}
+.habitat-header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 14px 8px}
+.habitat-header h4{margin:0;font-size:1rem}
+.habitat-sub,.muted{color:var(--muted);font-size:.76rem}
+.tiny-btn{background:#f1f5f1;border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:.78rem}
+.world{height:170px;margin:0 10px 10px;border-radius:13px;overflow:hidden;position:relative;background:linear-gradient(#dfeef3 0 68%,#9ec0a1 69%)}
+.world.bird{background:linear-gradient(#d9f1d1 0 68%,#8dbb6d 69%)}
+.world.hamster{background:linear-gradient(#f6e8c5 0 68%,#caa178 69%)}
+.world.fish,.world.pufferfish,.world.turtle,.world.frog,.world.snake,.world.spider,.world.pig,.world.cow{background:linear-gradient(#bfeaf3 0 68%,#6ca9a5 69%)}
+.world.dog{background:linear-gradient(#e9e9d4 0 68%,#a9be83 69%)}
+.world.cat{background:linear-gradient(#e9e1ef 0 68%,#b5a1c4 69%)}
+.decor-layer{position:absolute;inset:0;pointer-events:none}
+.decor{position:absolute;font-size:25px;filter:drop-shadow(0 3px 2px #24382d22);animation:decorFloat 3s ease-in-out infinite alternate}
+.decor:nth-child(even){animation-delay:-1.3s}
+@keyframes decorFloat{to{transform:translateY(-3px)}}
+.pet{position:absolute;z-index:2;left:0;top:0;width:44px;height:44px;border:0;background:transparent;font-size:29px;filter:drop-shadow(0 5px 6px #24382d26);padding:0;will-change:transform;transition:filter .2s}
+.pet:hover{z-index:3;filter:drop-shadow(0 0 8px #fff46a)}
+.pet.play-bounce{animation:playBounce .55s ease-in-out 2}
+@keyframes playBounce{
+  50%{filter:drop-shadow(0 0 11px #ffd65a);scale:1.18}
+}
+.habitat-footer{padding:0 14px 12px}
+.status-row{display:flex;justify-content:space-between;color:var(--muted);font-size:.78rem}
+.cleanbar,.meter{height:7px;background:#edf0ed;border-radius:99px;overflow:hidden;margin-top:7px}
+.cleanbar span,.meter span{display:block;height:100%;background:linear-gradient(90deg,#7cc375,#2d835a);border-radius:inherit;transition:width .35s ease}
+.meter span.low{background:#f0a143}
+.maintenance{font-size:11px;color:#84530e;background:#fff4db;border:1px solid #f2dfb6;border-radius:9px;padding:6px 8px;margin:8px 10px 10px}
+.pet-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pet-card{padding:12px}
+.pet-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pet-name{font-weight:800;display:block}
+.pet-name-btn{
+  background:none;border:none;padding:0;font:inherit;font-weight:800;color:var(--ink);
+  text-align:left;cursor:pointer
+}
+.pet-name-btn:hover{text-decoration:underline}
+.pet-kind{font-size:11px;color:var(--muted)}
+.pet-face{font-size:28px}
+.meter-title{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:8px}
+.pet-actions{display:flex;gap:7px;margin-top:10px}
+.pet-actions button{flex:1;background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 5px;font-size:12px;font-weight:700}
+.pet-actions button:disabled{color:#64846e;background:#f1f8f2;cursor:default}
+.health-note{font-size:11px;color:#9a3828;font-weight:700;margin-top:7px}
+.store-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.store-card{padding:16px;text-align:center}
+.store-card .emoji{font-size:44px}
+.store-card h4{margin:6px 0 3px}
+.store-card p{font-size:12px;color:var(--muted);margin:0 0 10px}
+.decoration-shop{margin-top:24px}
+.note{font-size:12px;color:var(--muted);margin:12px 0}
+.toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,10px);background:#20352c;color:#fff;padding:10px 15px;border-radius:12px;opacity:0;pointer-events:none;transition:.2s;z-index:30;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.modal-backdrop{position:fixed;inset:0;display:none;place-items:center;padding:14px;background:#12201db3;z-index:40}
+.modal-backdrop.show{display:grid}
+.modal{width:min(650px,100%);max-height:92vh;overflow:auto;background:white;border-radius:20px;padding:18px;box-shadow:0 30px 90px #0005}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modal-head h2{margin:0;font-size:20px}
+.modal-copy{color:var(--muted);font-size:13px;margin:5px 0 14px}
+.feed-progress{display:grid;gap:9px}
+.feed-row{display:grid;grid-template-columns:minmax(105px,1fr) auto;align-items:center;gap:9px;border:1px solid var(--line);border-radius:12px;padding:10px;animation:rowIn .25s ease both}
+@keyframes rowIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.feed-name{font-weight:700}
+.feed-instruction{font-size:11px;color:var(--muted)}
+.feed-control{display:flex;align-items:center;gap:7px}
+.feed-count{font-size:12px;font-weight:700;min-width:76px;text-align:center}
+.feed-btn{
+  border:1px solid #b6d5bd;background:#edf7ef;color:#235d3b;border-radius:9px;padding:7px 10px;font-weight:800;min-width:80px;transition:transform .12s,background .15s;
+}
+.feed-btn:active:not(:disabled){transform:scale(.94)}
+.feed-btn:disabled{opacity:.5;cursor:default}
+.feed-btn.shake{
+  animation:jarShake .38s ease-in-out 2 alternate;
+}
+@keyframes jarShake{
+  0%{transform:translateX(-3px) rotate(-8deg)}
+  50%{transform:translateX(8px) rotate(8deg)}
+  100%{transform:translateX(-4px) rotate(-5deg)}
+}
+.progress-track{height:5px;background:#edf0ed;border-radius:9px;margin-top:6px;overflow:hidden}
+.progress-track span{display:block;height:100%;background:#48a267;transition:width .2s}
+.modal-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.modal-footer p{margin:0;color:var(--muted);font-size:12px}
+.cutscene{position:fixed;inset:0;display:none;place-items:center;padding:14px;background:#12201db3;z-index:50}
+.cutscene.show{display:grid}
+.cutscene-panel{width:min(920px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;padding:18px;box-shadow:0 30px 90px #0005}
+.scene-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.scene-card{background:#f8faf6;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;animation:sceneIn .4s ease both}
+.scene-card:nth-child(2){animation-delay:.08s}
+.scene-card:nth-child(3){animation-delay:.16s}
+@keyframes sceneIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.scene-stage{height:95px;border-radius:11px;position:relative;overflow:hidden;background:linear-gradient(#d6ecdc 0 68%,#a5bf97 69%)}
+.scene-card.fish .scene-stage,.scene-card.pufferfish .scene-stage,.scene-card.turtle .scene-stage,.scene-card.frog .scene-stage,.scene-card.snake .scene-stage,.scene-card.spider .scene-stage,.scene-card.pig .scene-stage,.scene-card.cow .scene-stage{background:linear-gradient(#c0edf2 0 68%,#7aa9a5 69%)}
+.scene-card.bird .scene-stage{background:linear-gradient(#deefcf 0 68%,#8ab770 69%)}
+.scene-card.hamster .scene-stage{background:linear-gradient(#f3e6bf 0 68%,#d0a36d 69%)}
+.scene-card.dog .scene-stage{background:linear-gradient(#eceee0 0 68%,#b7c27a 69%)}
+.scene-card.cat .scene-stage{background:linear-gradient(#f3e9f7 0 68%,#c2aad6 69%)}
+.scene-pet,.scene-food{position:absolute;bottom:15px;font-size:32px}
+.scene-pet{left:50%;transform:translateX(-50%);animation:bounce .5s ease-in-out infinite alternate}
+.scene-food{left:18%;animation:sprinkle .45s ease-in-out infinite alternate}
+@keyframes bounce{to{transform:translate(-50%,-7px)}}
+@keyframes sprinkle{to{transform:translate(20px,-5px) rotate(25deg)}}
+.summary-list{display:grid;gap:9px;margin:12px 0}
+.summary-row{border:1px solid var(--line);border-radius:12px;background:#f8faf6;padding:10px 12px}
+.summary-row strong{display:block}
+.summary-row span{font-size:13px;color:var(--muted)}
+.summary-highlight{background:#eaf6ef;border-color:#d6e9db}
+.reminder-help{color:var(--muted);font-size:11px;margin-top:6px}
+.clean-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,.14);
+  display:grid;
+  place-items:center;
+  pointer-events:none;
+}
+.clean-overlay .fingerprint{
+  font-size:42px;
+  filter:drop-shadow(0 4px 4px rgba(0,0,0,.12));
+}
+.clean-overlay .clean-text{
+  position:absolute;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:12px;
+  font-weight:700;
+  background:rgba(255,255,255,.75);
+  color:#5a3b1b;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.08);
+}
+.clean-flash{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  background:rgba(255,255,255,.35);
+  color:#2f7d5b;
+  font-size:30px;
+  font-weight:800;
+  animation:cleanFade 1.5s ease forwards;
+  pointer-events:none;
+}
+@keyframes cleanFade{
+  0%{opacity:0;transform:scale(.9)}
+  20%{opacity:1;transform:scale(1)}
+  80%{opacity:1}
+  100%{opacity:0;transform:scale(1.08)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
+@media(max-width:850px){
+  .habitat-grid,.pet-list,.store-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  body{padding:13px}
+  .topbar,.hero{align-items:flex-start;flex-direction:column}
+  .wallet{justify-content:flex-start}
+  .habitat-grid,.pet-list,.store-grid,.scene-grid{grid-template-columns:1fr}
+  .world{height:150px}
+  .feed-row{grid-template-columns:1fr}
+  .feed-control{justify-content:space-between}
+}
 </style>
 </head>
-<body><div class="app">
-<header class="topbar"><div class="brand"><div class="logo">🐾</div><div><h1>Pet Pals Simulator</h1><p>Your cozy digital pet shop</p></div></div><div class="wallet"><span class="coinbox">🪙 <span id="coins">0</span></span><button class="button small" id="notify-button" type="button">🔔 Enable reminders</button></div></header>
-<section class="hero"><div><h2>Welcome to your pet shop!</h2><p>Your digital animals have their own habitats and personalities. Feed them yourself, play with the hamsters and birds, and decorate their homes.</p></div><div class="hero-icon" aria-hidden="true">🐹🐦🐟</div></section>
-<nav class="tabs" aria-label="Pet shop sections"><button class="tab active" data-view="habitats" type="button" aria-selected="true">🏡 Habitats</button><button class="tab" data-view="shop" type="button" aria-selected="false">🛍️ Pet shop & decorations</button></nav>
-<section class="view" id="habitats-view"><div class="section-head"><div><h3>Your habitats</h3><p>Each animal wanders independently. Care actions reset each day at local midnight.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="button primary" id="feed-all" type="button">🍽️ Feed all pets</button><button class="button" id="play-all" type="button">🎾 Play with all (no fish)</button></div></div><div id="alert" class="alert" role="status" aria-live="polite"></div><div id="habitat-grid" class="habitat-grid"></div><div class="section-head"><div><h3>Pet roster</h3><p>Feed each resident with the right food and play with every non-fish pet once daily.</p></div></div><div id="pet-list" class="pet-list"></div></section>
-<section class="view" id="shop-view" hidden><div class="section-head"><div><h3>Adopt a new friend</h3><p>Hamsters, birds, and fish are your starter shop pets. New animals are available to buy below.</p></div></div><div id="shop-grid" class="store-grid"></div><div class="section-head decoration-shop"><div><h3>Habitat decorations</h3><p>Buy decorations with coins; purchased items appear in their habitat.</p></div></div><div id="decor-shop" class="store-grid"></div></section>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">🐾</div>
+    <div>
+      <h1>Pet Pals Simulator</h1>
+      <p>Your cozy digital pet shop</p>
+    </div>
+  </div>
+  <div class="wallet">
+    <span class="coinbox">🪙 <span id="coins">0</span></span>
+    <button class="button small" id="notify-button" type="button">🔔 Enable reminders</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <h2>Welcome to your pet shop!</h2>
+    <p>Your digital animals have their own habitats and personalities. Feed them yourself, play with the hamsters and birds, clean the glass, and decorate their homes.</p>
+  </div>
+  <div class="hero-icon" aria-hidden="true">🐹🐦🐟</div>
+</section>
+
+<nav class="tabs" aria-label="Pet shop sections">
+  <button class="tab active" data-view="habitats" type="button" aria-selected="true">🏡 Habitats</button>
+  <button class="tab" data-view="shop" type="button" aria-selected="false">🛍️ Pet shop & decorations</button>
+</nav>
+
+<section class="view" id="habitats-view">
+  <div class="section-head">
+    <div><h3>Your habitats</h3><p>Each animal wanders independently. Care actions reset each day at local midnight.</p></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="button primary" id="feed-all" type="button">🍽️ Feed all pets</button>
+      <button class="button" id="play-all" type="button">🎾 Play with all (no fish)</button>
+    </div>
+  </div>
+  <div id="alert" class="alert" role="status" aria-live="polite"></div>
+  <div id="habitat-grid" class="habitat-grid"></div>
+
+  <div class="section-head">
+    <div><h3>Pet roster</h3><p>Click a pet name to rename them anytime. Feed each resident with the right food and play with every non-fish pet once daily.</p></div>
+  </div>
+  <div id="pet-list" class="pet-list"></div>
+</section>
+
+<section class="view" id="shop-view" hidden>
+  <div class="section-head">
+    <div><h3>Adopt a new friend</h3><p>Hamsters, birds, fish, pigs, cows, frogs, turtles, snakes, and spiders are all available to buy below.</p></div>
+  </div>
+  <div id="shop-grid" class="store-grid"></div>
+
+  <div class="section-head decoration-shop">
+    <div><h3>Habitat decorations</h3><p>Buy decorations with coins; purchased items appear in their habitat.</p></div>
+  </div>
+  <div id="decor-shop" class="store-grid"></div>
+</section>
 </div>
+
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
-<div id="feed-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="feed-title"><div class="modal"><div class="modal-head"><h2 id="feed-title">Hands-on feeding</h2><button class="tiny-btn" id="close-feed" type="button" aria-label="Close feeding">✕</button></div><p class="modal-copy" id="feed-copy">Use the right action for each pet. Feed progress is daily.</p><div id="feed-progress" class="feed-progress"></div><div class="modal-footer"><p id="feed-note">Food done today: 0 pets.</p><button class="button primary" id="finish-feed" type="button">Done</button></div></div></div>
-<div id="cutscene" class="cutscene" role="dialog" aria-modal="true" aria-labelledby="scene-title"><div class="cutscene-panel"><div class="modal-head"><h2 id="scene-title">Everyone is eating together! 🎉</h2><button class="tiny-btn" id="close-scene" type="button" aria-label="Close feeding scenes">✕</button></div><p class="modal-copy" id="scene-summary">A shop-wide snack break.</p><div class="scene-grid" id="scene-grid"></div><div class="modal-footer"><p>Each habitat has its own scene, shown together.</p><button class="button primary" id="done-scene" type="button">Back to the shop</button></div></div></div>
-<div id="summary-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="summary-title"><div class="modal"><div class="modal-head"><h2 id="summary-title">Yesterday at your pet shop</h2><button class="tiny-btn" id="close-summary" type="button" aria-label="Close daily summary">✕</button></div><p class="modal-copy" id="summary-date"></p><div class="summary-list" id="summary-content"></div><div class="modal-footer"><p>Your pets' current game stats are shown here too.</p><button class="button primary" id="done-summary" type="button">Start today's game</button></div></div></div>
+
+<div id="feed-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="feed-title">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="feed-title">Hands-on feeding</h2>
+      <button class="tiny-btn" id="close-feed" type="button" aria-label="Close feeding">✕</button>
+    </div>
+    <p class="modal-copy" id="feed-copy">Use the right action for each pet. Feeding progress is daily.</p>
+    <div id="feed-progress" class="feed-progress"></div>
+    <div class="modal-footer">
+      <p id="feed-note">Food done today: 0 pets.</p>
+      <button class="button primary" id="finish-feed" type="button">Done</button>
+    </div>
+  </div>
+</div>
+
+<div id="cutscene" class="cutscene" role="dialog" aria-modal="true" aria-labelledby="scene-title">
+  <div class="cutscene-panel">
+    <div class="modal-head">
+      <h2 id="scene-title">Everyone is eating together! 🎉</h2>
+      <button class="tiny-btn" id="close-scene" type="button" aria-label="Close feeding scenes">✕</button>
+    </div>
+    <p class="modal-copy" id="scene-summary">A shop-wide snack break.</p>
+    <div class="scene-grid" id="scene-grid"></div>
+    <div class="modal-footer">
+      <p>Each habitat has its own scene, shown together.</p>
+      <button class="button primary" id="done-scene" type="button">Back to the shop</button>
+    </div>
+  </div>
+</div>
+
+<div id="summary-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="summary-title">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="summary-title">Yesterday at your pet shop</h2>
+      <button class="tiny-btn" id="close-summary" type="button" aria-label="Close daily summary">✕</button>
+    </div>
+    <p class="modal-copy" id="summary-date"></p>
+    <div class="summary-list" id="summary-content"></div>
+    <div class="modal-footer">
+      <p>Your pets' current game stats are shown here too.</p>
+      <button class="button primary" id="done-summary" type="button">Start today's game</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (()=>{'use strict';
-const KEY='petpals-sim-v1',CARE_KEY='petpals-care-additions.v1',DAY=86400000,HOUR=3600000;
-const TYPES={hamster:{label:'Hamster Habitat',singular:'Hamster',emoji:'🐹',food:'🥕',foodType:'scoop',qty:3,names:['Hazel','Nibbles','Poppy'],price:0,playable:true},bird:{label:'Bird Aviary',singular:'Bird',emoji:'🐦',food:'🌻',foodType:'handful',qty:1,names:['Sunny','Pip','Feather'],price:0,playable:true},fish:{label:'Fish Tank',singular:'Fish',emoji:'🐟',food:'🐟',foodType:'flakes',qty:10,names:['Bubbles','Goldie','Ripple'],price:0,playable:false},pufferfish:{label:'Pufferfish Tank',singular:'Pufferfish',emoji:'🐡',food:'🦐',foodType:'flakes',qty:10,names:['Puff','Pebble','Sunny'],price:90,playable:false},dog:{label:'Dog Play Yard',singular:'Dog',emoji:'🐶',food:'🥣',foodType:'bowl',qty:1,names:['Scout','Mochi','Rex'],price:120,playable:true},cat:{label:'Cat Room',singular:'Cat',emoji:'🐱',food:'🐟',foodType:'bowl',qty:1,names:['Mittens','Clover','Luna'],price:120,playable:true}};
+const KEY='petpals-sim-v1', CARE_KEY='petpals-care-additions.v1', DAY=86400000, HOUR=3600000;
+
+const TYPES={
+  hamster:{label:'Hamster Habitat',singular:'Hamster',emoji:'🐹',food:'🥕',foodType:'scoop',qty:3,names:['Hazel','Nibbles','Poppy'],price:0,playable:true},
+  bird:{label:'Bird Aviary',singular:'Bird',emoji:'🐦',food:'🌻',foodType:'jar',qty:3,names:['Sunny','Pip','Feather'],price:0,playable:true},
+  fish:{label:'Fish Tank',singular:'Fish',emoji:'🐟',food:'🐟',foodType:'jar',qty:5,names:['Bubbles','Goldie','Ripple'],price:0,playable:false},
+  pufferfish:{label:'Pufferfish Tank',singular:'Pufferfish',emoji:'🐡',food:'🦐',foodType:'jar',qty:5,names:['Puff','Pebble','Sunny'],price:90,playable:false},
+  dog:{label:'Dog Play Yard',singular:'Dog',emoji:'🐶',food:'🥣',foodType:'bowl',qty:1,names:['Scout','Mochi','Rex'],price:120,playable:true},
+  cat:{label:'Cat Room',singular:'Cat',emoji:'🐱',food:'🐟',foodType:'bowl',qty:1,names:['Mittens','Clover','Luna'],price:120,playable:true},
+  pig:{label:'Pig Pen',singular:'Pig',emoji:'🐷',food:'🫘',foodType:'jar',qty:5,names:['Biscuit','Peaches','Mochi'],price:160,playable:true},
+  cow:{label:'Cow Barn',singular:'Cow',emoji:'🐮',food:'🌾',foodType:'jar',qty:5,names:['Daisy','Muffin','Bramble'],price:180,playable:true},
+  frog:{label:'Frog Pond',singular:'Frog',emoji:'🐸',food:'🪲',foodType:'jar',qty:4,names:['Pip','Lily','Juniper'],price:170,playable:false},
+  turtle:{label:'Turtle Tank',singular:'Turtle',emoji:'🐢',food:'🌿',foodType:'jar',qty:4,names:['Shelly','Maple','Pebble'],price:170,playable:false},
+  snake:{label:'Snake Terrarium',singular:'Snake',emoji:'🐍',food:'🐭',foodType:'jar',qty:4,names:['Slinky','Clover','Nova'],price:200,playable:false},
+  spider:{label:'Spider Enclosure',singular:'Spider',emoji:'🕷️',food:'🪲',foodType:'jar',qty:4,names:['Silk','Nova','Luna'],price:220,playable:false}
+};
+
 const STARTER=['hamster','bird','fish'];
-const DECOR=[{id:'plant',name:'Leafy plant',emoji:'🪴',kind:'hamster',price:25},{id:'wheel',name:'Comfy exercise wheel',emoji:'🎡',kind:'hamster',price:35},{id:'tunnel',name:'Colorful tunnel',emoji:'🟠',kind:'hamster',price:20},{id:'perch',name:'Wooden perch',emoji:'🪵',kind:'bird',price:25},{id:'swing',name:'Little bird swing',emoji:'🪺',kind:'bird',price:35},{id:'flowers',name:'Aviary flowers',emoji:'🌼',kind:'bird',price:20},{id:'coral',name:'Bright coral',emoji:'🪸',kind:'fish',price:30},{id:'castle',name:'Bubble castle',emoji:'🏰',kind:'fish',price:40},{id:'weed',name:'Sea plants',emoji:'🌿',kind:'fish',price:20},{id:'dogbed',name:'Comfy dog bed',emoji:'🛏️',kind:'dog',price:35},{id:'ball',name:'Bouncy ball',emoji:'⚽',kind:'dog',price:25},{id:'cat tree',name:'Cat tree',emoji:'🌳',kind:'cat',price:45},{id:'cattoy',name:'Yarn toy',emoji:'🧶',kind:'cat',price:25},{id:'puffcoral',name:'Pufferfish coral',emoji:'🪸',kind:'pufferfish',price:35}];
-const $=id=>document.getElementById(id),clamp=(n,a,b)=>Math.max(a,Math.min(b,Number.isFinite(Number(n))?Number(n):a)),today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-function makePet(kind,name,id){return{id:id||`pet-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,kind,name:String(name||TYPES[kind].names[0]),hunger:24,mood:78,health:100,x:.1+Math.random()*.75,y:.15+Math.random()*.65,dx:(Math.random()<.5?-1:1)*(.0014+Math.random()*.0015),dy:(Math.random()<.5?-1:1)*(.0005+Math.random()*.001),phase:Math.random()*6.28}}
-function starters(){return STARTER.flatMap(k=>TYPES[k].names.map((n,i)=>makePet(k,n,`starter-${k}-${i}`)))}
-function load(){let old={},add={};try{old=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch{}try{add=JSON.parse(localStorage.getItem(CARE_KEY)||'{}')||{}}catch{}let pets=Array.isArray(old.pets)?old.pets.filter(p=>p&&TYPES[p.kind]).map(p=>({...makePet(p.kind,p.name,p.id),...p,health:clamp(p.health??100,0,100),hunger:clamp(p.hunger,0,100),mood:clamp(p.mood,0,100),x:clamp(p.x,.04,.9),y:clamp(p.y,.1,.8)})):null;if(!pets){try{const legacy=JSON.parse(localStorage.getItem('petpals.dailycare.v1')||'null');pets=legacy?.pets?.filter(p=>TYPES[p.kind]).map((p,i)=>makePet(p.kind,p.name,`legacy-${i}`))||null}catch{}}return{coins:Math.max(0,Number(old.coins)||220),pets:pets?.length?pets:starters(),care:add.care&&typeof add.care==='object'?add.care:{},decor:add.decor&&typeof add.decor==='object'?add.decor:{hamster:[],bird:[],fish:[],pufferfish:[],dog:[],cat:[]},wheelLastRepair:Number(add.wheelLastRepair)||Date.now(),notifications:add.notifications===true,lastReminder:Number(add.lastReminder)||0,remindedDay:add.remindedDay||'',lastOpenedDay:add.lastOpenedDay||''}}
-const state=load();let toastTimer,feedMode='all',feedTargetIds=[],sceneTimer,summaryToShow=null,lastDay=today();const walkers=new Map();
-function save(){try{localStorage.setItem(KEY,JSON.stringify({coins:state.coins,pets:state.pets}));localStorage.setItem(CARE_KEY,JSON.stringify({care:state.care,decor:state.decor,wheelLastRepair:state.wheelLastRepair,notifications:state.notifications,lastReminder:state.lastReminder,remindedDay:state.remindedDay,lastOpenedDay:state.lastOpenedDay}))}catch{toast('Could not save your game in this browser.')}}
-function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2300)}
-function dayCare(day=today()){if(!state.care[day])state.care[day]={fed:[],played:[],feeding:{}};state.care[day].fed??=[];state.care[day].played??=[];state.care[day].feeding??={};return state.care[day]}
-function pruneCare(){const keys=Object.keys(state.care).sort().slice(-8);for(const k of Object.keys(state.care))if(!keys.includes(k))delete state.care[k]}
-function fed(id){return dayCare().fed.includes(id)}function played(id){return dayCare().played.includes(id)}
-function healthReason(p){if(p.health<55)return'health is low';if(p.hunger>78)return'very hungry';if(p.mood<28)return'needs cheering up';return''}function needsAttention(p){return Boolean(healthReason(p))}
-function render(){pruneCare();$('coins').textContent=state.coins;renderHabitats();renderPets();renderShop();renderAlert();syncWalkers();renderNotificationButton()}
-function renderHabitats(){const root=$('habitat-grid');root.replaceChildren();for(const kind of Object.keys(TYPES)){const t=TYPES[kind],pets=state.pets.filter(p=>p.kind===kind),card=document.createElement('article');card.className='habitat-card';card.dataset.habitat=kind;const header=document.createElement('div');header.className='habitat-header';const title=document.createElement('div'),h=document.createElement('h4'),sub=document.createElement('div');h.textContent=t.label;sub.className='habitat-sub';sub.textContent=`${pets.length} resident${pets.length===1?'':'s'}`;title.append(h,sub);const clean=document.createElement('button');clean.className='tiny-btn';clean.type='button';clean.textContent='✨ Tidy';clean.addEventListener('click',()=>tidy(kind));header.append(title,clean);const world=document.createElement('div');world.className=`world ${kind}`;world.dataset.kind=kind;const layer=document.createElement('div');layer.className='decor-layer';(state.decor[kind]||[]).forEach((id,index)=>{const d=DECOR.find(x=>x.id===id);if(!d)return;const item=document.createElement('span');item.className='decor';item.textContent=d.emoji;item.style.left=`${7+(index*23)%82}%`;item.style.top=kind==='fish'||kind==='pufferfish'?`${12+(index%3)*16}%`:`${8+(index%3)*13}%`;layer.append(item)});world.append(layer);pets.forEach(p=>{const b=document.createElement('button');b.type='button';b.className='pet';b.textContent=t.emoji;b.title=`${p.name} — ${healthReason(p)||'doing well'}; tap to play`;b.setAttribute('aria-label',`Play with ${p.name}`);b.dataset.petId=p.id;b.addEventListener('click',()=>playPet(p.id));world.append(b)});const avg=pets.length?Math.round(pets.reduce((n,p)=>n+p.mood,0)/pets.length):100,foot=document.createElement('div');foot.className='habitat-footer';foot.innerHTML=`<div class="status-row"><span>${pets.length?`${pets.filter(p=>!needsAttention(p)).length} feeling good`:'Ready for pets'}</span><span>${avg}% mood</span></div><div class="cleanbar"><span style="width:${avg}%"></span></div>`;card.append(header,world,foot);if(kind==='hamster'){const elapsed=Date.now()-state.wheelLastRepair,broken=elapsed>=365*DAY,maint=document.createElement('div');maint.className='maintenance';maint.textContent=broken?'⚠️ Exercise wheel needs its yearly repair.':`🛠️ Wheel maintenance: next repair in about ${Math.max(1,Math.ceil((365*DAY-elapsed)/DAY))} days.`;if(broken){const repair=document.createElement('button');repair.type='button';repair.className='tiny-btn';repair.textContent='Repair wheel (10 coins)';repair.addEventListener('click',()=>{if(state.coins<10){toast('Need 10 coins to repair the wheel.');return}state.coins-=10;state.wheelLastRepair=Date.now();save();render();toast('The hamster wheel is repaired!')});maint.append(document.createElement('br'),repair)}card.append(maint)}root.append(card)}}
-function meter(label,value,key){const wrap=document.createElement('div'),cap=document.createElement('div');cap.className='meter-title';const a=document.createElement('span'),b=document.createElement('span');a.textContent=label;b.textContent=`${Math.round(value)}%`;cap.append(a,b);const bar=document.createElement('div');bar.className='meter';const fill=document.createElement('span');fill.dataset.meter=key;fill.style.width=`${value}%`;if(value<30)fill.classList.add('low');bar.append(fill);wrap.append(cap,bar);return wrap}
-function renderPets(){const root=$('pet-list');root.replaceChildren();if(!state.pets.length){root.innerHTML='<div class="pet-card">No pets yet. Adopt one in the shop!</div>';return}for(const p of state.pets){const t=TYPES[p.kind],card=document.createElement('article');card.className='pet-card';card.dataset.cardPet=p.id;const top=document.createElement('div');top.className='pet-top';const n=document.createElement('div'),name=document.createElement('div'),kind=document.createElement('div'),face=document.createElement('span');name.className='pet-name';name.textContent=p.name;kind.className='pet-kind';kind.textContent=t.singular;face.className='pet-face';face.textContent=t.emoji;n.append(name,kind);top.append(n,face);card.append(top,meter('Fullness',100-p.hunger,`full-${p.id}`),meter('Happiness',p.mood,`mood-${p.id}`),meter('Health',p.health,`health-${p.id}`));const actions=document.createElement('div');actions.className='pet-actions';const feed=document.createElement('button');feed.type='button';feed.textContent=fed(p.id)?'✅ Fed today':'🥣 Feed myself';feed.disabled=fed(p.id);feed.addEventListener('click',()=>openFeeding([p.id],'single'));actions.append(feed);if(t.playable){const play=document.createElement('button');play.type='button';play.textContent=played(p.id)?'✅ Played today':'🎾 Play';play.disabled=played(p.id);play.addEventListener('click',()=>playPet(p.id));actions.append(play)}card.append(actions);const reason=healthReason(p);if(reason){const warning=document.createElement('div');warning.className='health-note';warning.textContent=`⚠️ ${p.name} ${reason}.`;card.append(warning)}root.append(card)}}
-function renderShop(){const root=$('shop-grid');root.replaceChildren();for(const kind of Object.keys(TYPES)){const t=TYPES[kind],card=document.createElement('article');card.className='store-card';card.innerHTML=`<div class="emoji">${t.emoji}</div><h4>${t.singular}</h4><p>${t.price?`A special new resident for your shop.`:'A familiar starter-shop resident.'}</p>`;const btn=document.createElement('button');btn.className='button gold';btn.type='button';if(t.price===0){btn.textContent='Starter animal';btn.disabled=true}else{btn.textContent=`🪙 ${t.price} — Adopt`;btn.disabled=state.coins<t.price;btn.addEventListener('click',()=>adopt(kind))}card.append(btn);root.append(card)}const decorRoot=$('decor-shop');decorRoot.replaceChildren();for(const d of DECOR){const owned=(state.decor[d.kind]||[]).includes(d.id),card=document.createElement('article');card.className='store-card';card.innerHTML=`<div class="emoji">${d.emoji}</div><h4>${d.name}</h4><p>For your ${TYPES[d.kind].label.toLowerCase()}.</p>`;const btn=document.createElement('button');btn.className='button gold';btn.type='button';btn.textContent=owned?'✓ In habitat':`🪙 ${d.price} — Add`;btn.disabled=owned||state.coins<d.price;btn.addEventListener('click',()=>buyDecor(d));card.append(btn);decorRoot.append(card)}}
-function renderAlert(){const pets=state.pets.filter(needsAttention),el=$('alert');el.classList.toggle('show',pets.length>0);el.classList.toggle('critical',pets.some(p=>p.health<55));el.textContent=pets.length?`⚠️ Pet health warning: ${pets.slice(0,4).map(p=>`${p.name} (${healthReason(p)})`).join(' • ')}${pets.length>4?' • and others':''}. Feed or play to help them feel better.`:''}
-function renderNotificationButton(){const b=$('notify-button');if(!('Notification'in window)){b.textContent='🔔 Notifications unavailable';b.disabled=true;return}if(Notification.permission==='granted'&&state.notifications){b.textContent='🔔 Reminders on';b.classList.add('primary');b.disabled=false}else if(Notification.permission==='denied'){b.textContent='🔕 Blocked in settings';b.classList.remove('primary');b.disabled=false}else{b.textContent='🔔 Enable reminders';b.classList.remove('primary');b.disabled=false}}
-function adopt(kind){const price=TYPES[kind].price;if(state.coins<price){toast('Play with pets to earn coins first.');return}const name=prompt(`Name your new ${TYPES[kind].singular.toLowerCase()}:`,TYPES[kind].names[state.pets.filter(p=>p.kind===kind).length%3]);if(name===null)return;if(!name.trim()){toast('Please give your pet a name.');return}state.coins-=price;state.pets.push(makePet(kind,name.trim().slice(0,30)));save();render();toast(`${name.trim()} joined the shop!`)}
-function buyDecor(d){if(state.coins<d.price){toast('Play with pets to earn more coins.');return}state.coins-=d.price;state.decor[d.kind]??=[];state.decor[d.kind].push(d.id);save();render();toast(`${d.name} added to the habitat!`)}
-function tidy(kind){if(state.coins<4){toast('Need 4 coins to tidy this habitat.');return}state.coins-=4;state.pets.filter(p=>p.kind===kind).forEach(p=>{p.mood=clamp(p.mood+9,0,100);p.health=clamp(p.health+1,0,100)});save();render();const card=document.querySelector(`[data-habitat="${kind}"]`);if(card){card.classList.remove('tidy-glow');void card.offsetWidth;card.classList.add('tidy-glow');card.addEventListener('animationend',()=>card.classList.remove('tidy-glow'),{once:true})}toast(`${TYPES[kind].label} is sparkling clean!`)}
-function playPet(id){const p=state.pets.find(x=>x.id===id),t=p&&TYPES[p.kind];if(!p)return;if(!t.playable){toast(`${t.singular}s enjoy exploring their habitat—try decorating it!`);return}if(played(id)){toast(`${p.name} has already had playtime today.`);return}dayCare().played.push(id);p.mood=clamp(p.mood+22,0,100);p.health=clamp(p.health+2,0,100);p.hunger=clamp(p.hunger+3,0,100);state.coins+=2;save();render();const el=document.querySelector(`.pet[data-pet-id="${CSS.escape(id)}"]`);if(el){el.classList.add('play-bounce');el.addEventListener('animationend',()=>el.classList.remove('play-bounce'),{once:true})}toast(`${p.name} enjoyed playtime! +2 coins`)}
-function playAll(){const eligible=state.pets.filter(p=>TYPES[p.kind].playable&&!played(p.id));if(!eligible.length){toast('All playful pets have played today!');return}for(const p of eligible){dayCare().played.push(p.id);p.mood=clamp(p.mood+22,0,100);p.health=clamp(p.health+2,0,100);p.hunger=clamp(p.hunger+3,0,100);state.coins+=2}save();render();toast(`Played with ${eligible.length} pets! +${eligible.length*2} coins`)}
-function openFeeding(ids,mode){feedTargetIds=ids.filter(id=>!fed(id));feedMode=mode;if(!feedTargetIds.length){toast('These pets have already been fed today.');return}renderFeedProgress();$('feed-modal').classList.add('show')}
-function renderFeedProgress(){const root=$('feed-progress');root.replaceChildren();let allDone=true;for(const id of feedTargetIds){const p=state.pets.find(x=>x.id===id);if(!p||fed(id))continue;allDone=false;const t=TYPES[p.kind],record=dayCare().feeding[id]||0,row=document.createElement('div');row.className='feed-row';const info=document.createElement('div'),name=document.createElement('div'),instruction=document.createElement('div');name.className='feed-name';name.textContent=`${t.emoji} ${p.name}`;instruction.className='feed-instruction';instruction.textContent=t.foodType==='scoop'?'Drag or click the scoop 3 times (one scoop each).':t.foodType==='flakes'?'Shake the flake grinder 10 times — about 5 flakes per shake.':t.foodType==='handful'?'Sprinkle one handful of bird food.':'Serve one bowl of food.';info.append(name,instruction);const outer=document.createElement('div'),control=document.createElement('div');control.className='feed-control';const count=document.createElement('span');count.className='feed-count';count.textContent=t.foodType==='scoop'?`${record} / 3 scoops`:t.foodType==='flakes'?`${record*5} / 50 flakes`:t.foodType==='handful'?`${record?1:0} / 1 handful`:`${record?1:0} / 1 bowl`;const btn=document.createElement('button');btn.type='button';btn.className='feed-btn';btn.textContent=t.foodType==='scoop'?'🥄 Scoop':t.foodType==='flakes'?'🫙 Shake grinder':t.foodType==='handful'?'🌻 Sprinkle handful':'🥣 Serve bowl';btn.disabled=record>=t.qty;btn.addEventListener('click',()=>feedAction(p.id));control.append(count,btn);const progress=document.createElement('div');progress.className='progress-track';const fill=document.createElement('span');fill.style.width=`${record/t.qty*100}%`;progress.append(fill);outer.append(control,progress);row.append(info,outer);root.append(row)}$('feed-copy').textContent=feedMode==='all'?'Finish each pet’s daily feeding action. Different species have different food actions.':'Finish this pet’s feeding action; each pet can be fed once daily.';$('feed-note').textContent=allDone?'All selected pets finished their food today.':`Fed today: ${dayCare().fed.length} of ${state.pets.length} pets.`;$('finish-feed').textContent=allDone?'Show feeding cutscenes':'Keep feeding';$('finish-feed').disabled=!allDone}
-function feedAction(id){const p=state.pets.find(x=>x.id===id);if(!p||fed(id))return;const t=TYPES[p.kind];dayCare().feeding[id]??=0;dayCare().feeding[id]=Math.min(t.qty,dayCare().feeding[id]+1);if(dayCare().feeding[id]>=t.qty){dayCare().fed.push(id);p.hunger=clamp(p.hunger-62,0,100);p.mood=clamp(p.mood+10,0,100);p.health=clamp(p.health+4,0,100);state.coins+=1;toast(`${p.name} finished their food! +1 coin`)}save();render();renderFeedProgress()}
-function feedAll(){const ids=state.pets.filter(p=>!fed(p.id)).map(p=>p.id);if(!ids.length){toast('Everyone has been fed today!');return}openFeeding(ids,'all')}
-function showScenes(){const root=$('scene-grid');root.replaceChildren();for(const kind of Object.keys(TYPES)){const t=TYPES[kind],count=feedTargetIds.filter(id=>state.pets.find(p=>p.id===id)?.kind===kind).length,card=document.createElement('div');card.className=`scene-card ${kind}`;const stage=document.createElement('div');stage.className='scene-stage';const food=document.createElement('span');food.className='scene-food';food.textContent=t.food;const animal=document.createElement('span');animal.className='scene-pet';animal.textContent=t.emoji;stage.append(food,animal);const title=document.createElement('strong');title.textContent=t.label;const n=document.createElement('div');n.className='muted';n.textContent=`${count} pet${count===1?'':'s'} ate`;card.append(stage,title,n);root.append(card)}$('scene-summary').textContent=`${feedTargetIds.length} digital pets fed. Each animal habitat gets its own simultaneous scene.`;$('cutscene').classList.add('show');clearTimeout(sceneTimer);sceneTimer=setTimeout(closeScenes,10000)}
-function closeFeed(){$('feed-modal').classList.remove('show')}function closeScenes(){$('cutscene').classList.remove('show');clearTimeout(sceneTimer)}
-function syncWalkers(){document.querySelectorAll('.pet').forEach(el=>{if(!walkers.has(el.dataset.petId)){const p=state.pets.find(x=>x.id===el.dataset.petId);if(p)walkers.set(p.id,{x:p.x,y:p.y,vx:p.dx,vy:p.dy,phase:p.phase,change:Date.now()+1000+Math.random()*2500})}});for(const id of walkers.keys())if(!document.querySelector(`.pet[data-pet-id="${CSS.escape(id)}"]`))walkers.delete(id)}
-function animate(){syncWalkers();for(const [id,m]of walkers){const el=document.querySelector(`.pet[data-pet-id="${CSS.escape(id)}"]`);if(!el)continue;const world=el.parentElement,w=Math.max(1,world.clientWidth-48),h=Math.max(1,world.clientHeight-48);if(Date.now()>m.change){m.vx=(Math.random()-.5)*.003;m.vy=(Math.random()-.5)*.0015;m.change=Date.now()+1100+Math.random()*2800}m.x+=m.vx;m.y+=m.vy;if(m.x<.025||m.x>.88)m.vx*=-1;if(m.y<.03||m.y>.65)m.vy*=-1;m.phase+=.05;el.style.transform=`translate(${m.x*w}px,${m.y*h+Math.sin(m.phase)*3}px) scaleX(${m.vx<0?-1:1})`}requestAnimationFrame(animate)}
-function refreshMeters(){for(const p of state.pets){for(const [key,value]of [[`full-${p.id}`,100-p.hunger],[`mood-${p.id}`,p.mood],[`health-${p.id}`,p.health]]){const el=document.querySelector(`[data-meter="${CSS.escape(key)}"]`);if(el){el.style.width=`${value}%`;el.classList.toggle('low',value<30);const label=el.parentElement.previousElementSibling?.querySelectorAll('span')[1];if(label)label.textContent=`${Math.round(value)}%`}}const card=document.querySelector(`[data-card-pet="${CSS.escape(p.id)}"]`);if(!card)continue;let warning=card.querySelector('.health-note');const reason=healthReason(p);if(reason&&!warning){warning=document.createElement('div');warning.className='health-note';card.append(warning)}if(warning){if(reason){warning.textContent=`⚠️ ${p.name} ${reason}.`}else warning.remove()}}renderAlert()}
-function reminderPending(){return state.pets.some(p=>!fed(p.id)||needsAttention(p)||(TYPES[p.kind].playable&&!played(p.id)))}
-function checkReminder(){if(!state.notifications||!('Notification'in window)||Notification.permission!=='granted'||!reminderPending())return;const day=today(),now=Date.now();if(state.remindedDay===day&&now-state.lastReminder<HOUR)return;state.lastReminder=now;state.remindedDay=day;save();const pending=state.pets.filter(p=>!fed(p.id)||(TYPES[p.kind].playable&&!played(p.id))||needsAttention(p));const names=pending.slice(0,4).map(p=>`${p.name}: ${needsAttention(p)?healthReason(p):!fed(p.id)?'feeding still to do':'playtime still to do'}`).join(' • ');try{const n=new Notification('Pet Pals — care still to do',{body:names||'Some daily pet care is still waiting. Open your shop to check in!',tag:'pet-pals-daily-care',renotify:false});n.onclick=()=>{window.focus();n.close()}}catch{}}
-async function toggleNotifications(){if(!('Notification'in window)){toast('This browser does not support web notifications.');return}if(Notification.permission==='denied'){toast('Notifications are blocked. Allow them for this site in your browser settings.');return}if(Notification.permission==='granted'){state.notifications=!state.notifications;save();renderNotificationButton();toast(state.notifications?'Hourly care reminders enabled while the page is open.':'Reminders paused.');return}try{const permission=await Notification.requestPermission();if(permission==='granted'){state.notifications=true;state.lastReminder=Date.now();state.remindedDay=today();save();renderNotificationButton();toast('Reminders enabled! This page checks hourly while it is open.')}else{renderNotificationButton();toast('Permission not granted. You can enable notifications in browser settings.')}}catch{toast('Could not request notification permission.')}}
-function dailyStats(day){const c=state.care[day]||{fed:[],played:[]},fedCount=Array.isArray(c.fed)?c.fed.length:0,playedCount=Array.isArray(c.played)?c.played.length:0;return{fedCount,playedCount}}
-function showDailySummary(day){const stats=dailyStats(day),date=new Date(`${day}T12:00:00`),dateText=new Intl.DateTimeFormat(undefined,{weekday:'long',month:'long',day:'numeric'}).format(date);$('summary-date').textContent=`Your last shop day: ${dateText}`;const root=$('summary-content');root.replaceChildren();const tasks=document.createElement('div');tasks.className='summary-row summary-highlight';const strong=document.createElement('strong');strong.textContent='Yesterday’s care';const detail=document.createElement('span');detail.textContent=`You fed ${stats.fedCount} pet${stats.fedCount===1?'':'s'} and played with ${stats.playedCount} pet${stats.playedCount===1?'':'s'}.`;tasks.append(strong,detail);root.append(tasks);for(const p of state.pets){const row=document.createElement('div');row.className='summary-row';const title=document.createElement('strong');title.textContent=`${TYPES[p.kind].emoji} ${p.name} — ${TYPES[p.kind].singular}`;const status=document.createElement('span');const healthLabel=p.health>=75?'doing great':p.health>=50?'needs a little care':'needs attention';status.textContent=`Today: ${healthLabel}. Health ${Math.round(p.health)}%, fullness ${Math.round(100-p.hunger)}%, happiness ${Math.round(p.mood)}%.`;row.append(title,status);root.append(row)}$('summary-modal').classList.add('show')}
-function closeSummary(){$('summary-modal').classList.remove('show')}
-function dailyReset(){const d=today();if(d===lastDay)return;lastDay=d;pruneCare();dayCare();save();render();toast('A new game day! Daily feeding and play are ready again.');checkReminder()}
-function maybeShowSummary(){const current=today();if(state.lastOpenedDay===current)return;const prior=Object.keys(state.care).filter(day=>day<current).sort().pop();state.lastOpenedDay=current;save();if(prior&&state.care[prior]){summaryToShow=prior;showDailySummary(prior)}}
-$('feed-all').addEventListener('click',feedAll);$('play-all').addEventListener('click',playAll);$('close-feed').addEventListener('click',closeFeed);$('finish-feed').addEventListener('click',()=>{if(!$('finish-feed').disabled){closeFeed();showScenes()}else closeFeed()});$('close-scene').addEventListener('click',closeScenes);$('done-scene').addEventListener('click',closeScenes);$('feed-modal').addEventListener('click',e=>{if(e.target===$('feed-modal'))closeFeed()});$('cutscene').addEventListener('click',e=>{if(e.target===$('cutscene'))closeScenes()});$('notify-button').addEventListener('click',toggleNotifications);$('close-summary').addEventListener('click',closeSummary);$('done-summary').addEventListener('click',closeSummary);$('summary-modal').addEventListener('click',e=>{if(e.target===$('summary-modal'))closeSummary()});document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>{const active=t===btn;t.classList.toggle('active',active);t.setAttribute('aria-selected',String(active))});$('habitats-view').hidden=btn.dataset.view!=='habitats';$('shop-view').hidden=btn.dataset.view!=='shop'}));document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeFeed();closeScenes();closeSummary()}});document.addEventListener('visibilitychange',()=>{if(!document.hidden){dailyReset();checkReminder()}});
-let last=Date.now();setInterval(()=>{dailyReset();const now=Date.now(),dt=Math.min((now-last)/1000,3600);last=now;state.pets.forEach(p=>{p.hunger=clamp(p.hunger+dt*.008,0,100);p.mood=clamp(p.mood-(p.hunger>68?dt*.006:dt*.001),0,100);if(p.hunger>82)p.health=clamp(p.health-dt*.003,0,100);else if(p.hunger<35&&p.mood>55)p.health=clamp(p.health+dt*.0005,0,100)});refreshMeters();save();checkReminder()},60000);render();maybeShowSummary();requestAnimationFrame(animate);
+const DECOR=[
+  {id:'plant',name:'Leafy plant',emoji:'🪴',kind:'hamster',price:25},
+  {id:'wheel',name:'Comfy exercise wheel',emoji:'🎡',kind:'hamster',price:35},
+  {id:'tunnel',name:'Colorful tunnel',emoji:'🟠',kind:'hamster',price:20},
+  {id:'perch',name:'Wooden perch',emoji:'🪵',kind:'bird',price:25},
+  {id:'swing',name:'Little bird swing',emoji:'🪺',kind:'bird',price:35},
+  {id:'flowers',name:'Aviary flowers',emoji:'🌼',kind:'bird',price:20},
+  {id:'coral',name:'Bright coral',emoji:'🪸',kind:'fish',price:30},
+  {id:'castle',name:'Bubble castle',emoji:'🏰',kind:'fish',price:40},
+  {id:'weed',name:'Sea plants',emoji:'🌿',kind:'fish',price:20},
+  {id:'dogbed',name:'Comfy dog bed',emoji:'🛏️',kind:'dog',price:35},
+  {id:'ball',name:'Bouncy ball',emoji:'⚽',kind:'dog',price:25},
+  {id:'cat tree',name:'Cat tree',emoji:'🌳',kind:'cat',price:45},
+  {id:'cattoy',name:'Yarn toy',emoji:'🧶',kind:'cat',price:25},
+  {id:'puffcoral',name:'Pufferfish coral',emoji:'🪸',kind:'pufferfish',price:35}
+];
+
+const $=id=>document.getElementById(id),
+clamp=(n,a,b)=>Math.max(a,Math.min(b,Number.isFinite(Number(n))?Number(n):a)),
+today=()=>{const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+
+function makePet(kind,name,id){
+  return {
+    id:id||`pet-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+    kind,
+    name:String(name||TYPES[kind].names[0]),
+    hunger:24,
+    mood:78,
+    health:100,
+    x:.1+Math.random()*.75,
+    y:.15+Math.random()*.65,
+    dx:(Math.random()<.5?-1:1)*(.0014+Math.random()*.0015),
+    dy:(Math.random()<.5?-1:1)*(.0005+Math.random()*.001),
+    phase:Math.random()*6.28
+  }
+}
+
+function starters(){ return STARTER.flatMap(k=>TYPES[k].names.map((n,i)=>makePet(k,n,`starter-${k}-${i}`))) }
+
+function load(){
+  let old={}, add={};
+  try { old=JSON.parse(localStorage.getItem(KEY)||'{}')||{} } catch {}
+  try { add=JSON.parse(localStorage.getItem(CARE_KEY)||'{}')||{} } catch {}
+
+  let pets = Array.isArray(old.pets) ? old.pets.filter(p=>p&&TYPES[p.kind]).map(p => ({...makePet(p.kind,p.name,p.id), ...p, health:clamp(p.health??100,0,100), hunger:clamp(p.hunger,0,100), mood:clamp(p.mood,0,100), x:clamp(p.x,.04,.9), y:clamp(p.y,.1,.8)})) : null;
+  if(!pets){
+    try {
+      const legacy = JSON.parse(localStorage.getItem('petpals.dailycare.v1') || 'null');
+      pets = legacy?.pets?.filter(p=>TYPES[p.kind]).map((p,i)=>makePet(p.kind,p.name,`legacy-${i}`)) || null;
+    } catch {}
+  }
+
+  return {
+    coins: Math.max(0, Number(old.coins) || 220),
+    pets: pets?.length ? pets : starters(),
+    care: add.care && typeof add.care==='object' ? add.care : {},
+    decor: add.decor && typeof add.decor==='object' ? add.decor : {hamster:[],bird:[],fish:[],pufferfish:[],dog:[],cat:[],pig:[],cow:[],frog:[],turtle:[],snake:[],spider:[]},
+    wheelLastRepair:Number(add.wheelLastRepair)||Date.now(),
+    notifications:add.notifications===true,
+    lastReminder:Number(add.lastReminder)||0,
+    remindedDay:add.remindedDay||'',
+    lastOpenedDay:add.lastOpenedDay||'',
+    habitatDirty: add.habitatDirty && typeof add.habitatDirty==='object' ? add.habitatDirty : {},
+    cleanFlash: add.cleanFlash && typeof add.cleanFlash==='object' ? add.cleanFlash : {}
+  }
+}
+
+const state=load();
+let toastTimer, feedMode='all', feedTargetIds=[], sceneTimer, summaryToShow=null, lastDay=today();
+const walkers=new Map();
+
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify({coins:state.coins,pets:state.pets}));
+    localStorage.setItem(CARE_KEY, JSON.stringify({
+      care:state.care,
+      decor:state.decor,
+      wheelLastRepair:state.wheelLastRepair,
+      notifications:state.notifications,
+      lastReminder:state.lastReminder,
+      remindedDay:state.remindedDay,
+      lastOpenedDay:state.lastOpenedDay,
+      habitatDirty:state.habitatDirty,
+      cleanFlash:state.cleanFlash
+    }));
+  } catch{ toast('Could not save your game in this browser.') }
+}
+
+function toast(msg){
+  $('toast').textContent = msg;
+  $('toast').classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>$('toast').classList.remove('show'),2300);
+}
+
+function dayCare(day=today()){
+  if(!state.care[day]) state.care[day] = {fed:[], played:[], feeding:{}};
+  state.care[day].fed ??= [];
+  state.care[day].played ??= [];
+  state.care[day].feeding ??= {};
+  return state.care[day];
+}
+
+function pruneCare(){
+  const keys=Object.keys(state.care).sort().slice(-8);
+  for(const k of Object.keys(state.care))
+    if(!keys.includes(k)) delete state.care[k];
+}
+
+function fed(id){ return dayCare().fed.includes(id) }
+function played(id){ return dayCare().played.includes(id) }
+function healthReason(p){
+  if(p.health<55) return 'health is low';
+  if(p.hunger>78) return 'very hungry';
+  if(p.mood<28) return 'needs cheering up';
+  return '';
+}
+function needsAttention(p){ return Boolean(healthReason(p)) }
+
+function render(){
+  pruneCare();
+  $('coins').textContent = state.coins;
+  renderHabitats();
+  renderPets();
+  renderShop();
+  renderAlert();
+  syncWalkers();
+  renderNotificationButton();
+}
+
+function renderHabitats(){
+  const root = $('habitat-grid');
+  root.replaceChildren();
+
+  for(const kind of Object.keys(TYPES)){
+    const t = TYPES[kind];
+    const pets = state.pets.filter(p => p.kind === kind);
+    const card = document.createElement('article');
+    card.className='habitat-card';
+    card.dataset.habitat = kind;
+
+    const header = document.createElement('div');
+    header.className='habitat-header';
+
+    const title = document.createElement('div');
+    const h = document.createElement('h4');
+    const sub = document.createElement('div');
+    h.textContent = t.label;
+    sub.className='habitat-sub';
+    sub.textContent = `${pets.length} resident${pets.length===1?'':'s'}`;
+    title.append(h,sub);
+
+    const clean = document.createElement('button');
+    clean.className='tiny-btn';
+    clean.type='button';
+    clean.textContent = '🧼 Clean';
+    clean.addEventListener('click',()=>cleanHabitat(kind));
+
+    header.append(title,clean);
+
+    const world = document.createElement('div');
+    world.className = `world ${kind}`;
+    world.dataset.kind = kind;
+
+    const layer = document.createElement('div');
+    layer.className='decor-layer';
+
+    (state.decor[kind] || []).forEach((id,index)=>{
+      const d = DECOR.find(x=>x.id===id);
+      if(!d) return;
+      const item = document.createElement('span');
+      item.className='decor';
+      item.textContent = d.emoji;
+      item.style.left = `${7+(index*23)%82}%`;
+      item.style.top = (kind==='fish'||kind==='pufferfish'||kind==='frog'||kind==='turtle'||kind==='snake'||kind==='spider'||kind==='pig'||kind==='cow') ? `${12+(index%3)*16}%` : `${8+(index%3)*13}%`;
+      layer.append(item);
+    });
+
+    if(state.habitatDirty[kind]){
+      const dirt = document.createElement('div');
+      dirt.className='clean-overlay';
+      dirt.innerHTML = '<span class="fingerprint">🖐️</span><span class="clean-text">Dirty glass</span>';
+      layer.append(dirt);
+    }
+
+    if(state.cleanFlash[kind]){
+      const flash = document.createElement('div');
+      flash.className='clean-flash';
+      flash.textContent = '🧼';
+      layer.append(flash);
+    }
+
+    world.append(layer);
+
+    pets.forEach(p=>{
+      const b = document.createElement('button');
+      b.type='button';
+      b.className='pet';
+      b.textContent=t.emoji;
+      b.title=`${p.name} — ${healthReason(p)||'doing well'}; tap to play`;
+      b.setAttribute('aria-label',`Play with ${p.name}`);
+      b.dataset.petId=p.id;
+      b.addEventListener('click',()=>playPet(p.id));
+      world.append(b);
+    });
+
+    const avg = pets.length ? Math.round(pets.reduce((n,p)=>n+p.mood,0) / pets.length) : 100;
+    const foot = document.createElement('div');
+    foot.className='habitat-footer';
+    foot.innerHTML = `
+      <div class="status-row">
+        <span>${pets.length ? `${pets.filter(p=>!needsAttention(p)).length} feeling good` : 'Ready for pets'}</span>
+        <span>${avg}% mood</span>
+      </div>
+      <div class="cleanbar"><span style="width:${avg}%"></span></div>
+    `;
+    card.append(header,world,foot);
+
+    if(kind==='hamster'){
+      const elapsed = Date.now()-state.wheelLastRepair;
+      const broken = elapsed >= 365 * DAY;
+      const maint = document.createElement('div');
+      maint.className='maintenance';
+      maint.textContent = broken ? '⚠️ Exercise wheel needs its yearly repair.' : `🛠️ Wheel maintenance: next repair in about ${Math.max(1,Math.ceil((365*DAY-elapsed)/DAY))} days.`;
+      if(broken){
+        const repair = document.createElement('button');
+        repair.type='button';
+        repair.className='tiny-btn';
+        repair.textContent='Repair wheel (10 coins)';
+        repair.addEventListener('click',()=>{
+          if(state.coins<10){toast('Need 10 coins to repair the wheel.'); return}
+          state.coins-=10;
+          state.wheelLastRepair = Date.now();
+          save();
+          render();
+          toast('The hamster wheel is repaired!');
+        });
+        maint.append(document.createElement('br'), repair);
+      }
+      card.append(maint);
+    }
+
+    root.append(card);
+  }
+}
+
+function meter(label,value,key){
+  const wrap=document.createElement('div');
+  const cap=document.createElement('div');
+  cap.className='meter-title';
+  const a=document.createElement('span');
+  const b=document.createElement('span');
+  a.textContent=label;
+  b.textContent=`${Math.round(value)}%`;
+  cap.append(a,b);
+
+  const bar=document.createElement('div');
+  bar.className='meter';
+  const fill=document.createElement('span');
+  fill.dataset.meter=key;
+  fill.style.width=`${value}%`;
+  if(value<30) fill.classList.add('low');
+  bar.append(fill);
+
+  wrap.append(cap,bar);
+  return wrap;
+}
+
+function renderPets(){
+  const root=$('pet-list');
+  root.replaceChildren();
+
+  if(!state.pets.length){
+    root.innerHTML='<div class="pet-card">No pets yet. Adopt one in the shop!</div>';
+    return;
+  }
+
+  for(const p of state.pets){
+    const t = TYPES[p.kind];
+    const card = document.createElement('article');
+    card.className='pet-card';
+    card.dataset.cardPet=p.id;
+
+    const top = document.createElement('div');
+    top.className='pet-top';
+
+    const n = document.createElement('div');
+    const nameWrap = document.createElement('div');
+    const kind = document.createElement('div');
+    const face = document.createElement('span');
+
+    const nameBtn = document.createElement('button');
+    nameBtn.type='button';
+    nameBtn.className='pet-name-btn';
+    nameBtn.textContent = p.name;
+    nameBtn.addEventListener('click',()=>{
+      const next = prompt('Rename your pet:', p.name);
+      if(next===null) return;
+      const trimmed = next.trim();
+      if(!trimmed){toast('Please give the pet a name.'); return;}
+      p.name = trimmed.slice(0,30);
+      save();
+      render();
+    });
+
+    nameWrap.append(nameBtn);
+    kind.className='pet-kind';
+    kind.textContent = t.singular;
+    face.className='pet-face';
+    face.textContent = t.emoji;
+
+    n.append(nameWrap, kind);
+    top.append(n, face);
+
+    card.append(
+      top,
+      meter('Fullness', 100-p.hunger, `full-${p.id}`),
+      meter('Happiness', p.mood, `mood-${p.id}`),
+      meter('Health', p.health, `health-${p.id}`)
+    );
+
+    const actions = document.createElement('div');
+    actions.className='pet-actions';
+
+    const feed = document.createElement('button');
+    feed.type='button';
+    feed.textContent = fed(p.id) ? '✅ Fed today' : '🥣 Feed myself';
+    feed.disabled = fed(p.id);
+    feed.addEventListener('click',()=>openFeeding([p.id],'single'));
+    actions.append(feed);
+
+    if(t.playable){
+      const play = document.createElement('button');
+      play.type='button';
+      play.textContent = played(p.id) ? '✅ Played today' : '🎾 Play';
+      play.disabled = played(p.id);
+      play.addEventListener('click',()=>playPet(p.id));
+      actions.append(play);
+    }
+
+    card.append(actions);
+
+    const reason = healthReason(p);
+    if(reason){
+      const warning = document.createElement('div');
+      warning.className='health-note';
+      warning.textContent=`⚠️ ${p.name} ${reason}.`;
+      card.append(warning);
+    }
+
+    root.append(card);
+  }
+}
+
+function renderShop(){
+  const root = $('shop-grid');
+  root.replaceChildren();
+
+  for(const kind of Object.keys(TYPES)){
+    const t = TYPES[kind];
+    const card = document.createElement('article');
+    card.className='store-card';
+    card.innerHTML = `<div class="emoji">${t.emoji}</div><h4>${t.singular}</h4><p>${t.price ? 'A special new resident for your shop.' : 'A familiar starter-shop resident.'}</p>`;
+    const btn = document.createElement('button');
+    btn.className='button gold';
+    btn.type='button';
+    if(t.price===0){
+      btn.textContent='Starter animal';
+      btn.disabled=true;
+    } else {
+      btn.textContent = `🪙 ${t.price} — Adopt`;
+      btn.disabled = state.coins < t.price;
+      btn.addEventListener('click',()=>adopt(kind));
+    }
+    card.append(btn);
+    root.append(card);
+  }
+
+  const decorRoot=$('decor-shop');
+  decorRoot.replaceChildren();
+  for(const d of DECOR){
+    const owned=(state.decor[d.kind]||[]).includes(d.id);
+    const card=document.createElement('article');
+    card.className='store-card';
+    card.innerHTML=`<div class="emoji">${d.emoji}</div><h4>${d.name}</h4><p>For your ${TYPES[d.kind].label.toLowerCase()}.</p>`;
+    const btn=document.createElement('button');
+    btn.className='button gold';
+    btn.type='button';
+    btn.textContent=owned?'✓ In habitat':`🪙 ${d.price} — Add`;
+    btn.disabled=owned || state.coins<d.price;
+    btn.addEventListener('click',()=>buyDecor(d));
+    card.append(btn);
+    decorRoot.append(card);
+  }
+}
+
+function renderAlert(){
+  const pets = state.pets.filter(needsAttention);
+  const el = $('alert');
+  el.classList.toggle('show', pets.length>0);
+  el.classList.toggle('critical', pets.some(p=>p.health<55));
+  el.textContent = pets.length
+    ? `⚠️ Pet health warning: ${pets.slice(0,4).map(p=>`${p.name} (${healthReason(p)})`).join(' • ')}${pets.length>4?' • and others':''}. Feed or play to help them feel better.`
+    : '';
+}
+
+function renderNotificationButton(){
+  const b = $('notify-button');
+  if(!('Notification' in window)){
+    b.textContent='🔔 Notifications unavailable';
+    b.disabled=true;
+    return;
+  }
+  if(Notification.permission==='granted' && state.notifications){
+    b.textContent='🔔 Reminders on';
+    b.classList.add('primary');
+    b.disabled=false;
+  } else if(Notification.permission==='denied'){
+    b.textContent='🔕 Blocked in settings';
+    b.classList.remove('primary');
+    b.disabled=false;
+  } else {
+    b.textContent='🔔 Enable reminders';
+    b.classList.remove('primary');
+    b.disabled=false;
+  }
+}
+
+function adopt(kind){
+  const price = TYPES[kind].price;
+  if(state.coins < price){
+    toast('Play with pets to earn coins first.');
+    return;
+  }
+  const name = prompt(`Name your new ${TYPES[kind].singular.toLowerCase()}:`, TYPES[kind].names[state.pets.filter(p=>p.kind===kind).length % 3]);
+  if(name===null) return;
+  if(!name.trim()){toast('Please give your pet a name.'); return;}
+
+  state.coins -= price;
+  state.pets.push(makePet(kind, name.trim().slice(0,30)));
+  save();
+  render();
+  toast(`${name.trim()} joined the shop!`);
+}
+
+function buyDecor(d){
+  if(state.coins < d.price){
+    toast('Play with pets to earn more coins.');
+    return;
+  }
+  state.coins -= d.price;
+  state.decor[d.kind] ??= [];
+  state.decor[d.kind].push(d.id);
+  save();
+  render();
+  toast(`${d.name} added to the habitat!`);
+}
+
+function cleanHabitat(kind){
+  const dirty = !!state.habitatDirty[kind];
+  if(!dirty){
+    toast(`${TYPES[kind].label} is already clean.`);
+    return;
+  }
+
+  state.habitatDirty[kind] = false;
+  state.cleanFlash[kind] = true;
+  state.coins += 4;
+  save();
+  render();
+
+  setTimeout(()=>{
+    state.cleanFlash[kind] = false;
+    save();
+    render();
+  },1500);
+
+  toast(`${TYPES[kind].label} sparkles clean! +4 coins`);
+}
+
+function maybeDirtyHabitat(){
+  const options = Object.keys(TYPES).filter(kind => !state.habitatDirty[kind] && (state.pets.some(p => p.kind===kind) || kind==='hamster'||kind==='bird'||kind==='fish'));
+  if(!options.length) return;
+  if(Math.random() < 0.12){
+    const kind = options[Math.floor(Math.random()*options.length)];
+    state.habitatDirty[kind] = true;
+    save();
+    render();
+  }
+}
+
+function playPet(id){
+  const p=state.pets.find(x=>x.id===id), t = p && TYPES[p.kind];
+  if(!p) return;
+  if(!t.playable){
+    toast(`${t.singular}s enjoy exploring their habitat—try decorating it!`);
+    return;
+  }
+  if(played(id)){toast(`${p.name} has already had playtime today.`); return;}
+
+  dayCare().played.push(id);
+  p.mood = clamp(p.mood + 22, 0, 100);
+  p.health = clamp(p.health + 2, 0, 100);
+  p.hunger = clamp(p.hunger + 3, 0, 100);
+  state.coins += 2;
+  save();
+  render();
+
+  const el = document.querySelector(`.pet[data-pet-id="${CSS.escape(id)}"]`);
+  if(el){
+    el.classList.add('play-bounce');
+    el.addEventListener('animationend',()=>el.classList.remove('play-bounce'),{once:true});
+  }
+  toast(`${p.name} enjoyed playtime! +2 coins`);
+}
+
+function playAll(){
+  const eligible = state.pets.filter(p => TYPES[p.kind].playable && !played(p.id));
+  if(!eligible.length){toast('All playful pets have played today!'); return;}
+  for(const p of eligible){
+    dayCare().played.push(p.id);
+    p.mood = clamp(p.mood + 22, 0, 100);
+    p.health = clamp(p.health + 2, 0, 100);
+    p.hunger = clamp(p.hunger + 3, 0, 100);
+    state.coins += 2;
+  }
+  save();
+  render();
+  toast(`Played with ${eligible.length} pets! +${eligible.length*2} coins`);
+}
+
+function openFeeding(ids,mode){
+  feedTargetIds = ids.filter(id => !fed(id));
+  feedMode = mode;
+  if(!feedTargetIds.length){toast('These pets have already been fed today.'); return;}
+  renderFeedProgress();
+  $('feed-modal').classList.add('show');
+}
+
+function renderFeedProgress(){
+  const root = $('feed-progress');
+  root.replaceChildren();
+  let allDone = true;
+
+  for(const id of feedTargetIds){
+    const p = state.pets.find(x=>x.id===id);
+    if(!p || fed(id)) continue;
+    allDone = false;
+
+    const t = TYPES[p.kind];
+    const record = dayCare().feeding[id] || 0;
+    const row = document.createElement('div');
+    row.className='feed-row';
+
+    const info = document.createElement('div');
+    const name = document.createElement('div');
+    const instruction = document.createElement('div');
+    name.className='feed-name';
+    name.textContent = `${t.emoji} ${p.name}`;
+    instruction.className='feed-instruction';
+
+    const typeText = t.foodType === 'scoop'
+      ? 'Use the spoon to scoop the food 3 times.'
+      : t.foodType === 'jar'
+      ? 'Shake the glass jar left and right to release the food.'
+      : 'Serve one bowl of food.';
+    instruction.textContent = typeText;
+
+    info.append(name, instruction);
+
+    const outer = document.createElement('div');
+    const control = document.createElement('div');
+    control.className='feed-control';
+
+    const count = document.createElement('span');
+    count.className='feed-count';
+    count.textContent = t.foodType==='scoop'
+      ? `${record} / 3 scoops`
+      : t.foodType==='jar'
+      ? `${record} / ${t.qty} shakes`
+      : `${record?1:0} / 1 bowl`;
+
+    const btn = document.createElement('button');
+    btn.type='button';
+    btn.className='feed-btn';
+    btn.dataset.feedPet = p.id;
+    btn.textContent = t.foodType === 'scoop'
+      ? '🥄 Scoop'
+      : t.foodType === 'jar'
+      ? '🫙 Shake jar'
+      : '🥣 Serve bowl';
+    btn.disabled = record >= t.qty;
+    btn.addEventListener('click',()=>{
+      btn.classList.remove('shake');
+      void btn.offsetWidth;
+      btn.classList.add('shake');
+      feedAction(p.id);
+    });
+
+    control.append(count, btn);
+
+    const progress = document.createElement('div');
+    progress.className='progress-track';
+    const fill = document.createElement('span');
+    fill.style.width = `${(record / t.qty) * 100}%`;
+    progress.append(fill);
+
+    outer.append(control, progress);
+    row.append(info, outer);
+    root.append(row);
+  }
+
+  $('feed-copy').textContent = feedMode === 'all'
+    ? 'Finish each pet’s daily feeding action. Different species have different food actions.'
+    : 'Finish this pet’s feeding action; each pet can be fed once daily.';
+  $('feed-note').textContent = allDone ? 'All selected pets finished their food today.' : `Fed today: ${dayCare().fed.length} of ${state.pets.length} pets.`;
+  $('finish-feed').textContent = allDone ? 'Show feeding cutscenes' : 'Keep feeding';
+  $('finish-feed').disabled = !allDone;
+}
+
+function feedAction(id){
+  const p = state.pets.find(x=>x.id===id);
+  if(!p || fed(id)) return;
+
+  const t = TYPES[p.kind];
+  dayCare().feeding[id] ??= 0;
+  dayCare().feeding[id] = Math.min(t.qty, dayCare().feeding[id] + 1);
+
+  if(dayCare().feeding[id] >= t.qty){
+    dayCare().fed.push(id);
+    p.hunger = clamp(p.hunger - 62, 0, 100);
+    p.mood = clamp(p.mood + 10, 0, 100);
+    p.health = clamp(p.health + 4, 0, 100);
+    state.coins += 1;
+    toast(`${p.name} finished their food! +1 coin`);
+  }
+
+  save();
+  render();
+  renderFeedProgress();
+}
+
+function feedAll(){
+  const ids = state.pets.filter(p=>!fed(p.id)).map(p=>p.id);
+  if(!ids.length){toast('Everyone has been fed today!'); return;}
+  openFeeding(ids,'all');
+}
+
+function showScenes(){
+  const root = $('scene-grid');
+  root.replaceChildren();
+
+  for(const kind of Object.keys(TYPES)){
+    const t = TYPES[kind];
+    const count = feedTargetIds.filter(id => state.pets.find(p=>p.id===id)?.kind === kind).length;
+    const card = document.createElement('div');
+    card.className = `scene-card ${kind}`;
+
+    const stage = document.createElement('div');
+    stage.className='scene-stage';
+
+    const food = document.createElement('span');
+    food.className='scene-food';
+    food.textContent = t.food;
+
+    const animal = document.createElement('span');
+    animal.className='scene-pet';
+    animal.textContent = t.emoji;
+
+    stage.append(food, animal);
+
+    const title = document.createElement('strong');
+    title.textContent = t.label;
+
+    const n = document.createElement('div');
+    n.className='muted';
+    n.textContent = `${count} pet${count===1?'':'s'} ate`;
+
+    card.append(stage, title, n);
+    root.append(card);
+  }
+
+  $('scene-summary').textContent = `${feedTargetIds.length} digital pets fed. Each animal habitat gets its own simultaneous scene.`;
+  $('cutscene').classList.add('show');
+  clearTimeout(sceneTimer);
+  sceneTimer = setTimeout(closeScenes,10000);
+}
+
+function closeFeed(){ $('feed-modal').classList.remove('show') }
+function closeScenes(){ $('cutscene').classList.remove('show'); clearTimeout(sceneTimer) }
+
+function syncWalkers(){
+  document.querySelectorAll('.pet').forEach(el=>{
+    if(!walkers.has(el.dataset.petId)){
+      const p = state.pets.find(x=>x.id===el.dataset.petId);
+      if(p) walkers.set(p.id,{x:p.x,y:p.y,vx:p.dx,vy:p.dy,phase:p.phase,change:Date.now()+1000+Math.random()*2500});
+    }
+  });
+
+  for(const id of walkers.keys())
+    if(!document.querySelector(`.pet[data-pet-id="${CSS.escape(id)}"]`)) walkers.delete(id);
+}
+
+function animate(){
+  syncWalkers();
+  for(const [id,m] of walkers){
+    const el = document.querySelector(`.pet[data-pet-id="${CSS.escape(id)}"]`);
+    if(!el) continue;
+
+    const world = el.parentElement;
+    const w = Math.max(1, world.clientWidth - 48);
+    const h = Math.max(1, world.clientHeight - 48);
+
+    if(Date.now() > m.change){
+      m.vx = (Math.random()-0.5) * .003;
+      m.vy = (Math.random()-0.5) * .0015;
+      m.change = Date.now() + 1100 + Math.random() * 2800;
+    }
+
+    m.x += m.vx;
+    m.y += m.vy;
+    if(m.x < .025 || m.x > .88) m.vx *= -1;
+    if(m.y < .03 || m.y > .65) m.vy *= -1;
+    m.phase += .05;
+
+    el.style.transform = `translate(${m.x*w}px,${m.y*h+Math.sin(m.phase)*3}px) scaleX(${m.vx<0?-1:1})`;
+  }
+  requestAnimationFrame(animate);
+}
+
+function refreshMeters(){
+  for(const p of state.pets){
+    for(const [key,value] of [[`full-${p.id}`,100-p.hunger],[`mood-${p.id}`,p.mood],[`health-${p.id}`,p.health]]){
+      const el = document.querySelector(`[data-meter="${CSS.escape(key)}"]`);
+      if(el){
+        el.style.width=`${value}%`;
+        el.classList.toggle('low', value < 30);
+        const label = el.parentElement.previousElementSibling?.querySelectorAll('span')[1];
+        if(label) label.textContent = `${Math.round(value)}%`;
+      }
+    }
+
+    const card=document.querySelector(`[data-card-pet="${CSS.escape(p.id)}"]`);
+    if(!card) continue;
+    let warning = card.querySelector('.health-note');
+    const reason = healthReason(p);
+
+    if(reason && !warning){
+      warning = document.createElement('div');
+      warning.className='health-note';
+      card.append(warning);
+    }
+    if(warning){
+      if(reason) warning.textContent=`⚠️ ${p.name} ${reason}.`;
+      else warning.remove();
+    }
+  }
+  renderAlert();
+}
+
+function reminderPending(){
+  return state.pets.some(p => !fed(p.id) || needsAttention(p) || (TYPES[p.kind].playable && !played(p.id)));
+}
+
+function checkReminder(){
+  if(!state.notifications || !('Notification' in window) || Notification.permission !== 'granted' || !reminderPending()) return;
+  const day = today(), now = Date.now();
+  if(state.remindedDay === day && now-state.lastReminder < HOUR) return;
+  state.lastReminder = now;
+  state.remindedDay = day;
+  save();
+
+  const pending = state.pets.filter(p => !fed(p.id) || (TYPES[p.kind].playable && !played(p.id)) || needsAttention(p));
+  const names = pending.slice(0,4).map(p => `${p.name}: ${needsAttention(p)?healthReason(p):!fed(p.id)?'feeding still to do':'playtime still to do'}`).join(' • ');
+  try{
+    const n = new Notification('Pet Pals — care still to do',{
+      body: names || 'Some daily pet care is still waiting. Open your shop to check in!',
+      tag:'pet-pals-daily-care',
+      renotify:false
+    });
+    n.onclick = ()=>{ window.focus(); n.close(); };
+  } catch {}
+}
+
+async function toggleNotifications(){
+  if(!('Notification' in window)){toast('This browser does not support web notifications.'); return;}
+  if(Notification.permission === 'denied'){toast('Notifications are blocked. Allow them for this site in your browser settings.'); return;}
+  if(Notification.permission === 'granted'){
+    state.notifications = !state.notifications;
+    save();
+    renderNotificationButton();
+    toast(state.notifications ? 'Hourly care reminders enabled while the page is open.' : 'Reminders paused.');
+    return;
+  }
+  try{
+    const permission = await Notification.requestPermission();
+    if(permission === 'granted'){
+      state.notifications = true;
+      state.lastReminder = Date.now();
+      state.remindedDay = today();
+      save();
+      renderNotificationButton();
+      toast('Reminders enabled! This page checks hourly while it is open.');
+    } else {
+      renderNotificationButton();
+      toast('Permission not granted. You can enable notifications in browser settings.');
+    }
+  } catch {
+    toast('Could not request notification permission.');
+  }
+}
+
+function dailyStats(day){
+  const c = state.care[day] || {fed:[],played:[]};
+  const fedCount = Array.isArray(c.fed) ? c.fed.length : 0;
+  const playedCount = Array.isArray(c.played) ? c.played.length : 0;
+  return {fedCount, playedCount};
+}
+
+function showDailySummary(day){
+  const stats = dailyStats(day);
+  const date = new Date(`${day}T12:00:00`);
+  const dateText = new Intl.DateTimeFormat(undefined,{weekday:'long',month:'long',day:'numeric'}).format(date);
+  $('summary-date').textContent = `Your last shop day: ${dateText}`;
+
+  const root = $('summary-content');
+  root.replaceChildren();
+
+  const tasks = document.createElement('div');
+  tasks.className='summary-row summary-highlight';
+  const strong = document.createElement('strong');
+  strong.textContent = 'Yesterday’s care';
+  const detail = document.createElement('span');
+  detail.textContent = `You fed ${stats.fedCount} pet${stats.fedCount===1?'':'s'} and played with ${stats.playedCount} pet${stats.playedCount===1?'':'s'}.`;
+  tasks.append(strong, detail);
+  root.append(tasks);
+
+  for(const p of state.pets){
+    const row = document.createElement('div');
+    row.className='summary-row';
+    const title = document.createElement('strong');
+    title.textContent = `${TYPES[p.kind].emoji} ${p.name} — ${TYPES[p.kind].singular}`;
+    const status = document.createElement('span');
+    const healthLabel = p.health>=75 ? 'doing great' : p.health>=50 ? 'needs a little care' : 'needs attention';
+    status.textContent = `Today: ${healthLabel}. Health ${Math.round(p.health)}%, fullness ${Math.round(100-p.hunger)}%, happiness ${Math.round(p.mood)}%.`;
+    row.append(title, status);
+    root.append(row);
+  }
+
+  $('summary-modal').classList.add('show');
+}
+
+function closeSummary(){ $('summary-modal').classList.remove('show') }
+
+function dailyReset(){
+  const d = today();
+  if(d === lastDay) return;
+  lastDay = d;
+  pruneCare();
+  dayCare();
+  save();
+  render();
+  toast('A new game day! Daily feeding and play are ready again.');
+  checkReminder();
+}
+
+function maybeShowSummary(){
+  const current = today();
+  if(state.lastOpenedDay === current) return;
+  const prior = Object.keys(state.care).filter(day => day < current).sort().pop();
+  state.lastOpenedDay = current;
+  save();
+  if(prior && state.care[prior]) {
+    summaryToShow = prior;
+    showDailySummary(prior);
+  }
+}
+
+$('feed-all').addEventListener('click', feedAll);
+$('play-all').addEventListener('click', playAll);
+$('close-feed').addEventListener('click', closeFeed);
+$('finish-feed').addEventListener('click',()=>{ if(!$('finish-feed').disabled){ closeFeed(); showScenes(); } else closeFeed(); });
+$('close-scene').addEventListener('click', closeScenes);
+$('done-scene').addEventListener('click', closeScenes);
+$('feed-modal').addEventListener('click', e => { if(e.target === $('feed-modal')) closeFeed(); });
+$('cutscene').addEventListener('click', e => { if(e.target === $('cutscene')) closeScenes(); });
+$('notify-button').addEventListener('click', toggleNotifications);
+$('close-summary').addEventListener('click', closeSummary);
+$('done-summary').addEventListener('click', closeSummary);
+$('summary-modal').addEventListener('click', e => { if(e.target === $('summary-modal')) closeSummary(); });
+
+document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(t=>{
+    const active = t === btn;
+    t.classList.toggle('active', active);
+    t.setAttribute('aria-selected', String(active));
+  });
+  $('habitats-view').hidden = btn.dataset.view !== 'habitats';
+  $('shop-view').hidden = btn.dataset.view !== 'shop';
+}));
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape'){ closeFeed(); closeScenes(); closeSummary(); }
+});
+
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ dailyReset(); checkReminder(); } });
+
+let last = Date.now();
+setInterval(()=>{
+  dailyReset();
+  maybeDirtyHabitat();
+  const now = Date.now();
+  const dt = Math.min((now-last)/1000, 3600);
+  last = now;
+
+  state.pets.forEach(p=>{
+    p.hunger = clamp(p.hunger + dt*.008, 0, 100);
+    p.mood = clamp(p.mood - (p.hunger>68 ? dt*.006 : dt*.001), 0, 100);
+    if(p.hunger>82) p.health = clamp(p.health - dt*.003, 0, 100);
+    else if(p.hunger<35 && p.mood>55) p.health = clamp(p.health + dt*.0005, 0, 100);
+  });
+
+  refreshMeters();
+  save();
+  checkReminder();
+},60000);
+
+render();
+maybeShowSummary();
+requestAnimationFrame(animate);
 })();
 </script>
 </body>
