@@ -288,6 +288,73 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 @keyframes playBounce{
   50%{filter:drop-shadow(0 0 11px #ffd65a);transform:scale(1.18)}
 }
+  /* Mini cage shown alongside each pet's feeding controls */
+.feed-cage{
+  grid-column:1 / -1;
+  height:96px;
+  position:relative;
+  overflow:hidden;
+  border:2px solid #b9c9b8;
+  border-radius:12px;
+  background:linear-gradient(#e7f4e9 0 70%,#c9ac82 71%);
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.35);
+}
+.feed-cage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(
+    90deg,
+    transparent 0 23px,
+    rgba(75,95,78,.28) 24px 26px
+  );
+  pointer-events:none;
+}
+.feed-cage::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;top:7px;
+  border-top:3px solid rgba(75,95,78,.28);
+}
+.feed-cage-pet,.feed-tool,.feed-fall{
+  position:absolute;
+  z-index:2;
+  pointer-events:none;
+}
+.feed-cage-pet{
+  right:18%;
+  bottom:7px;
+  font-size:34px;
+  filter:drop-shadow(0 3px 2px #24382d33);
+}
+.feed-tool{
+  left:8%;
+  top:5px;
+  font-size:30px;
+}
+.feed-tool.jar-moving{animation:jarInCage .8s ease-in-out}
+.feed-tool.spoon-moving{animation:spoonInCage .65s ease-in-out}
+@keyframes jarInCage{
+  0%{left:8%;transform:rotate(-14deg)}
+  30%{left:58%;transform:rotate(15deg)}
+  55%{left:66%;transform:rotate(-12deg)}
+  100%{left:8%;transform:rotate(8deg)}
+}
+@keyframes spoonInCage{
+  0%{left:8%;top:5px;transform:rotate(-22deg)}
+  65%{left:62%;top:20px;transform:rotate(10deg)}
+  100%{left:66%;top:35px;transform:rotate(25deg);opacity:.2}
+}
+.feed-fall{
+  top:31px;
+  left:67%;
+  font-size:15px;
+  animation:foodFalls .55s ease-in forwards;
+}
+@keyframes foodFalls{
+  from{opacity:1;transform:translateY(0) scale(1)}
+  to{opacity:0;transform:translate(var(--fall-x),42px) scale(.7)}
+}
 </style>
 </head>
 <body>
@@ -1205,8 +1272,9 @@ function renderFeedProgress(){
 
   for(const id of feedTargetIds){
     const p = state.pets.find(x=>x.id===id);
-    if(!p || fed(id)) continue;
-    allDone = false;
+    if(!p) continue;
+const alreadyFed = fed(id);
+if(!alreadyFed) allDone = false;
 
     const t = TYPES[p.kind];
     const record = dayCare().feeding[id] || 0;
@@ -1228,7 +1296,15 @@ function renderFeedProgress(){
     instruction.textContent = typeText;
 
     info.append(name, instruction);
+const cage = document.createElement('div');
+cage.className = 'feed-cage';
+cage.dataset.petId = p.id;
+cage.setAttribute('aria-label', `${p.name}'s feeding cage`);
 
+const cagePet = document.createElement('span');
+cagePet.className = 'feed-cage-pet';
+cagePet.textContent = t.emoji;
+cage.append(cagePet);
     const outer = document.createElement('div');
     const control = document.createElement('div');
     control.className='feed-control';
@@ -1250,13 +1326,15 @@ function renderFeedProgress(){
       : t.foodType === 'jar'
       ? '🫙 Shake jar'
       : '🥣 Serve bowl';
-    btn.disabled = record >= t.qty;
+    btn.disabled = alreadyFed || record >= t.qty;
+if(alreadyFed) btn.textContent = '✅ Fed!';
   btn.addEventListener('click',()=>{
   btn.classList.remove('shake');
   void btn.offsetWidth;
   btn.classList.add('shake');
   triggerFeedingEffect(p.id, t.foodType);
   feedAction(p.id);
+requestAnimationFrame(() => animateFeedInCage(p.id, t.foodType, t.food));
 });
 
     control.append(count, btn);
@@ -1268,7 +1346,7 @@ function renderFeedProgress(){
     progress.append(fill);
 
     outer.append(control, progress);
-    row.append(info, outer);
+    row.append(info, outer, cage);
     root.append(row);
   }
 
@@ -1361,7 +1439,32 @@ function triggerFeedingEffect(petId, foodType){
     setTimeout(()=>bowl.remove(), 900);
   }
 }
-      
+      function animateFeedInCage(petId, foodType, foodEmoji){
+  const cage = [...document.querySelectorAll('.feed-cage')]
+    .find(el => el.dataset.petId === petId);
+  if(!cage) return;
+
+  const tool = document.createElement('span');
+  tool.className = `feed-tool ${foodType === 'jar' ? 'jar-moving' : 'spoon-moving'}`;
+  tool.textContent = foodType === 'jar' ? '🫙' : foodType === 'scoop' ? '🥄' : '🥣';
+  cage.append(tool);
+  setTimeout(() => tool.remove(), 900);
+
+  const dropFood = () => {
+    for(let i=0;i<3;i++){
+      const bit = document.createElement('span');
+      bit.className = 'feed-fall';
+      bit.textContent = foodType === 'jar' ? '🟡' : foodEmoji;
+      bit.style.setProperty('--fall-x', `${(Math.random() - .5) * 28}px`);
+      bit.style.left = `${62 + Math.random() * 9}%`;
+      bit.style.animationDelay = `${i * 70}ms`;
+      cage.append(bit);
+      setTimeout(() => bit.remove(), 750);
+    }
+  };
+
+  setTimeout(dropFood, foodType === 'scoop' ? 420 : 180);
+}
 function feedAction(id){
   const p = state.pets.find(x=>x.id===id);
   if(!p || fed(id)) return;
