@@ -23,7 +23,7 @@ body{
   margin:0;
   padding:20px;
   background:var(--bg);
-  color:var(--ink);
+  color:var(--ink);c
   font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 button{font:inherit;cursor:pointer}
@@ -237,51 +237,7 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
   .feed-row{grid-template-columns:1fr}
   .feed-control{justify-content:space-between}
 }
-  .feed-jar-anim{
-  position:fixed;
-  left:50%;
-  top:30%;
-  transform:translate(-50%,-50%);
-  font-size:58px;
-  pointer-events:none;
-  z-index:90;
-  animation:jarTravel .9s ease-in-out forwards;
-}
-@keyframes jarTravel{
-  0%{transform:translate(-50%,-50%) rotate(-12deg) scale(.8);opacity:0}
-  12%{opacity:1}
-  35%{transform:translate(calc(-50% - 70px),-50%) rotate(-16deg)}
-  50%{transform:translate(calc(-50% + 70px),-50%) rotate(16deg)}
-  100%{transform:translate(-50%,-50%) rotate(0deg) scale(1);opacity:0}
-}
-.feed-flake{
-  position:fixed;
-  width:11px;height:11px;
-  border-radius:50%;
-  background:radial-gradient(circle,#ffe7a6,#d69d42);
-  box-shadow:0 0 10px rgba(255,185,68,.55);
-  pointer-events:none;
-  z-index:88;
-  animation:flakeFall .9s ease-in forwards;
-}
-@keyframes flakeFall{
-  0%{opacity:0;transform:translate(0,0) scale(.5)}
-  15%{opacity:1}
-  100%{opacity:0;transform:translate(var(--dx), var(--dy)) scale(1.08)}
-}
-.feed-spoon-anim{
-  position:fixed;
-  font-size:52px;
-  pointer-events:none;
-  z-index:90;
-  animation:spoonToPet .9s ease-in-out forwards;
-}
-@keyframes spoonToPet{
-  0%{transform:translate(-50%,-50%) rotate(-18deg) scale(.65);opacity:0}
-  15%{opacity:1}
-  50%{transform:translate(var(--x), var(--y)) rotate(-18deg) scale(1)}
-  100%{transform:translate(var(--endX), var(--endY)) rotate(12deg) scale(.9);opacity:0}
-}
+ 
 .pet.play-bounce{
   animation:playBounce .55s ease-in-out 2
 }
@@ -1332,7 +1288,6 @@ if(alreadyFed) btn.textContent = '✅ Fed!';
   btn.classList.remove('shake');
   void btn.offsetWidth;
   btn.classList.add('shake');
-  triggerFeedingEffect(p.id, t.foodType);
   feedAction(p.id);
 requestAnimationFrame(() => animateFeedInCage(p.id, t.foodType, t.food));
 });
