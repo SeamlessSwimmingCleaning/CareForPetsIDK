@@ -237,6 +237,57 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
   .feed-row{grid-template-columns:1fr}
   .feed-control{justify-content:space-between}
 }
+  .feed-jar-anim{
+  position:fixed;
+  left:50%;
+  top:30%;
+  transform:translate(-50%,-50%);
+  font-size:58px;
+  pointer-events:none;
+  z-index:90;
+  animation:jarTravel .9s ease-in-out forwards;
+}
+@keyframes jarTravel{
+  0%{transform:translate(-50%,-50%) rotate(-12deg) scale(.8);opacity:0}
+  12%{opacity:1}
+  35%{transform:translate(calc(-50% - 70px),-50%) rotate(-16deg)}
+  50%{transform:translate(calc(-50% + 70px),-50%) rotate(16deg)}
+  100%{transform:translate(-50%,-50%) rotate(0deg) scale(1);opacity:0}
+}
+.feed-flake{
+  position:fixed;
+  width:11px;height:11px;
+  border-radius:50%;
+  background:radial-gradient(circle,#ffe7a6,#d69d42);
+  box-shadow:0 0 10px rgba(255,185,68,.55);
+  pointer-events:none;
+  z-index:88;
+  animation:flakeFall .9s ease-in forwards;
+}
+@keyframes flakeFall{
+  0%{opacity:0;transform:translate(0,0) scale(.5)}
+  15%{opacity:1}
+  100%{opacity:0;transform:translate(var(--dx), var(--dy)) scale(1.08)}
+}
+.feed-spoon-anim{
+  position:fixed;
+  font-size:52px;
+  pointer-events:none;
+  z-index:90;
+  animation:spoonToPet .9s ease-in-out forwards;
+}
+@keyframes spoonToPet{
+  0%{transform:translate(-50%,-50%) rotate(-18deg) scale(.65);opacity:0}
+  15%{opacity:1}
+  50%{transform:translate(var(--x), var(--y)) rotate(-18deg) scale(1)}
+  100%{transform:translate(var(--endX), var(--endY)) rotate(12deg) scale(.9);opacity:0}
+}
+.pet.play-bounce{
+  animation:playBounce .55s ease-in-out 2
+}
+@keyframes playBounce{
+  50%{filter:drop-shadow(0 0 11px #ffd65a);transform:scale(1.18)}
+}
 </style>
 </head>
 <body>
@@ -1200,12 +1251,13 @@ function renderFeedProgress(){
       ? '🫙 Shake jar'
       : '🥣 Serve bowl';
     btn.disabled = record >= t.qty;
-    btn.addEventListener('click',()=>{
-      btn.classList.remove('shake');
-      void btn.offsetWidth;
-      btn.classList.add('shake');
-      feedAction(p.id);
-    });
+  btn.addEventListener('click',()=>{
+  btn.classList.remove('shake');
+  void btn.offsetWidth;
+  btn.classList.add('shake');
+  triggerFeedingEffect(p.id, t.foodType);
+  feedAction(p.id);
+});
 
     control.append(count, btn);
 
@@ -1228,6 +1280,88 @@ function renderFeedProgress(){
   $('finish-feed').disabled = !allDone;
 }
 
+function spawnJarFeedBurst(){
+  const jar = document.createElement('div');
+  jar.className = 'feed-jar-anim';
+  jar.textContent = '🫙';
+  document.body.appendChild(jar);
+  setTimeout(()=>jar.remove(), 900);
+
+  for(let i=0;i<12;i++){
+    const flake = document.createElement('div');
+    flake.className = 'feed-flake';
+    const startX = window.innerWidth * 0.5 + (Math.random() - 0.5) * 120;
+    const startY = window.innerHeight * 0.3 + Math.random() * 40;
+    flake.style.left = `${startX}px`;
+    flake.style.top = `${startY}px`;
+    flake.style.setProperty('--dx', `${(Math.random() - 0.5) * 180}px`);
+    flake.style.setProperty('--dy', `${90 + Math.random() * 140}px`);
+    document.body.appendChild(flake);
+    setTimeout(()=>flake.remove(), 900);
+  }
+}
+
+function spawnScoopFeedBurst(petId){
+  const pet = document.querySelector(`.pet[data-pet-id="${CSS.escape(petId)}"]`);
+  const startX = window.innerWidth * 0.28;
+  const startY = window.innerHeight * 0.32;
+  const target = pet
+    ? pet.getBoundingClientRect()
+    : { left: window.innerWidth * 0.62, top: window.innerHeight * 0.52, width: 44, height: 44 };
+
+  const spoon = document.createElement('div');
+  spoon.className = 'feed-spoon-anim';
+  spoon.textContent = '🥄';
+  spoon.style.left = `${startX}px`;
+  spoon.style.top = `${startY}px`;
+
+  const midX = (target.left + target.width / 2 - startX) * 0.5;
+  const midY = (target.top + target.height / 2 - startY) * 0.5;
+
+  spoon.style.setProperty('--x', `${midX}px`);
+  spoon.style.setProperty('--y', `${midY}px`);
+  spoon.style.setProperty('--endX', `${target.left + target.width / 2 - startX}px`);
+  spoon.style.setProperty('--endY', `${target.top + target.height / 2 - startY}px`);
+
+  document.body.appendChild(spoon);
+  setTimeout(()=>spoon.remove(), 900);
+
+  if(pet){
+    pet.classList.remove('play-bounce');
+    void pet.offsetWidth;
+    pet.classList.add('play-bounce');
+    setTimeout(()=>pet.classList.remove('play-bounce'), 600);
+  }
+}
+
+function triggerFeedingEffect(petId, foodType){
+  if(foodType === 'jar'){
+    spawnJarFeedBurst();
+  } else if(foodType === 'scoop'){
+    spawnScoopFeedBurst(petId);
+  } else {
+    const pet = document.querySelector(`.pet[data-pet-id="${CSS.escape(petId)}"]`);
+    if(pet){
+      pet.classList.remove('play-bounce');
+      void pet.offsetWidth;
+      pet.classList.add('play-bounce');
+      setTimeout(()=>pet.classList.remove('play-bounce'), 600);
+    }
+    const bowl = document.createElement('div');
+    bowl.className = 'feed-spoon-anim';
+    bowl.textContent = '🥣';
+    const target = pet ? pet.getBoundingClientRect() : { left: window.innerWidth * 0.5, top: window.innerHeight * 0.5, width: 44, height: 44 };
+    bowl.style.left = `${window.innerWidth * 0.28}px`;
+    bowl.style.top = `${window.innerHeight * 0.32}px`;
+    bowl.style.setProperty('--x', `${(target.left + target.width / 2 - window.innerWidth * 0.28) * 0.5}px`);
+    bowl.style.setProperty('--y', `${(target.top + target.height / 2 - window.innerHeight * 0.32) * 0.5}px`);
+    bowl.style.setProperty('--endX', `${target.left + target.width / 2 - window.innerWidth * 0.28}px`);
+    bowl.style.setProperty('--endY', `${target.top + target.height / 2 - window.innerHeight * 0.32}px`);
+    document.body.appendChild(bowl);
+    setTimeout(()=>bowl.remove(), 900);
+  }
+}
+      
 function feedAction(id){
   const p = state.pets.find(x=>x.id===id);
   if(!p || fed(id)) return;
