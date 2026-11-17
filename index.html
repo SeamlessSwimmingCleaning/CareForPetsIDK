@@ -766,7 +766,7 @@ function load(){
   }
 
   return {
-    coins: Math.max(0, Number(old.coins) || 220),
+    coins: Math.max(0, Number(old.coins) ?? 220),
     pets: pets?.length ? pets : starters(),
     care: add.care && typeof add.care==='object' ? add.care : {},
     decor: add.decor && typeof add.decor==='object' ? add.decor : {hamster:[],bird:[],fish:[],pufferfish:[],dog:[],cat:[],pig:[],cow:[],frog:[],turtle:[],snake:[],spider:[]},
