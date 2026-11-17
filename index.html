@@ -754,8 +754,8 @@ function starters(){ return STARTER.flatMap(k=>TYPES[k].names.map((n,i)=>makePet
 
 function load(){
   let old={}, add={};
-  try { old=JSON.parse(localStorage.getItem(KEY + "_v2")||'{}')||{} } catch {}
-  try { add=JSON.parse(localStorage.getItem(CARE_KEY + "_v2")||'{}')||{} } catch {}
+  try { old=JSON.parse(localStorage.getItem(KEY)||'{}')||{} } catch {}
+  try { add=JSON.parse(localStorage.getItem(CARE_KEY)||'{}')||{} } catch {}
 
   let pets = Array.isArray(old.pets) ? old.pets.filter(p=>p&&TYPES[p.kind]).map(p => ({...makePet(p.kind,p.name,p.id, p.rarity || 'Common'), ...p, rarity:(p.rarity||'Common'), rarityEmoji:getRarityByName(p.rarity||'Common').emoji, rarityColor:getRarityByName(p.rarity||'Common').color, health:clamp(p.health??100,0,100), hunger:clamp(p.hunger,0,100), mood:clamp(p.mood,0,100), x:clamp(p.x,.04,.9), y:clamp(p.y,.1,.8)})) : null;
   if(!pets){
@@ -795,7 +795,7 @@ let dragState = null;
 
 function save(){
   try{
-    localStorage.setItem(KEY, JSON.stringify({coins:state.coins,pets:state.pets}) + "v2");
+    localStorage.setItem(KEY, JSON.stringify({coins:state.coins,pets:state.pets}));
     localStorage.setItem(CARE_KEY, JSON.stringify({
       care:state.care,
       decor:state.decor,
@@ -813,7 +813,7 @@ function save(){
       food:state.food,
       dailyStreak:state.dailyStreak,
       lastRewardDay:state.lastRewardDay
-    } + "_v2"));
+    }));
   } catch{ toast('Could not save your game in this browser.') }
 }
 
