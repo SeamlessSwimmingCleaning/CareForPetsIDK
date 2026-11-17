@@ -160,10 +160,10 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 .scene-card:nth-child(3){animation-delay:.16s}
 @keyframes sceneIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 .scene-stage{height:95px;border-radius:11px;position:relative;overflow:hidden;background:linear-gradient(#d6ecdc 0 68%,#a5bf97 69%)}
-.scene-card.fish .scene-stage,.scene-card.pufferfish .scene-stage,.scene-card.turtle .scene-stage,.scene-card.frog .scene-stage,.scene-card.snake .scene-stage,.scene-card.spider .scene-stage,.scene-card.pig .scene-stage,.scene-card.cow .scene-stage{background:linear-gradient(#c0edf2 0 68%,#7aa9a5 69%)}
-.scene-card.bird .scene-stage{background:linear-gradient(#deefcf 0 68%,#8ab770 69%)}
+.scene-card.fish .scene-stage,.scene-card.pufferfish .scene-stage,.scene-card.turtle .scene-stage,.scene-card.frog .scene-stage,.scene-card.snake .scene-stage,.scene-card.spider .scene-stage,.scene-card.pig .scene-stage,.scene-card.cow .scene-stage,.scene-card.dolphin .scene-stage,.scene-card.orca .scene-stage,.scene-card.seal .scene-stage,.scene-card.shark .scene-stage,.scene-card.octopus .scene-stage,.scene-card.otter .scene-stage,.scene-card.penguin .scene-stage,.scene-card.duck .scene-stage,.scene-card.flamingo .scene-stage{background:linear-gradient(#c0edf2 0 68%,#7aa9a5 69%)}
+.scene-card.bird .scene-stage,.scene-card.monkey .scene-stage,.scene-card.gorilla .scene-stage,.scene-card.orangutan .scene-stage,.scene-card.koala .scene-stage,.scene-card.panda .scene-stage,.scene-card.sloth .scene-stage,.scene-card.bat .scene-stage,.scene-card.parrot .scene-stage,.scene-card.peacock .scene-stage,.scene-card.owl .scene-stage,.scene-card.turkey .scene-stage,.scene-card.chicken .scene-stage{background:linear-gradient(#deefcf 0 68%,#8ab770 69%)}
 .scene-card.hamster .scene-stage{background:linear-gradient(#f3e6bf 0 68%,#d0a36d 69%)}
-.scene-card.dog .scene-stage{background:linear-gradient(#eceee0 0 68%,#b7c27a 69%)}
+.scene-card.dog .scene-stage,.scene-card.fox .scene-stage,.scene-card.raccoon .scene-stage,.scene-card.badger .scene-stage,.scene-card.tiger .scene-stage,.scene-card.bear .scene-stage,.scene-card.horse .scene-stage,.scene-card.bunny .scene-stage,.scene-card.hedgehog .scene-stage,.scene-card.husky .scene-stage,.scene-card.poodle .scene-stage,.scene-card.retriever .scene-stage,.scene-card.lizard .scene-stage{background:linear-gradient(#eceee0 0 68%,#b7c27a 69%)}
 .scene-card.cat .scene-stage{background:linear-gradient(#f3e9f7 0 68%,#c2aad6 69%)}
 .scene-pet,.scene-food{position:absolute;bottom:15px;font-size:32px}
 .scene-pet{left:50%;transform:translateX(-50%);animation:bounce .5s ease-in-out infinite alternate}
@@ -311,6 +311,48 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
   from{opacity:1;transform:translateY(0) scale(1)}
   to{opacity:0;transform:translate(var(--fall-x),42px) scale(.7)}
 }
+/* ---------- Upgrades tab ---------- */
+.upgrade-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.upgrade-card{display:flex;flex-direction:column;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:var(--shadow)}
+.upgrade-top{display:flex;align-items:center;gap:10px}
+.upgrade-emoji{flex:0 0 auto;width:42px;height:42px;border-radius:13px;background:var(--mint);display:grid;place-items:center;font-size:22px}
+.upgrade-card h4{margin:0;font-size:1rem}
+.upgrade-card p{margin:0;color:var(--muted);font-size:12.5px}
+.upgrade-levels{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:800;color:var(--muted)}
+.upgrade-levels .boost{color:var(--green);font-size:13px}
+.upgrade-bar{height:7px;border-radius:99px;background:#edf0ed;overflow:hidden}
+.upgrade-bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#7cc375,#2d835a);transition:width .35s ease}
+.upgrade-card .button{margin-top:2px}
+/* ---------- Mini games tab ---------- */
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.game-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:16px;box-shadow:var(--shadow)}
+.game-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.game-head h4{margin:0;font-size:1.05rem}
+.game-score{background:#fff8e4;border:1px solid #f3df9b;color:#704d03;border-radius:99px;padding:5px 10px;font-weight:800;font-size:12px;white-space:nowrap}
+.game-score.bump{animation:scoreBump .4s ease}
+@keyframes scoreBump{50%{transform:scale(1.12)}}
+.game-copy{margin:6px 0 12px;color:var(--muted);font-size:12.5px}
+.game-copy strong{color:#704d03}
+.whack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.whack-hole{position:relative;aspect-ratio:1/1;padding:0;border-radius:15px;border:1px solid #cfdccb;background:radial-gradient(circle at 50% 118%, #cbdabf 0 44%, #e8f0e3 45% 100%);overflow:hidden;transition:background .15s}
+.whack-hole span{position:absolute;left:50%;bottom:-4px;transform:translate(-50%,112%) scale(.6);font-size:30px;line-height:1;transition:transform .13s ease-out;pointer-events:none}
+.whack-hole.up span{transform:translate(-50%,6%) scale(1)}
+.whack-hole.hit{background:radial-gradient(circle at 50% 118%, #f7e3ad 0 44%, #fdf7e6 45% 100%)}
+.hit-pop{position:absolute;left:50%;top:6%;transform:translateX(-50%);font-size:12px;font-weight:800;color:#1d5a40;animation:popUp .7s ease forwards;pointer-events:none}
+@keyframes popUp{0%{opacity:0;transform:translate(-50%,6px)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-16px)}}
+.game-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.flappy-wrap{position:relative;border-radius:15px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(#cfeaf6,#eaf7ee)}
+#flappy-canvas{display:block;width:100%;height:auto;touch-action:manipulation;cursor:pointer}
+.flappy-overlay{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:8px;text-align:center;padding:18px;background:rgba(255,255,255,.86);backdrop-filter:blur(2px)}
+.flappy-overlay[hidden]{display:none}
+.flappy-overlay strong{font-size:1rem}
+.flappy-overlay span{font-size:12px;color:var(--muted);max-width:250px}
+@media(max-width:850px){
+  .upgrade-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+  .upgrade-grid,.game-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -340,6 +382,8 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 <nav class="tabs" aria-label="Pet shop sections">
   <button class="tab active" data-view="habitats" type="button" aria-selected="true">🏡 Habitats</button>
   <button class="tab" data-view="shop" type="button" aria-selected="false">🛍️ Pet shop & decorations</button>
+  <button class="tab" data-view="upgrades" type="button" aria-selected="false">⬆️ Upgrades</button>
+  <button class="tab" data-view="minigames" type="button" aria-selected="false">🎮 Mini games</button>
 </nav>
 
 <section class="view" id="habitats-view">
@@ -354,7 +398,7 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
   <div id="habitat-grid" class="habitat-grid"></div>
 
   <div class="section-head">
-    <div><h3>Pet roster</h3><p>Click a pet name to rename them anytime. Feed each resident with the right food and play with every non-fish pet once daily.</p></div>
+    <div><h3>Pet roster</h3><p>Click a pet name to rename them anytime. Feed each resident 3 meals a day with the right food and play with every non-fish pet once daily.</p></div>
   </div>
   <div id="pet-list" class="pet-list"></div>
 </section>
@@ -365,10 +409,57 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
   </div>
   <div id="shop-grid" class="store-grid"></div>
 
+  <div class="section-head">
+    <div><h3>Pet food shop</h3><p>Each bag holds 15 portions — about 5 days of meals for one pet (3 meals a day). Buy the right food for each species.</p></div>
+  </div>
+  <div id="food-shop" class="store-grid"></div>
+
   <div class="section-head decoration-shop">
     <div><h3>Habitat decorations</h3><p>Buy decorations with coins; purchased items appear in their habitat.</p></div>
   </div>
   <div id="decor-shop" class="store-grid"></div>
+</section>
+
+<section class="view" id="upgrades-view" hidden>
+  <div class="section-head">
+    <div><h3>Upgrades</h3><p>Every upgrade starts at ×1 and gains +0.5× each time you buy it. Each one levels up on its own.</p></div>
+  </div>
+  <div id="upgrade-grid" class="upgrade-grid"></div>
+</section>
+
+<section class="view" id="minigames-view" hidden>
+  <div class="section-head">
+    <div><h3>Mini games</h3><p>There are no lives and no play limits — keep going as long as you like and every hit pays coins.</p></div>
+  </div>
+  <div class="game-grid">
+    <article class="game-card">
+      <div class="game-head">
+        <h4>🔨 Whack-A-Mole</h4>
+        <span class="game-score" id="whack-score">0 coins</span>
+      </div>
+      <p class="game-copy">Tap the animal that pops out of a hole. Each whack pays <strong id="whack-payout">10 coins</strong>.</p>
+      <div class="whack-grid" id="whack-grid"></div>
+      <div class="game-actions">
+        <button class="button primary" id="whack-start" type="button">Start whacking</button>
+        <button class="button" id="whack-stop" type="button" hidden>Stop</button>
+      </div>
+    </article>
+    <article class="game-card">
+      <div class="game-head">
+        <h4>🐦 Flappy Bird</h4>
+        <span class="game-score" id="flappy-score">0 coins</span>
+      </div>
+      <p class="game-copy">Tap the sky or press space to flap. Every pipe you clear pays <strong id="flappy-payout">5 coins</strong>.</p>
+      <div class="flappy-wrap">
+        <canvas id="flappy-canvas" width="360" height="420" aria-label="Flappy Bird game"></canvas>
+        <div class="flappy-overlay" id="flappy-overlay">
+          <strong id="flappy-overlay-title">Ready for takeoff?</strong>
+          <span id="flappy-overlay-copy">Tap the sky or press space to flap through the pipes.</span>
+          <button class="button primary" id="flappy-start" type="button">Start flying</button>
+        </div>
+      </div>
+    </article>
+  </div>
 </section>
 </div>
 
@@ -419,6 +510,19 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
   </div>
 </div>
 
+<div id="reward-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="reward-title">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="reward-title">🎁 Daily reward!</h2>
+    </div>
+    <p class="modal-copy" id="reward-copy"></p>
+    <div id="reward-content"></div>
+    <div class="modal-footer">
+      <button class="button primary" id="close-reward" type="button">Collect</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (()=>{'use strict';
 
@@ -426,7 +530,6 @@ const KEY='petpals-sim-v1';
 const CARE_KEY='petpals-care-additions.v1';
 const DAY=86400000;
 const HOUR=3600000;
-
 const RARITIES = [
   { name:'Common', emoji:'✨', color:'#7dc9b4', weight:56, bonus:0 },
   { name:'Rare', emoji:'💎', color:'#5ca7ff', weight:25, bonus:1 },
@@ -456,17 +559,82 @@ const HABITAT_THEMES = {
 const TYPES={
   hamster:{label:'Hamster Habitat',singular:'Hamster',emoji:'🐹',food:'🥕',foodType:'scoop',qty:3,names:['Hazel','Nibbles','Poppy'],price:0,playable:true},
   bird:{label:'Bird Aviary',singular:'Bird',emoji:'🐦',food:'🌻',foodType:'jar',qty:3,names:['Sunny','Pip','Feather'],price:0,playable:true},
-  fish:{label:'Fish Tank',singular:'Fish',emoji:'🐟',food:'🐟',foodType:'jar',qty:5,names:['Bubbles','Goldie','Ripple'],price:0,playable:false},
+  fish:{label:'Fish Tank',singular:'Fish',emoji:'🐟',food:'🦐',foodType:'jar',qty:5,names:['Bubbles','Goldie','Ripple'],price:0,playable:false},
   pufferfish:{label:'Pufferfish Tank',singular:'Pufferfish',emoji:'🐡',food:'🦐',foodType:'jar',qty:5,names:['Puff','Pebble','Sunny'],price:90,playable:false},
   dog:{label:'Dog Play Yard',singular:'Dog',emoji:'🐶',food:'🥣',foodType:'bowl',qty:1,names:['Scout','Mochi','Rex'],price:120,playable:true},
-  cat:{label:'Cat Room',singular:'Cat',emoji:'🐱',food:'🐟',foodType:'bowl',qty:1,names:['Mittens','Clover','Luna'],price:120,playable:true},
+  cat:{label:'Cat Room',singular:'Cat',emoji:'🐱',food:'🥣',foodType:'bowl',qty:1,names:['Mittens','Clover','Luna'],price:120,playable:true},
   pig:{label:'Pig Pen',singular:'Pig',emoji:'🐷',food:'🫘',foodType:'jar',qty:5,names:['Biscuit','Peaches','Mochi'],price:160,playable:true},
   cow:{label:'Cow Barn',singular:'Cow',emoji:'🐮',food:'🌾',foodType:'jar',qty:5,names:['Daisy','Muffin','Bramble'],price:180,playable:true},
   frog:{label:'Frog Pond',singular:'Frog',emoji:'🐸',food:'🪲',foodType:'jar',qty:4,names:['Pip','Lily','Juniper'],price:170,playable:false},
   turtle:{label:'Turtle Tank',singular:'Turtle',emoji:'🐢',food:'🌿',foodType:'jar',qty:4,names:['Shelly','Maple','Pebble'],price:170,playable:false},
   snake:{label:'Snake Terrarium',singular:'Snake',emoji:'🐍',food:'🐭',foodType:'jar',qty:4,names:['Slinky','Clover','Nova'],price:200,playable:false},
-  spider:{label:'Spider Enclosure',singular:'Spider',emoji:'🕷️',food:'🪲',foodType:'jar',qty:4,names:['Silk','Nova','Luna'],price:220,playable:false}
+  spider:{label:'Spider Enclosure',singular:'Spider',emoji:'🕷️',food:'🐛',foodType:'jar',qty:4,names:['Silk','Nova','Luna'],price:220,playable:false},
+  monkey:{label:'Monkey Habitat',singular:'Monkey',emoji:'🐵',food:'🍌',foodType:'jar',qty:3,names:['Koko','Mango','George'],price:150,playable:true},
+  gorilla:{label:'Gorilla Enclosure',singular:'Gorilla',emoji:'🦍',food:'🍌',foodType:'jar',qty:3,names:['Silver','Kong','Bramble'],price:300,playable:true},
+  orangutan:{label:'Orangutan Habitat',singular:'Orangutan',emoji:'🦧',food:'🍌',foodType:'jar',qty:3,names:['Raja','Marmalade','Juice'],price:280,playable:true},
+  husky:{label:'Husky Yard',singular:'Husky',emoji:'🐺',food:'🥣',foodType:'bowl',qty:1,names:['Luna','Ghost','Frost'],price:220,playable:true},
+  poodle:{label:'Poodle Salon',singular:'Poodle',emoji:'🐩',food:'🥣',foodType:'bowl',qty:1,names:['Fifi','Coco','Pearl'],price:170,playable:true},
+  retriever:{label:'Retriever Field',singular:'Retriever',emoji:'🦮',food:'🥣',foodType:'bowl',qty:1,names:['Buddy','Sunny','Bear'],price:200,playable:true},
+  fox:{label:'Fox Den',singular:'Fox',emoji:'🦊',food:'🥣',foodType:'bowl',qty:1,names:['Sly','Ember','Rusty'],price:200,playable:true},
+  raccoon:{label:'Raccoon Nook',singular:'Raccoon',emoji:'🦝',food:'🥣',foodType:'bowl',qty:1,names:['Bandit','Rocket','Scrap'],price:180,playable:true},
+  badger:{label:'Badger Sett',singular:'Badger',emoji:'🦡',food:'🥣',foodType:'bowl',qty:1,names:['Boris','Honey','Dig'],price:210,playable:true},
+  tiger:{label:'Tiger Enclosure',singular:'Tiger',emoji:'🐯',food:'🍖',foodType:'bowl',qty:1,names:['Rajah','Tigger','Stripe'],price:350,playable:true},
+  bear:{label:'Bear Cave',singular:'Bear',emoji:'🐻',food:'🍖',foodType:'bowl',qty:1,names:['Bruno','Honey','Bramble'],price:330,playable:true},
+  horse:{label:'Horse Paddock',singular:'Horse',emoji:'🐴',food:'🌾',foodType:'bowl',qty:1,names:['Spirit','Daisy','Thunder'],price:250,playable:true},
+  bunny:{label:'Bunny Burrow',singular:'Bunny',emoji:'🐰',food:'🥕',foodType:'jar',qty:3,names:['Cottontail','Thumper','Clover'],price:140,playable:true},
+  hedgehog:{label:'Hedgehog Habitat',singular:'Hedgehog',emoji:'🦔',food:'🥕',foodType:'jar',qty:3,names:['Sonic','Prickle','Spikes'],price:160,playable:true},
+  bat:{label:'Bat Roost',singular:'Bat',emoji:'🦇',food:'🍌',foodType:'jar',qty:3,names:['Echo','Vlad','Bramble'],price:190,playable:true},
+  koala:{label:'Koala Corner',singular:'Koala',emoji:'🐨',food:'🍌',foodType:'jar',qty:3,names:['Gum','Euc','Munch'],price:240,playable:true},
+  panda:{label:'Panda Grove',singular:'Panda',emoji:'🐼',food:'🍌',foodType:'jar',qty:3,names:['Bao','Bamboo','Yun'],price:320,playable:true},
+  sloth:{label:'Sloth Tree',singular:'Sloth',emoji:'🦥',food:'🍌',foodType:'jar',qty:3,names:['Flash','Lazy','Mochi'],price:220,playable:true},
+  otter:{label:'Otter Stream',singular:'Otter',emoji:'🦦',food:'🦐',foodType:'jar',qty:3,names:['Pebble','River','Splash'],price:230,playable:true},
+  lizard:{label:'Lizard Terrarium',singular:'Lizard',emoji:'🦎',food:'🪲',foodType:'jar',qty:3,names:['Scales','Rex','Iggy'],price:170,playable:true},
+  owl:{label:'Owl Aviary',singular:'Owl',emoji:'🦉',food:'🌻',foodType:'jar',qty:3,names:['Hoot','Sage','Archimedes'],price:210,playable:true},
+  flamingo:{label:'Flamingo Lagoon',singular:'Flamingo',emoji:'🦩',food:'🌻',foodType:'jar',qty:3,names:['Pink','Flam','Tutu'],price:260,playable:true},
+  peacock:{label:'Peacock Garden',singular:'Peacock',emoji:'🦚',food:'🌻',foodType:'jar',qty:3,names:['Royal','Jewel','Iris'],price:280,playable:true},
+  parrot:{label:'Parrot Aviary',singular:'Parrot',emoji:'🦜',food:'🌻',foodType:'jar',qty:3,names:['Polly','Cracker','Mango'],price:220,playable:true},
+  turkey:{label:'Turkey Coop',singular:'Turkey',emoji:'🦃',food:'🌻',foodType:'jar',qty:3,names:['Tom','Gobble','Drumstick'],price:190,playable:true},
+  chicken:{label:'Chicken Coop',singular:'Chicken',emoji:'🐔',food:'🌻',foodType:'jar',qty:3,names:['Henrietta','Cluck','Nugget'],price:150,playable:true},
+  duck:{label:'Duck Pond',singular:'Duck',emoji:'🦆',food:'🦐',foodType:'jar',qty:3,names:['Quackers','Daffy','Puddles'],price:170,playable:true},
+  penguin:{label:'Penguin Cove',singular:'Penguin',emoji:'🐧',food:'🦐',foodType:'jar',qty:3,names:['Mumble','Ice','Tux'],price:240,playable:true},
+  dolphin:{label:'Dolphin Pool',singular:'Dolphin',emoji:'🐬',food:'🦐',foodType:'jar',qty:5,names:['Flipper','Splash','Winter'],price:300,playable:false},
+  orca:{label:'Orca Lagoon',singular:'Orca',emoji:'🐋',food:'🦐',foodType:'jar',qty:5,names:['Shamu','Killer','Tide'],price:400,playable:false},
+  seal:{label:'Seal Shore',singular:'Seal',emoji:'🦭',food:'🦐',foodType:'jar',qty:5,names:['Sandy','Sebastian','Splash'],price:270,playable:false},
+  shark:{label:'Shark Tank',singular:'Shark',emoji:'🦈',food:'🦐',foodType:'jar',qty:5,names:['Bruce','Jaws','Fin'],price:350,playable:false},
+  octopus:{label:'Octopus Den',singular:'Octopus',emoji:'🐙',food:'🦐',foodType:'jar',qty:5,names:['Inky','Tentacle','Squid'],price:330,playable:false}
 };
+
+const FOODS = {
+  rodent:    { id:'rodent',    name:'Rodent Mix',    emoji:'🥕', price:35, for:'Hamster, bunny & hedgehog' },
+  seed:      { id:'seed',      name:'Bird Seed',     emoji:'🌻', price:30, for:'All birds' },
+  flakes:    { id:'flakes',    name:'Fish Flakes',   emoji:'🦐', price:40, for:'Fish, puffers & sea life' },
+  kibble:    { id:'kibble',    name:'Pet Kibble',    emoji:'🥣', price:55, for:'Dogs, cats, foxes & badgers' },
+  pigfeed:   { id:'pigfeed',   name:'Pig Feed',      emoji:'🫘', price:45, for:'Pig' },
+  cowfeed:   { id:'cowfeed',   name:'Cow Feed',      emoji:'🌾', price:45, for:'Cow & horse' },
+  frogfood:  { id:'frogfood',  name:'Frog Food',     emoji:'🪲', price:40, for:'Frog & lizard' },
+  turtlefood:{ id:'turtlefood',name:'Turtle Food',   emoji:'🌿', price:40, for:'Turtle' },
+  snakefood: { id:'snakefood', name:'Snake Food',    emoji:'🐭', price:50, for:'Snake' },
+  spiderfood:{ id:'spiderfood',name:'Spider Food',   emoji:'🐛', price:45, for:'Spider' },
+  fruit:     { id:'fruit',     name:'Fruit Mix',     emoji:'🍌', price:35, for:'Monkeys, apes, bats, koalas, pandas & sloths' },
+  carnivore: { id:'carnivore', name:'Carnivore Diet', emoji:'🍖', price:60, for:'Tigers & bears' }
+};
+const KIND_FOOD = {
+  hamster:'rodent', bird:'seed', fish:'flakes', pufferfish:'flakes',
+  dog:'kibble', cat:'kibble', pig:'pigfeed', cow:'cowfeed',
+  frog:'frogfood', turtle:'turtlefood', snake:'snakefood', spider:'spiderfood',
+  monkey:'fruit', gorilla:'fruit', orangutan:'fruit',
+  husky:'kibble', poodle:'kibble', retriever:'kibble',
+  fox:'kibble', raccoon:'kibble', badger:'kibble',
+  tiger:'carnivore', bear:'carnivore',
+  horse:'cowfeed', bunny:'rodent', hedgehog:'rodent',
+  bat:'fruit', koala:'fruit', panda:'fruit', sloth:'fruit',
+  otter:'flakes', lizard:'frogfood',
+  owl:'seed', flamingo:'seed', peacock:'seed', parrot:'seed',
+  turkey:'seed', chicken:'seed', duck:'flakes', penguin:'flakes',
+  dolphin:'flakes', orca:'flakes', seal:'flakes', shark:'flakes', octopus:'flakes'
+};
+const FOOD_PORTIONS = 15;
+const MEALS_PER_DAY = 3;
 
 const STARTER=['hamster','bird','fish'];
 const DECOR=[
@@ -483,11 +651,59 @@ const DECOR=[
   {id:'ball',name:'Bouncy ball',emoji:'⚽',kind:'dog',price:25},
   {id:'cat tree',name:'Cat tree',emoji:'🌳',kind:'cat',price:45},
   {id:'cattoy',name:'Yarn toy',emoji:'🧶',kind:'cat',price:25},
-  {id:'puffcoral',name:'Pufferfish coral',emoji:'🪸',kind:'pufferfish',price:35}
+  {id:'puffcoral',name:'Pufferfish coral',emoji:'🪸',kind:'pufferfish',price:35},
+  {id:'mud',name:'Mud puddle',emoji:'🟤',kind:'pig',price:25}, {id:'trough',name:'Feed trough',emoji:'🪣',kind:'pig',price:30},
+  {id:'haybale',name:'Hay bale',emoji:'🌾',kind:'cow',price:25}, {id:'bell',name:'Cow bell',emoji:'🔔',kind:'cow',price:20},
+  {id:'lilypad',name:'Lily pad',emoji:'🪷',kind:'frog',price:25}, {id:'mosslog',name:'Mossy log',emoji:'🪵',kind:'frog',price:30},
+  {id:'baskrock',name:'Basking rock',emoji:'🪨',kind:'turtle',price:25}, {id:'tankweed',name:'Tank weed',emoji:'🌿',kind:'turtle',price:20},
+  {id:'snakehide',name:'Hide cave',emoji:'🕳️',kind:'snake',price:30}, {id:'branch',name:'Climbing branch',emoji:'🪵',kind:'snake',price:25},
+  {id:'webcorner',name:'Web corner',emoji:'🕸️',kind:'spider',price:25}, {id:'barklog',name:'Bark log',emoji:'🪵',kind:'spider',price:30},
+  {id:'mtree',name:'Jungle tree',emoji:'🌳',kind:'monkey',price:35}, {id:'mrope',name:'Swing rope',emoji:'🪢',kind:'monkey',price:30},
+  {id:'gtree',name:'Big tree',emoji:'🌳',kind:'gorilla',price:40}, {id:'boulder',name:'Boulder',emoji:'🪨',kind:'gorilla',price:35},
+  {id:'otree',name:'Rainforest tree',emoji:'🌴',kind:'orangutan',price:40}, {id:'ovine',name:'Hanging vine',emoji:'🌿',kind:'orangutan',price:25},
+  {id:'huskybed',name:'Cozy sled bed',emoji:'🛏️',kind:'husky',price:35}, {id:'icetoy',name:'Ice toy',emoji:'🧊',kind:'husky',price:25},
+  {id:'poodlebed',name:'Velvet cushion',emoji:'🛏️',kind:'poodle',price:35}, {id:'ribbon',name:'Pretty ribbon',emoji:'🎀',kind:'poodle',price:20},
+  {id:'retrbed',name:'Big dog bed',emoji:'🛏️',kind:'retriever',price:35}, {id:'stick',name:'Fetch stick',emoji:'🪵',kind:'retriever',price:20},
+  {id:'foxden',name:'Cozy den',emoji:'🕳️',kind:'fox',price:30}, {id:'foxlog',name:'Forest log',emoji:'🪵',kind:'fox',price:25},
+  {id:'trashbin',name:'Trash bin',emoji:'🗑️',kind:'raccoon',price:30}, {id:'raccoontree',name:'Climb tree',emoji:'🌳',kind:'raccoon',price:30},
+  {id:'badgerset',name:'Sett burrow',emoji:'🕳️',kind:'badger',price:30}, {id:'badgerlog',name:'Fallen log',emoji:'🪵',kind:'badger',price:25},
+  {id:'tigerrock',name:'Sunning rock',emoji:'🪨',kind:'tiger',price:40}, {id:'tigbamboo',name:'Bamboo grove',emoji:'🎋',kind:'tiger',price:35},
+  {id:'bearcave',name:'Cozy cave',emoji:'🕳️',kind:'bear',price:40}, {id:'honeypot',name:'Honey pot',emoji:'🍯',kind:'bear',price:35},
+  {id:'fence',name:'Wood fence',emoji:'🚧',kind:'horse',price:35}, {id:'haynet',name:'Hay net',emoji:'🌾',kind:'horse',price:25},
+  {id:'carrotbox',name:'Carrot box',emoji:'🥕',kind:'bunny',price:25}, {id:'bunnyburrow',name:'Burrow',emoji:'🕳️',kind:'bunny',price:20},
+  {id:'leafpile',name:'Leaf pile',emoji:'🍂',kind:'hedgehog',price:20}, {id:'tinyhouse',name:'Tiny house',emoji:'🏠',kind:'hedgehog',price:30},
+  {id:'batcave',name:'Dark cave',emoji:'🕳️',kind:'bat',price:30}, {id:'stalactite',name:'Stalactite',emoji:'🪨',kind:'bat',price:25},
+  {id:'euctree',name:'Eucalyptus tree',emoji:'🌳',kind:'koala',price:40}, {id:'koalabran',name:'Sturdy branch',emoji:'🪵',kind:'koala',price:25},
+  {id:'pandabam',name:'Bamboo thicket',emoji:'🎋',kind:'panda',price:40}, {id:'pandarock',name:'Resting rock',emoji:'🪨',kind:'panda',price:30},
+  {id:'slothbranch',name:'Hanging branch',emoji:'🪵',kind:'sloth',price:25}, {id:'slothtree',name:'Tall tree',emoji:'🌳',kind:'sloth',price:35},
+  {id:'otterrock',name:'Stream rock',emoji:'🪨',kind:'otter',price:25}, {id:'clamshell',name:'Clam shell',emoji:'🐚',kind:'otter',price:20},
+  {id:'hotrock',name:'Hot rock',emoji:'🪨',kind:'lizard',price:25}, {id:'tinycactus',name:'Tiny cactus',emoji:'🌵',kind:'lizard',price:30},
+  {id:'owlperch',name:'High perch',emoji:'🪵',kind:'owl',price:25}, {id:'owloak',name:'Old oak',emoji:'🌳',kind:'owl',price:35},
+  {id:'flampool',name:'Shallow pool',emoji:'🪷',kind:'flamingo',price:35}, {id:'flamgrass',name:'Tall grass',emoji:'🌾',kind:'flamingo',price:20},
+  {id:'peacperch',name:'Grand perch',emoji:'🪵',kind:'peacock',price:30}, {id:'peacfount',name:'Stone fountain',emoji:'⛲',kind:'peacock',price:40},
+  {id:'parperch',name:'Tropical perch',emoji:'🌴',kind:'parrot',price:30}, {id:'parmirror',name:'Little mirror',emoji:'🪞',kind:'parrot',price:25},
+  {id:'turkstraw',name:'Straw nest',emoji:'🌾',kind:'turkey',price:20}, {id:'turkfeed',name:'Grain feeder',emoji:'🪣',kind:'turkey',price:25},
+  {id:'coop',name:'Cozy coop',emoji:'🏠',kind:'chicken',price:30}, {id:'nestegg',name:'Nest egg',emoji:'🥚',kind:'chicken',price:20},
+  {id:'duckpond',name:'Garden pond',emoji:'🪷',kind:'duck',price:35}, {id:'duckreed',name:'Reeds',emoji:'🌿',kind:'duck',price:20},
+  {id:'iceberg',name:'Iceberg',emoji:'🧊',kind:'penguin',price:40}, {id:'snowpatch',name:'Snow patch',emoji:'⛄',kind:'penguin',price:25},
+  {id:'dolphball',name:'Beach ball',emoji:'🏐',kind:'dolphin',price:35}, {id:'dolpring',name:'Hoop ring',emoji:'⭕',kind:'dolphin',price:25},
+  {id:'orcakelp',name:'Kelp forest',emoji:'🌿',kind:'orca',price:35}, {id:'orcawreck',name:'Ship wreck',emoji:'🚢',kind:'orca',price:45},
+  {id:'sealice',name:'Ice floe',emoji:'🧊',kind:'seal',price:30}, {id:'sealrock',name:'Resting rock',emoji:'🪨',kind:'seal',price:25},
+  {id:'sharkcave',name:'Sea cave',emoji:'🕳️',kind:'shark',price:40}, {id:'sharkcoral',name:'Big coral',emoji:'🪸',kind:'shark',price:30},
+  {id:'octocave',name:'Reef cave',emoji:'🕳️',kind:'octopus',price:35}, {id:'octojar',name:'Treasure jar',emoji:'🏺',kind:'octopus',price:40}
 ];
 
 const COLOR_SWATCHES = [
   '#dfeef3','#d9f1d1','#f6e8c5','#e9e1ef','#bfeaf3','#f9d7d0','#d6e8d9','#d7d9ef'
+];
+
+/* Each upgrade starts at x1 and gains +0.5x per level. Cost grows per level. */
+const UPGRADES=[
+  {id:'feeding',name:'Feeding multiplier',emoji:'🍽️',desc:'Earn more coins every time a pet finishes a meal.',base:30},
+  {id:'cleaning',name:'Cleaning multiplier',emoji:'🧼',desc:'Earn more coins each time you clean a dirty habitat.',base:40},
+  {id:'playing',name:'Playtime multiplier',emoji:'🎾',desc:'Earn more coins every time you play with a pet.',base:35},
+  {id:'whack',name:'Whack multiplier',emoji:'🔨',desc:'Earn more coins for every whack in Whack-A-Mole.',base:60},
+  {id:'pipes',name:'Pipe multiplier',emoji:'🟩',desc:'Earn more coins for every pipe you clear in Flappy Bird.',base:50}
 ];
 
 const $=id=>document.getElementById(id),
@@ -557,7 +773,11 @@ function load(){
     remindedDay:add.remindedDay||'',
     lastOpenedDay:add.lastOpenedDay||'',
     habitatDirty: add.habitatDirty && typeof add.habitatDirty==='object' ? add.habitatDirty : {},
-    cleanFlash: add.cleanFlash && typeof add.cleanFlash==='object' ? add.cleanFlash : {}
+    cleanFlash: add.cleanFlash && typeof add.cleanFlash==='object' ? add.cleanFlash : {},
+    upgrades: add.upgrades && typeof add.upgrades==='object' ? add.upgrades : {},
+    food: add.food && typeof add.food==='object' ? add.food : { rodent:45, seed:45, flakes:45 },
+    dailyStreak: Number(add.dailyStreak) || 0,
+    lastRewardDay: add.lastRewardDay || ''
   }
 }
 
@@ -582,7 +802,11 @@ function save(){
       remindedDay:state.remindedDay,
       lastOpenedDay:state.lastOpenedDay,
       habitatDirty:state.habitatDirty,
-      cleanFlash:state.cleanFlash
+      cleanFlash:state.cleanFlash,
+      upgrades:state.upgrades,
+      food:state.food,
+      dailyStreak:state.dailyStreak,
+      lastRewardDay:state.lastRewardDay
     }));
   } catch{ toast('Could not save your game in this browser.') }
 }
@@ -595,10 +819,11 @@ function toast(msg){
 }
 
 function dayCare(day=today()){
-  if(!state.care[day]) state.care[day] = {fed:[], played:[], feeding:{}};
+  if(!state.care[day]) state.care[day] = {fed:[], played:[], feeding:{}, meals:{}};
   state.care[day].fed ??= [];
   state.care[day].played ??= [];
   state.care[day].feeding ??= {};
+  state.care[day].meals ??= {};
   return state.care[day];
 }
 
@@ -608,7 +833,8 @@ function pruneCare(){
     if(!keys.includes(k)) delete state.care[k];
 }
 
-function fed(id){ return dayCare().fed.includes(id) }
+function mealsLeft(id){ return MEALS_PER_DAY - (dayCare().meals?.[id] || 0) }
+function fed(id){ return mealsLeft(id) <= 0 }
 function played(id){ return dayCare().played.includes(id) }
 function healthReason(p){
   if(p.health<55) return 'health is low';
@@ -618,8 +844,21 @@ function healthReason(p){
 }
 function needsAttention(p){ return Boolean(healthReason(p)) }
 
+const BIOME_DEFAULTS = {
+  water:{primary:'#bfeaf3',secondary:'#6ca9a5',accent:'#295d5c'},
+  jungle:{primary:'#d9f1d1',secondary:'#8dbb6d',accent:'#3a7d47'},
+  forest:{primary:'#e9e9d4',secondary:'#a9be83',accent:'#5e7b2a'},
+  cave:{primary:'#d7d9ef',secondary:'#a9a0d0',accent:'#4d3f7e'},
+  desert:{primary:'#f6e8c5',secondary:'#caa178',accent:'#8f5f2c'}
+};
+const KIND_BIOME = {
+  dolphin:'water', orca:'water', seal:'water', shark:'water', octopus:'water', otter:'water', penguin:'water', duck:'water', flamingo:'water',
+  monkey:'jungle', gorilla:'jungle', orangutan:'jungle', koala:'jungle', panda:'jungle', sloth:'jungle', parrot:'jungle', peacock:'jungle', owl:'jungle', turkey:'jungle', chicken:'jungle',
+  fox:'forest', raccoon:'forest', badger:'forest', tiger:'forest', bear:'forest', horse:'forest', bunny:'forest', hedgehog:'forest', husky:'forest', poodle:'forest', retriever:'forest',
+  bat:'cave', lizard:'desert'
+};
 function getHabitatTheme(kind){
-  const preset = HABITAT_THEMES[kind] || {primary:'#dfeef3',secondary:'#9ec0a1',accent:'#2a785a'};
+  const preset = HABITAT_THEMES[kind] || BIOME_DEFAULTS[KIND_BIOME[kind]] || {primary:'#dfeef3',secondary:'#9ec0a1',accent:'#2a785a'};
   const custom = state.habitatThemes[kind] || {};
   return {
     primary: custom.primary || preset.primary,
@@ -642,7 +881,8 @@ function getDecorPos(kind, itemId, index){
   if(stored && Number.isFinite(stored.left) && Number.isFinite(stored.top)){
     return { left: clamp(stored.left, 5, 82), top: clamp(stored.top, 8, 72) };
   }
-  const topValue = (kind==='fish'||kind==='pufferfish'||kind==='frog'||kind==='turtle'||kind==='snake'||kind==='spider'||kind==='pig'||kind==='cow')
+  const isWater = kind==='fish'||kind==='pufferfish'||kind==='frog'||kind==='turtle'||kind==='snake'||kind==='spider'||kind==='pig'||kind==='cow'||KIND_BIOME[kind]==='water';
+  const topValue = isWater
     ? `${12+(index%3)*16}%`
     : `${8+(index%3)*13}%`;
   return {
@@ -657,6 +897,8 @@ function render(){
   renderHabitats();
   renderPets();
   renderShop();
+  renderFoodShop();
+  renderUpgrades();
   renderAlert();
   syncWalkers();
   renderNotificationButton();
@@ -669,6 +911,7 @@ function renderHabitats(){
   for(const kind of Object.keys(TYPES)){
     const t = TYPES[kind];
     const pets = state.pets.filter(p => p.kind === kind);
+    if(!pets.length) continue;
     const card = document.createElement('article');
     card.className='habitat-card';
     card.dataset.habitat = kind;
@@ -1007,7 +1250,7 @@ function renderPets(){
 
     const feed = document.createElement('button');
     feed.type='button';
-    feed.textContent = fed(p.id) ? '✅ Fed today' : '🥣 Feed myself';
+    feed.textContent = fed(p.id) ? '✅ Fed today' : `🥣 Feed (${mealsLeft(p.id)} meals left)`;
     feed.disabled = fed(p.id);
     feed.addEventListener('click',()=>openFeeding([p.id],'single'));
     actions.append(feed);
@@ -1022,6 +1265,11 @@ function renderPets(){
     }
 
     card.append(actions);
+
+    const foodLine = document.createElement('div');
+    foodLine.style.cssText='font-size:11px;color:var(--muted);margin-top:6px';
+    foodLine.textContent = `${FOODS[KIND_FOOD[p.kind]].emoji} ${FOODS[KIND_FOOD[p.kind]].name}: ${state.food[KIND_FOOD[p.kind]]||0} portions`;
+    card.append(foodLine);
 
     const reason = healthReason(p);
     if(reason){
@@ -1076,6 +1324,124 @@ function renderShop(){
     decorRoot.append(card);
   }
 }
+function renderFoodShop(){
+  const root=$('food-shop');
+  root.replaceChildren();
+  for(const f of Object.values(FOODS)){
+    const card=document.createElement('article');
+    card.className='store-card';
+    const owned = state.food[f.id] || 0;
+    card.innerHTML=`<div class="emoji">${f.emoji}</div><h4>${f.name}</h4><p>For: ${f.for}. You have ${owned} portions.</p>`;
+    const btn=document.createElement('button');
+    btn.className='button gold';
+    btn.type='button';
+    btn.textContent=`🪙 ${f.price} — Buy 15 portions`;
+    btn.disabled = state.coins < f.price;
+    btn.addEventListener('click',()=>buyFood(f.id));
+    card.append(btn);
+    root.append(card);
+  }
+}
+function buyFood(id){
+  const f=FOODS[id];
+  if(state.coins < f.price){ toast('Not enough coins — earn some in the mini games.'); return; }
+  state.coins -= f.price;
+  state.food[id] = (state.food[id]||0) + FOOD_PORTIONS;
+  save();
+  render();
+  toast(`Bought 15 portions of ${f.name}!`);
+}
+function upgradeLevel(id){
+  return clamp(Math.round(Number(state.upgrades[id]) || 1), 1, 999);
+}
+
+function upgradeMultiplier(id){
+  return 1 + 0.5 * (upgradeLevel(id) - 1);
+}
+
+function upgradeCost(u){
+  return Math.round(u.base * Math.pow(1.6, upgradeLevel(u.id) - 1));
+}
+
+function renderUpgrades(){
+  const root = $('upgrade-grid');
+  if(!root) return;
+  root.replaceChildren();
+
+  for(const u of UPGRADES){
+    const level = upgradeLevel(u.id);
+    const mult = upgradeMultiplier(u.id);
+    const cost = upgradeCost(u);
+
+    const card = document.createElement('article');
+    card.className='upgrade-card';
+
+    const top = document.createElement('div');
+    top.className='upgrade-top';
+
+    const emoji = document.createElement('div');
+    emoji.className='upgrade-emoji';
+    emoji.textContent=u.emoji;
+
+    const head = document.createElement('div');
+    const h = document.createElement('h4');
+    h.textContent=u.name;
+    const sub = document.createElement('p');
+    sub.style.margin='2px 0 0';
+    sub.textContent=`Level ${level}`;
+    head.append(h,sub);
+    top.append(emoji,head);
+
+    const desc = document.createElement('p');
+    desc.textContent=u.desc;
+
+    const levels = document.createElement('div');
+    levels.className='upgrade-levels';
+    const now = document.createElement('span');
+    now.className='boost';
+    now.textContent=`×${mult.toFixed(1)} now`;
+    const next = document.createElement('span');
+    next.textContent=`×${(mult+0.5).toFixed(1)} next`;
+    levels.append(now,next);
+
+    const bar = document.createElement('div');
+    bar.className='upgrade-bar';
+    const fill = document.createElement('span');
+    fill.style.width=`${Math.min(100, (mult/10)*100)}%`;
+    bar.append(fill);
+
+    const btn = document.createElement('button');
+    btn.type='button';
+    btn.className='button gold';
+    btn.textContent=`🪙 ${cost} — Upgrade`;
+    btn.disabled = state.coins < cost;
+    btn.addEventListener('click',()=>buyUpgrade(u.id));
+
+    card.append(top,desc,levels,bar,btn);
+    root.append(card);
+  }
+
+  updateGamePayouts();
+}
+
+function buyUpgrade(id){
+  const u = UPGRADES.find(x=>x.id===id);
+  if(!u) return;
+  const cost = upgradeCost(u);
+  if(state.coins < cost){ toast('Not enough coins yet — win some in the mini games.'); return; }
+  state.coins -= cost;
+  state.upgrades[id] = upgradeLevel(id) + 1;
+  save();
+  render();
+  toast(`${u.name} is now ×${upgradeMultiplier(id).toFixed(1)}!`);
+}
+
+function updateGamePayouts(){
+  const w = $('whack-payout');
+  if(w) w.textContent = `${Math.round(10 * upgradeMultiplier('whack'))} coins`;
+  const f = $('flappy-payout');
+  if(f) f.textContent = `${Math.round(5 * upgradeMultiplier('pipes'))} coins`;
+}
 
 function renderAlert(){
   const pets = state.pets.filter(needsAttention);
@@ -1122,9 +1488,11 @@ function adopt(kind){
   const earnedRarity = rollRarity();
   state.coins -= price;
   state.pets.push(makePet(kind, name.trim().slice(0,30), null, earnedRarity.name));
+  const fid = KIND_FOOD[kind];
+  state.food[fid] = (state.food[fid]||0) + FOOD_PORTIONS;
   save();
   render();
-  toast(`${name.trim()} joined the shop as ${earnedRarity.emoji} ${earnedRarity.name}!`);
+  toast(`${name.trim()} joined the shop as ${earnedRarity.emoji} ${earnedRarity.name}! +15 ${FOODS[fid].name} included.`);
 }
 
 function buyDecor(d){
@@ -1147,9 +1515,10 @@ function cleanHabitat(kind){
     return;
   }
 
+  const reward = Math.round(4 * upgradeMultiplier('cleaning'));
   state.habitatDirty[kind] = false;
   state.cleanFlash[kind] = true;
-  state.coins += 4;
+  state.coins += reward;
   save();
   render();
 
@@ -1159,11 +1528,11 @@ function cleanHabitat(kind){
     render();
   },1500);
 
-  toast(`${TYPES[kind].label} sparkles clean! +4 coins`);
+  toast(`${TYPES[kind].label} sparkles clean! +${reward} coins`);
 }
 
 function maybeDirtyHabitat(){
-  const options = Object.keys(TYPES).filter(kind => !state.habitatDirty[kind] && (state.pets.some(p => p.kind===kind) || kind==='hamster'||kind==='bird'||kind==='fish'));
+  const options = Object.keys(TYPES).filter(kind => !state.habitatDirty[kind] && state.pets.some(p => p.kind===kind));
   if(!options.length) return;
   if(Math.random() < 0.12){
     const kind = options[Math.floor(Math.random()*options.length)];
@@ -1182,11 +1551,12 @@ function playPet(id){
   }
   if(played(id)){toast(`${p.name} has already had playtime today.`); return;}
 
+  const reward = Math.round(2 * upgradeMultiplier('playing'));
   dayCare().played.push(id);
   p.mood = clamp(p.mood + 22, 0, 100);
   p.health = clamp(p.health + 2, 0, 100);
   p.hunger = clamp(p.hunger + 3, 0, 100);
-  state.coins += 2;
+  state.coins += reward;
   save();
   render();
 
@@ -1195,28 +1565,28 @@ function playPet(id){
     el.classList.add('play-bounce');
     el.addEventListener('animationend',()=>el.classList.remove('play-bounce'),{once:true});
   }
-  toast(`${p.name} enjoyed playtime! +2 coins`);
+  toast(`${p.name} enjoyed playtime! +${reward} coins`);
 }
 
 function playAll(){
   const eligible = state.pets.filter(p => TYPES[p.kind].playable && !played(p.id));
   if(!eligible.length){toast('All playful pets have played today!'); return;}
+  const reward = Math.round(2 * upgradeMultiplier('playing'));
   for(const p of eligible){
     dayCare().played.push(p.id);
     p.mood = clamp(p.mood + 22, 0, 100);
     p.health = clamp(p.health + 2, 0, 100);
     p.hunger = clamp(p.hunger + 3, 0, 100);
-    state.coins += 2;
+    state.coins += reward;
   }
   save();
   render();
-  toast(`Played with ${eligible.length} pets! +${eligible.length*2} coins`);
+  toast(`Played with ${eligible.length} pets! +${eligible.length*reward} coins`);
 }
-
 function openFeeding(ids,mode){
-  feedTargetIds = ids.filter(id => !fed(id));
+  feedTargetIds = ids.filter(id => mealsLeft(id) > 0);
   feedMode = mode;
-  if(!feedTargetIds.length){toast('These pets have already been fed today.'); return;}
+  if(!feedTargetIds.length){toast('These pets have already had all 3 meals today.'); return;}
   renderFeedProgress();
   $('feed-modal').classList.add('show');
 }
@@ -1229,8 +1599,12 @@ function renderFeedProgress(){
   for(const id of feedTargetIds){
     const p = state.pets.find(x=>x.id===id);
     if(!p) continue;
-const alreadyFed = fed(id);
-if(!alreadyFed) allDone = false;
+    const foodId = KIND_FOOD[p.kind];
+    const portions = state.food[foodId] || 0;
+    const meals = dayCare().meals?.[id] || 0;
+    const done = mealsLeft(id) <= 0;
+    const noFood = portions <= 0;
+    if(!done) allDone = false;
 
     const t = TYPES[p.kind];
     const record = dayCare().feeding[id] || 0;
@@ -1267,11 +1641,7 @@ cage.append(cagePet);
 
     const count = document.createElement('span');
     count.className='feed-count';
-    count.textContent = t.foodType==='scoop'
-      ? `${record} / 3 scoops`
-      : t.foodType==='jar'
-      ? `${record} / ${t.qty} shakes`
-      : `${record?1:0} / 1 bowl`;
+    count.textContent = `${meals}/3 meals · ${FOODS[foodId].emoji} ${portions}`;
 
     const btn = document.createElement('button');
     btn.type='button';
@@ -1282,8 +1652,9 @@ cage.append(cagePet);
       : t.foodType === 'jar'
       ? '🫙 Shake jar'
       : '🥣 Serve bowl';
-    btn.disabled = alreadyFed || record >= t.qty;
-if(alreadyFed) btn.textContent = '✅ Fed!';
+    btn.disabled = done || noFood || record >= t.qty;
+    if(done) btn.textContent = '✅ All meals done';
+    else if(noFood) btn.textContent = '🛒 No food — buy some';
   btn.addEventListener('click',()=>{
   btn.classList.remove('shake');
   void btn.offsetWidth;
@@ -1308,7 +1679,7 @@ requestAnimationFrame(() => animateFeedInCage(p.id, t.foodType, t.food));
   $('feed-copy').textContent = feedMode === 'all'
     ? 'Finish each pet’s daily feeding action. Different species have different food actions.'
     : 'Finish this pet’s feeding action; each pet can be fed once daily.';
-  $('feed-note').textContent = allDone ? 'All selected pets finished their food today.' : `Fed today: ${dayCare().fed.length} of ${state.pets.length} pets.`;
+  $('feed-note').textContent = allDone ? 'All selected pets had all 3 meals today.' : `${dayCare().fed.length} of ${state.pets.length} pets fully fed so far today.`;
   $('finish-feed').textContent = allDone ? 'Show feeding cutscenes' : 'Keep feeding';
   $('finish-feed').disabled = !allDone;
 }
@@ -1425,16 +1796,29 @@ function feedAction(id){
   if(!p || fed(id)) return;
 
   const t = TYPES[p.kind];
+  const foodId = KIND_FOOD[p.kind];
+  if((state.food[foodId]||0) <= 0){
+    toast(`No ${FOODS[foodId].name} left — buy some in the food shop.`);
+    return;
+  }
   dayCare().feeding[id] ??= 0;
   dayCare().feeding[id] = Math.min(t.qty, dayCare().feeding[id] + 1);
 
   if(dayCare().feeding[id] >= t.qty){
-    dayCare().fed.push(id);
-    p.hunger = clamp(p.hunger - 62, 0, 100);
-    p.mood = clamp(p.mood + 10, 0, 100);
-    p.health = clamp(p.health + 4, 0, 100);
-    state.coins += 1;
-    toast(`${p.name} finished their food! +1 coin`);
+    state.food[foodId] -= 1;
+    dayCare().meals[id] = (dayCare().meals[id]||0) + 1;
+    dayCare().feeding[id] = 0;
+    p.hunger = clamp(p.hunger - 18, 0, 100);
+    p.mood = clamp(p.mood + 4, 0, 100);
+    p.health = clamp(p.health + 1, 0, 100);
+    const reward = Math.round(1 * upgradeMultiplier('feeding'));
+    state.coins += reward;
+    if((dayCare().meals[id]||0) >= MEALS_PER_DAY){
+      dayCare().fed.push(id);
+      toast(`${p.name} had all 3 meals today! +${reward} coin${reward===1?'':'s'}`);
+    } else {
+      toast(`${p.name} enjoyed a meal (${dayCare().meals[id]}/3 today). +${reward} coin${reward===1?'':'s'}`);
+    }
   }
 
   save();
@@ -1443,8 +1827,8 @@ function feedAction(id){
 }
 
 function feedAll(){
-  const ids = state.pets.filter(p=>!fed(p.id)).map(p=>p.id);
-  if(!ids.length){toast('Everyone has been fed today!'); return;}
+  const ids = state.pets.filter(p=>mealsLeft(p.id)>0).map(p=>p.id);
+  if(!ids.length){toast('Everyone has had all 3 meals today!'); return;}
   openFeeding(ids,'all');
 }
 
@@ -1455,6 +1839,7 @@ function showScenes(){
   for(const kind of Object.keys(TYPES)){
     const t = TYPES[kind];
     const count = feedTargetIds.filter(id => state.pets.find(p=>p.id===id)?.kind === kind).length;
+    if(count <= 0) continue;
     const card = document.createElement('div');
     card.className = `scene-card ${kind}`;
 
@@ -1633,7 +2018,7 @@ function showDailySummary(day){
   const strong = document.createElement('strong');
   strong.textContent = 'Yesterday’s care';
   const detail = document.createElement('span');
-  detail.textContent = `You fed ${stats.fedCount} pet${stats.fedCount===1?'':'s'} and played with ${stats.playedCount} pet${stats.playedCount===1?'':'s'}.`;
+  detail.textContent = `You fully fed ${stats.fedCount} pet${stats.fedCount===1?'':'s'} (3 meals each) and played with ${stats.playedCount} pet${stats.playedCount===1?'':'s'}.`;
   tasks.append(strong, detail);
   root.append(tasks);
 
@@ -1654,6 +2039,83 @@ function showDailySummary(day){
 
 function closeSummary(){ $('summary-modal').classList.remove('show') }
 
+function claimDailyReward(){
+  const day = today();
+  if(state.lastRewardDay === day) return false;
+  const gap = state.lastRewardDay ? Math.round((new Date(day+'T00:00:00') - new Date(state.lastRewardDay+'T00:00:00'))/DAY) : null;
+  if(!state.lastRewardDay || gap > 1) state.dailyStreak = 1;
+  else state.dailyStreak = (state.dailyStreak||0) + 1;
+  state.lastRewardDay = day;
+  const cycleDay = ((state.dailyStreak - 1) % 7) + 1;
+  if(cycleDay === 7){
+    showDay7Reward();
+  } else {
+    const reward = 40 + cycleDay*10;
+    state.coins += reward;
+    showRewardModal(cycleDay, reward);
+  }
+  save();
+  return true;
+}
+function showRewardModal(day, coins){
+  $('reward-title').textContent = `🎁 Day ${day} reward!`;
+  $('reward-copy').textContent = `Welcome back! Here are ${coins} coins to start your day. Come back tomorrow for more.`;
+  $('reward-content').replaceChildren();
+  const big=document.createElement('div');
+  big.style.cssText='text-align:center;font-size:44px;font-weight:800;color:#704d03;padding:6px';
+  big.textContent=`🪙 ${coins}`;
+  $('reward-content').append(big);
+  $('close-reward').textContent='Collect';
+  $('close-reward').hidden=false;
+  $('reward-modal').classList.add('show');
+}
+function showDay7Reward(){
+  $('reward-title').textContent='🎁 Day 7 — choose your reward!';
+  $('reward-copy').textContent="You've checked in 7 days running. Pick a new pet to adopt, or take 200 coins.";
+  const root=$('reward-content');
+  root.replaceChildren();
+  const grid=document.createElement('div');
+  grid.style.cssText='display:grid;grid-template-columns:repeat(4,1fr);gap:8px';
+  for(const kind of Object.keys(TYPES)){
+    const t=TYPES[kind];
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='button';
+    btn.style.cssText='display:flex;flex-direction:column;gap:4px;align-items:center';
+    btn.innerHTML=`<span style="font-size:26px">${t.emoji}</span><span style="font-size:11px">${t.singular}</span>`;
+    btn.addEventListener('click',()=>claimDay7Pet(kind));
+    grid.append(btn);
+  }
+  const coinBtn=document.createElement('button');
+  coinBtn.type='button';
+  coinBtn.className='button gold';
+  coinBtn.style.cssText='grid-column:1 / -1';
+  coinBtn.textContent='🪙 Take 200 coins instead';
+  coinBtn.addEventListener('click',()=>{
+    state.coins += 200; save(); render(); closeReward();
+    toast('200 coins claimed!');
+  });
+  grid.append(coinBtn);
+  root.append(grid);
+  $('close-reward').hidden=true;
+  $('reward-modal').classList.add('show');
+}
+function claimDay7Pet(kind){
+  const name = prompt(`Name your new ${TYPES[kind].singular.toLowerCase()}:`, TYPES[kind].names[0]);
+  if(name===null) return;
+  if(!name.trim()){toast('Please give your pet a name.'); return;}
+  const rarity = rollRarity();
+  state.pets.push(makePet(kind, name.trim().slice(0,30), null, rarity.name));
+  const fid = KIND_FOOD[kind];
+  state.food[fid] = (state.food[fid]||0) + FOOD_PORTIONS;
+  save(); render(); closeReward();
+  toast(`${name.trim()} joined as ${rarity.emoji} ${rarity.name}! +15 ${FOODS[fid].name}.`);
+}
+function closeReward(){
+  $('reward-modal').classList.remove('show');
+  if(summaryToShow){ showDailySummary(summaryToShow); summaryToShow=null; }
+}
+
 function dailyReset(){
   const d = today();
   if(d === lastDay) return;
@@ -1668,14 +2130,247 @@ function dailyReset(){
 
 function maybeShowSummary(){
   const current = today();
-  if(state.lastOpenedDay === current) return;
-  const prior = Object.keys(state.care).filter(day => day < current).sort().pop();
+  const newDay = state.lastOpenedDay !== current;
+  const prior = newDay ? Object.keys(state.care).filter(day => day < current).sort().pop() : null;
   state.lastOpenedDay = current;
   save();
-  if(prior && state.care[prior]) {
+  if(!newDay) return;
+  const rewardShown = claimDailyReward();
+  if(prior && state.care[prior]){
     summaryToShow = prior;
-    showDailySummary(prior);
+    if(!rewardShown) showDailySummary(prior);
   }
+}
+/* ---------------- Mini games ---------------- */
+const WHACK_ANIMALS = Object.values(TYPES).map(t=>t.emoji);
+const whack = { running:false, holes:[], timer:null, earned:0 };
+
+function awardCoins(amount){
+  if(!Number.isFinite(amount) || amount <= 0) return;
+  state.coins += amount;
+  $('coins').textContent = state.coins;
+  save();
+}
+
+function bumpScore(el){
+  if(!el) return;
+  el.classList.remove('bump');
+  void el.offsetWidth;
+  el.classList.add('bump');
+}
+
+function buildWhackBoard(){
+  const grid = $('whack-grid');
+  if(!grid || grid.childElementCount) return;
+  for(let i=0;i<9;i++){
+    const hole = document.createElement('button');
+    hole.type='button';
+    hole.className='whack-hole';
+    hole.setAttribute('aria-label','Whack a Pal hole');
+    const face = document.createElement('span');
+    face.textContent = WHACK_ANIMALS[0];
+    hole.append(face);
+    hole.addEventListener('click',()=>whackHit(hole));
+    grid.append(hole);
+    whack.holes.push(hole);
+  }
+}
+
+function whackTick(){
+  const free = whack.holes.filter(h=>!h.classList.contains('up'));
+  if(!free.length) return;
+  const hole = free[Math.floor(Math.random()*free.length)];
+  hole.querySelector('span').textContent = WHACK_ANIMALS[Math.floor(Math.random()*WHACK_ANIMALS.length)];
+  hole.classList.add('up');
+  clearTimeout(hole._hide);
+  hole._hide = setTimeout(()=>hole.classList.remove('up'), 820);
+}
+
+function whackHit(hole){
+  if(!whack.running || !hole.classList.contains('up')) return;
+  const gain = Math.round(10 * upgradeMultiplier('whack'));
+  clearTimeout(hole._hide);
+  hole.classList.remove('up');
+  hole.classList.add('hit');
+  whack.earned += gain;
+  awardCoins(gain);
+  $('whack-score').textContent = `${whack.earned} coins`;
+  bumpScore($('whack-score'));
+
+  const pop = document.createElement('span');
+  pop.className='hit-pop';
+  pop.textContent=`+${gain}`;
+  hole.append(pop);
+  setTimeout(()=>pop.remove(), 720);
+  setTimeout(()=>hole.classList.remove('hit'), 240);
+}
+
+function startWhack(){
+  buildWhackBoard();
+  if(whack.running) return;
+  whack.running = true;
+  whack.earned = 0;
+  $('whack-score').textContent = '0 coins';
+  $('whack-start').disabled = true;
+  $('whack-start').textContent = 'Whacking…';
+  $('whack-stop').hidden = false;
+  whackTick();
+  whack.timer = setInterval(whackTick, 620);
+}
+
+function stopWhack(){
+  if(whack.running){
+    whack.running = false;
+    clearInterval(whack.timer);
+  }
+  whack.holes.forEach(h=>{
+    clearTimeout(h._hide);
+    h.classList.remove('up','hit');
+    h.querySelectorAll('.hit-pop').forEach(p=>p.remove());
+  });
+  const start = $('whack-start');
+  if(start){ start.disabled = false; start.textContent = 'Start whacking'; }
+  const stop = $('whack-stop');
+  if(stop) stop.hidden = true;
+}
+
+const FLAPPY_W=360, FLAPPY_H=420, FLAPPY_GROUND=34, BIRD_X=74, BIRD_R=13;
+const flappy = { running:false, dead:false, raf:null, last:0, birdY:FLAPPY_H*.4, vy:0, pipes:[], spawnIn:1, earned:0 };
+
+function roundRectPath(ctx,x,y,w,h,r){
+  const radius = Math.max(0, Math.min(r, w/2, Math.abs(h)/2));
+  ctx.beginPath();
+  ctx.moveTo(x+radius, y);
+  ctx.arcTo(x+w, y, x+w, y+h, radius);
+  ctx.arcTo(x+w, y+h, x, y+h, radius);
+  ctx.arcTo(x, y+h, x, y, radius);
+  ctx.arcTo(x, y, x+w, y, radius);
+  ctx.closePath();
+}
+
+function drawFlappy(){
+  const canvas = $('flappy-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,FLAPPY_W,FLAPPY_H);
+
+  ctx.fillStyle='#4aa56a';
+  ctx.strokeStyle='#2f7a4b';
+  ctx.lineWidth=3;
+  for(const p of flappy.pipes){
+    const topH = Math.max(4, p.gapY);
+    const bottomY = p.gapY + p.gapH;
+    const bottomH = Math.max(4, FLAPPY_H - FLAPPY_GROUND - bottomY);
+    roundRectPath(ctx, p.x, 0, 54, topH, 8);
+    ctx.fill(); ctx.stroke();
+    roundRectPath(ctx, p.x, bottomY, 54, bottomH, 8);
+    ctx.fill(); ctx.stroke();
+  }
+
+  ctx.fillStyle='#a9d08a';
+  ctx.fillRect(0, FLAPPY_H-FLAPPY_GROUND, FLAPPY_W, FLAPPY_GROUND);
+  ctx.fillStyle='#8cbb6d';
+  ctx.fillRect(0, FLAPPY_H-FLAPPY_GROUND, FLAPPY_W, 6);
+
+  ctx.save();
+  ctx.translate(BIRD_X, flappy.birdY);
+  ctx.rotate(clamp(flappy.vy/1500, -0.5, 0.7));
+  ctx.font='26px system-ui,"Apple Color Emoji","Segoe UI Emoji",sans-serif';
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText('🐦', 0, 0);
+  ctx.restore();
+}
+
+function flappyReset(){
+  flappy.birdY = FLAPPY_H * 0.4;
+  flappy.vy = 0;
+  flappy.pipes = [];
+  flappy.spawnIn = 1;
+  flappy.earned = 0;
+  flappy.dead = false;
+}
+
+function flap(){
+  if(!flappy.running || flappy.dead) return;
+  flappy.vy = -430;
+}
+
+function flappyStep(now){
+  if(!flappy.running) return;
+  const dt = Math.min((now - flappy.last)/1000, 0.05);
+  flappy.last = now;
+
+  flappy.vy += 1500 * dt;
+  flappy.birdY += flappy.vy * dt;
+
+  flappy.spawnIn -= dt;
+  if(flappy.spawnIn <= 0){
+    flappy.spawnIn = 1.6;
+    const gapH = 150;
+    const gapY = 36 + Math.random() * Math.max(1, FLAPPY_H - FLAPPY_GROUND - gapH - 72);
+    flappy.pipes.push({ x:FLAPPY_W+10, gapY, gapH, scored:false });
+  }
+
+  for(const p of flappy.pipes) p.x -= 150 * dt;
+  flappy.pipes = flappy.pipes.filter(p => p.x > -70);
+
+  for(const p of flappy.pipes){
+    if(!p.scored && p.x + 54 < BIRD_X - BIRD_R){
+      p.scored = true;
+      const gain = Math.round(5 * upgradeMultiplier('pipes'));
+      flappy.earned += gain;
+      awardCoins(gain);
+      $('flappy-score').textContent = `${flappy.earned} coins`;
+      bumpScore($('flappy-score'));
+    }
+  }
+
+  drawFlappy();
+
+  const hitGround = flappy.birdY + BIRD_R > FLAPPY_H - FLAPPY_GROUND;
+  const hitSky = flappy.birdY - BIRD_R < 0;
+  let hitPipe = false;
+  for(const p of flappy.pipes){
+    if(BIRD_X + BIRD_R > p.x && BIRD_X - BIRD_R < p.x + 54){
+      if(flappy.birdY - BIRD_R < p.gapY || flappy.birdY + BIRD_R > p.gapY + p.gapH){ hitPipe = true; break; }
+    }
+  }
+
+  if(hitGround || hitSky || hitPipe){ flappyCrash(); return; }
+  flappy.raf = requestAnimationFrame(flappyStep);
+}
+
+function startFlappy(){
+  if(flappy.running) return;
+  flappyReset();
+  drawFlappy();
+  $('flappy-overlay').hidden = true;
+  $('flappy-score').textContent = '0 coins';
+  flappy.running = true;
+  flappy.last = performance.now();
+  flappy.raf = requestAnimationFrame(flappyStep);
+}
+
+function flappyCrash(){
+  flappy.running = false;
+  flappy.dead = true;
+  cancelAnimationFrame(flappy.raf);
+  drawFlappy();
+  $('flappy-overlay-title').textContent = 'Down you go!';
+  $('flappy-overlay-copy').textContent = `You banked ${flappy.earned} coins this flight. No lives to lose, so flap again whenever you like.`;
+  $('flappy-start').textContent = 'Fly again';
+  $('flappy-overlay').hidden = false;
+}
+
+function stopFlappy(){
+  if(!flappy.running) return;
+  flappy.running = false;
+  cancelAnimationFrame(flappy.raf);
+  $('flappy-overlay-title').textContent = 'Flight paused';
+  $('flappy-overlay-copy').textContent = 'The coins you already earned are safe. Start a new flight whenever you are ready.';
+  $('flappy-start').textContent = 'Start flying';
+  $('flappy-overlay').hidden = false;
 }
 
 $('feed-all').addEventListener('click', feedAll);
@@ -1690,6 +2385,20 @@ $('notify-button').addEventListener('click', toggleNotifications);
 $('close-summary').addEventListener('click', closeSummary);
 $('done-summary').addEventListener('click', closeSummary);
 $('summary-modal').addEventListener('click', e => { if(e.target === $('summary-modal')) closeSummary(); });
+$('close-reward').addEventListener('click', closeReward);
+$('reward-modal').addEventListener('click', e => { if(e.target === $('reward-modal') && !$('close-reward').hidden) closeReward(); });
+
+$('whack-start').addEventListener('click', startWhack);
+$('whack-stop').addEventListener('click', stopWhack);
+$('flappy-start').addEventListener('click', startFlappy);
+$('flappy-canvas').addEventListener('pointerdown', e=>{ e.preventDefault(); flap(); });
+
+document.addEventListener('keydown', e=>{
+  if((e.code === 'Space' || e.key === ' ') && flappy.running && !$('minigames-view').hidden){
+    e.preventDefault();
+    flap();
+  }
+});
 
 document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(t=>{
@@ -1697,12 +2406,16 @@ document.querySelectorAll('.tab').forEach(btn => btn.addEventListener('click',()
     t.classList.toggle('active', active);
     t.setAttribute('aria-selected', String(active));
   });
-  $('habitats-view').hidden = btn.dataset.view !== 'habitats';
-  $('shop-view').hidden = btn.dataset.view !== 'shop';
+  const view = btn.dataset.view;
+  document.querySelectorAll('.view').forEach(v=>{ v.hidden = v.id !== `${view}-view`; });
+  if(view !== 'minigames'){
+    stopWhack();
+    stopFlappy();
+  }
 }));
 
 document.addEventListener('keydown', e => {
-  if(e.key === 'Escape'){ closeFeed(); closeScenes(); closeSummary(); }
+  if(e.key === 'Escape'){ closeFeed(); closeScenes(); closeSummary(); closeReward(); }
 });
 
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ dailyReset(); checkReminder(); } });
@@ -1729,6 +2442,9 @@ setInterval(()=>{
 
 render();
 maybeShowSummary();
+buildWhackBoard();
+flappyReset();
+drawFlappy();
 requestAnimationFrame(animate);
 })();
 </script>
