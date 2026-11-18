@@ -398,7 +398,7 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
   <div id="habitat-grid" class="habitat-grid"></div>
 
   <div class="section-head">
-    <div><h3>Pet roster</h3><p>Click a pet name to rename them anytime. Feed each resident 3 meals a day with the right food and play with every non-fish pet once daily.</p></div>
+  <div><h3>Pet roster</h3><p>Click a pet name to rename them anytime. Feed pets whenever they need a meal and play with every non-fish pet once daily.</p></div>
   </div>
   <div id="pet-list" class="pet-list"></div>
 </section>
@@ -641,7 +641,7 @@ const KIND_FOOD = {
   dolphin:'flakes', orca:'flakes', seal:'flakes', shark:'flakes', octopus:'flakes'
 };
 const FOOD_PORTIONS = 15;
-const MEALS_PER_DAY = 3;
+const MEALS_PER_DAY = Infinity;
 
 const STARTER=['hamster','bird','fish'];
 const DECOR=[
@@ -858,14 +858,17 @@ function pruneCare(){
   for(const k of Object.keys(state.care))
     if(!keys.includes(k)) delete state.care[k];
 }
-function mealsLeft(id){ return MEALS_PER_DAY - (dayCare().meals?.[id] || 0) }
+function mealsLeft(id){ return 999; }
 
 function isTooFull(p){
   const fullness = 100 - p.hunger;
-  return fullness > 90;
+  return fullness >= 90;
 }
-      
-function fed(id){ return mealsLeft(id) <= 0 }
+
+function fed(id){
+  const p = state.pets.find(pet => pet.id === id);
+  return p ? isTooFull(p) : false;
+}
 function played(id){ return dayCare().played.includes(id) }
 function healthReason(p){
   if(p.health<55) return 'health is low';
@@ -1279,12 +1282,21 @@ function renderPets(){
     const actions = document.createElement('div');
     actions.className='pet-actions';
 
-    const feed = document.createElement('button');
-    feed.type='button';
-    feed.textContent = fed(p.id) ? '✅ Fed today' : `🥣 Feed (${mealsLeft(p.id)} meals left)`;
-    feed.disabled = fed(p.id);
-    feed.addEventListener('click',()=>openFeeding([p.id],'single'));
-    actions.append(feed);
+   const feed = document.createElement('button');
+feed.type='button';
+
+const fullness = 100 - p.hunger;
+if(fullness >= 90){
+  feed.textContent = '🥣 Full';
+  feed.disabled = true;
+}else if(fullness >= 50){
+  feed.textContent = '🥣 Consider feeding';
+}else{
+  feed.textContent = '🍽️ Needs feeding';
+}
+
+feed.addEventListener('click',()=>openFeeding([p.id],'single'));
+actions.append(feed);
 
     if(t.playable){
       const play = document.createElement('button');
@@ -1674,8 +1686,7 @@ cage.append(cagePet);
 
     const count = document.createElement('span');
     count.className='feed-count';
-    count.textContent = `${meals}/3 meals · ${FOODS[foodId].emoji} ${portions}`;
-
+  count.textContent = `${FOODS[foodId].emoji} ${portions} portions`;
     const btn = document.createElement('button');
     btn.type='button';
     btn.className='feed-btn';
@@ -1687,10 +1698,11 @@ cage.append(cagePet);
       : '🥣 Serve bowl';
     
    const tooFull = isTooFull(p);
-btn.disabled = tooFull || noFood || record >= t.qty;
-    
-    if(tooFull) btn.textContent = '✅ Over 90% full';
+btn.disabled = noFood;
+if(done) btn.textContent = '🥣 Full';
 else if(noFood) btn.textContent = '🛒 No food — buy some';
+else if(p.hunger > 78) btn.textContent = '🍽️ Needs feeding';
+else btn.textContent = '🥣 Consider feeding';
     
   btn.addEventListener('click',()=>{
   btn.classList.remove('shake');
@@ -1713,12 +1725,13 @@ requestAnimationFrame(() => animateFeedInCage(p.id, t.foodType, t.food));
     root.append(row);
   }
 
-  $('feed-copy').textContent = feedMode === 'all'
-    ? 'Finish each pet’s daily feeding action. Different species have different food actions.'
-    : 'Finish this pet’s feeding action; each pet can be fed once daily.';
-  $('feed-note').textContent = allDone ? 'All selected pets had all 3 meals today.' : `${dayCare().fed.length} of ${state.pets.length} pets fully fed so far today.`;
-  $('finish-feed').textContent = allDone ? 'Show feeding cutscenes' : 'Keep feeding';
-  $('finish-feed').disabled = !allDone;
+$('feed-copy').textContent = feedMode === 'all'
+    ? 'Feed the pets whenever they need a meal.'
+    : 'Feed this pet whenever they need a meal.';
+$('feed-note').textContent = allDone
+    ? 'All selected pets are full.'
+    : 'Select a pet that is not full.';
+$('finish-feed').textContent = allDone ? 'Show feeding cutscenes' : 'Keep feeding';
 }
 
 function spawnJarFeedBurst(){
@@ -1855,11 +1868,10 @@ function feedAction(id){
     p.health = clamp(p.health + 1, 0, 100);
     const reward = Math.round(1 * upgradeMultiplier('feeding'));
     state.coins += reward;
-    if((dayCare().meals[id]||0) >= MEALS_PER_DAY){
-      dayCare().fed.push(id);
-      toast(`${p.name} had all 3 meals today! +${reward} coin${reward===1?'':'s'}`);
+    if(isTooFull(p)){
+      toast(`${p.name} is full! +${reward} coin${reward===1?'':'s'}`);
     } else {
-      toast(`${p.name} enjoyed a meal (${dayCare().meals[id]}/3 today). +${reward} coin${reward===1?'':'s'}`);
+      toast(`${p.name} enjoyed a meal. +${reward} coin${reward===1?'':'s'}`);
     }
   }
 
