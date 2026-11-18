@@ -865,6 +865,10 @@ function isTooFull(p){
   return fullness >= 90;
 }
 
+function isHappyEnough(p){
+  return p.mood >= 90;
+}
+
 function fed(id){
   const p = state.pets.find(pet => pet.id === id);
   return p ? isTooFull(p) : false;
@@ -1592,10 +1596,9 @@ function playPet(id){
     toast(`${t.singular}s enjoy exploring their habitat—try decorating it!`);
     return;
   }
-  if(played(id)){toast(`${p.name} has already had playtime today.`); return;}
+  if(isHappyEnough(p)){toast(`${p.name} is happy enough for now!`); return;}
 
   const reward = Math.round(2 * upgradeMultiplier('playing'));
-  dayCare().played.push(id);
   p.mood = clamp(p.mood + 22, 0, 100);
   p.health = clamp(p.health + 2, 0, 100);
   p.hunger = clamp(p.hunger + 3, 0, 100);
@@ -1612,11 +1615,12 @@ function playPet(id){
 }
 
 function playAll(){
-  const eligible = state.pets.filter(p => TYPES[p.kind].playable && !played(p.id));
+  const eligible = state.pets.filter(
+  p => TYPES[p.kind].playable && !isHappyEnough(p)
+);
   if(!eligible.length){toast('All playful pets have played today!'); return;}
   const reward = Math.round(2 * upgradeMultiplier('playing'));
   for(const p of eligible){
-    dayCare().played.push(p.id);
     p.mood = clamp(p.mood + 22, 0, 100);
     p.health = clamp(p.health + 2, 0, 100);
     p.hunger = clamp(p.hunger + 3, 0, 100);
