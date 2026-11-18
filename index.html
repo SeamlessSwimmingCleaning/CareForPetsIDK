@@ -526,11 +526,14 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
 <script>
 (()=>{'use strict';
 
-const KEY='petpals-sim-v2';
-const CARE_KEY='petpals-care-additions.v1_v2';
+const KEY = 'petpals-sim-v3';
+const CARE_KEY = 'petpals-care-additions.v1_v3';
 
-localStorage.removeItem('petpals-sim-v1');
-localStorage.removeItem('petpals-care-additions.v1');
+const OLD_KEYS = ['petpals-sim-v2', 'petpals-sim-v1'];
+const OLD_CARE_KEYS = [
+  'petpals-care-additions.v1_v2',
+  'petpals-care-additions.v1'
+];
 
 const DAY=86400000;
 const HOUR=3600000;
@@ -752,8 +755,19 @@ function starters(){ return STARTER.flatMap(k=>TYPES[k].names.map((n,i)=>makePet
 
 function load(){
   let old={}, add={};
-  try { old=JSON.parse(localStorage.getItem(KEY)||'{}')||{} } catch {}
-  try { add=JSON.parse(localStorage.getItem(CARE_KEY)||'{}')||{} } catch {}
+ try {
+  const raw = [KEY, ...OLD_KEYS]
+    .map(key => localStorage.getItem(key))
+    .find(value => value !== null);
+  old = JSON.parse(raw ?? '{}') || {};
+} catch {}
+
+try {
+  const raw = [CARE_KEY, ...OLD_CARE_KEYS]
+    .map(key => localStorage.getItem(key))
+    .find(value => value !== null);
+  add = JSON.parse(raw ?? '{}') || {};
+} catch {}
 
   let pets = Array.isArray(old.pets) ? old.pets.filter(p=>p&&TYPES[p.kind]).map(p => ({...makePet(p.kind,p.name,p.id, p.rarity || 'Common'), ...p, rarity:(p.rarity||'Common'), rarityEmoji:getRarityByName(p.rarity||'Common').emoji, rarityColor:getRarityByName(p.rarity||'Common').color, health:clamp(p.health??100,0,100), hunger:clamp(p.hunger,0,100), mood:clamp(p.mood,0,100), x:clamp(p.x,.04,.9), y:clamp(p.y,.1,.8)})) : null;
   if(!pets){
@@ -815,6 +829,14 @@ function save(){
   } catch{ toast('Could not save your game in this browser.') }
 }
 
+const hasLegacySave = [...OLD_KEYS, ...OLD_CARE_KEYS]
+  .some(key => localStorage.getItem(key) !== null);
+
+if (hasLegacySave &&
+    (!localStorage.getItem(KEY) || !localStorage.getItem(CARE_KEY))) {
+  save();
+}
+      
 function toast(msg){
   $('toast').textContent = msg;
   $('toast').classList.add('show');
