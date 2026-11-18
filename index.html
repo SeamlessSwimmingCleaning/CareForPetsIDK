@@ -836,8 +836,13 @@ function pruneCare(){
   for(const k of Object.keys(state.care))
     if(!keys.includes(k)) delete state.care[k];
 }
-
 function mealsLeft(id){ return MEALS_PER_DAY - (dayCare().meals?.[id] || 0) }
+
+function isTooFull(p){
+  const fullness = 100 - p.hunger;
+  return fullness > 90;
+}
+      
 function fed(id){ return mealsLeft(id) <= 0 }
 function played(id){ return dayCare().played.includes(id) }
 function healthReason(p){
@@ -1588,13 +1593,15 @@ function playAll(){
   toast(`Played with ${eligible.length} pets! +${eligible.length*reward} coins`);
 }
 function openFeeding(ids,mode){
-  feedTargetIds = ids.filter(id => mealsLeft(id) > 0);
+  feedTargetIds = ids.filter(id => {
+    const pet = state.pets.find(p => p.id === id);
+    return pet && !isTooFull(pet);
+  });
   feedMode = mode;
-  if(!feedTargetIds.length){toast('These pets have already had all 3 meals today.'); return;}
+  if(!feedTargetIds.length){toast('These pets are already over 90% full.'); return;}
   renderFeedProgress();
   $('feed-modal').classList.add('show');
 }
-
 function renderFeedProgress(){
   const root = $('feed-progress');
   root.replaceChildren();
@@ -1656,9 +1663,13 @@ cage.append(cagePet);
       : t.foodType === 'jar'
       ? '🫙 Shake jar'
       : '🥣 Serve bowl';
-    btn.disabled = done || noFood || record >= t.qty;
-    if(done) btn.textContent = '✅ All meals done';
-    else if(noFood) btn.textContent = '🛒 No food — buy some';
+    
+   const tooFull = isTooFull(p);
+btn.disabled = tooFull || noFood || record >= t.qty;
+    
+    if(tooFull) btn.textContent = '✅ Over 90% full';
+else if(noFood) btn.textContent = '🛒 No food — buy some';
+    
   btn.addEventListener('click',()=>{
   btn.classList.remove('shake');
   void btn.offsetWidth;
@@ -1797,7 +1808,12 @@ function triggerFeedingEffect(petId, foodType){
 }
 function feedAction(id){
   const p = state.pets.find(x=>x.id===id);
-  if(!p || fed(id)) return;
+  if(!p) return;
+
+  if(isTooFull(p)){
+    toast(`${p.name} is already over 90% full.`);
+    return;
+  }
 
   const t = TYPES[p.kind];
   const foodId = KIND_FOOD[p.kind];
@@ -1831,11 +1847,13 @@ function feedAction(id){
 }
 
 function feedAll(){
-  const ids = state.pets.filter(p=>mealsLeft(p.id)>0).map(p=>p.id);
-  if(!ids.length){toast('Everyone has had all 3 meals today!'); return;}
+  const ids = state.pets
+    .filter(p => !isTooFull(p))
+    .map(p => p.id);
+
+  if(!ids.length){toast('All your pets are over 90% full!'); return;}
   openFeeding(ids,'all');
 }
-
 function showScenes(){
   const root = $('scene-grid');
   root.replaceChildren();
