@@ -391,7 +391,7 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
     <div><h3>Your habitats</h3><p>Each animal wanders independently. Care actions reset each day at local midnight.</p></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="button primary" id="feed-all" type="button">🍽️ Feed all pets</button>
-      <button class="button" id="play-all" type="button">🎾 Play with all (no fish)</button>
+      <button class="button" id="play-all" type="button">🎾 Play with all</button>
     </div>
   </div>
   <div id="alert" class="alert" role="status" aria-live="polite"></div>
@@ -564,16 +564,16 @@ const HABITAT_THEMES = {
 const TYPES={
   hamster:{label:'Hamster Habitat',singular:'Hamster',emoji:'🐹',food:'🥕',foodType:'scoop',qty:3,names:['Hazel','Nibbles','Poppy'],price:0,playable:true},
   bird:{label:'Bird Aviary',singular:'Bird',emoji:'🐦',food:'🌻',foodType:'jar',qty:3,names:['Sunny','Pip','Feather'],price:0,playable:true},
-  fish:{label:'Fish Tank',singular:'Fish',emoji:'🐟',food:'🦐',foodType:'jar',qty:5,names:['Bubbles','Goldie','Ripple'],price:0,playable:false},
+  fish:{label:'Fish Tank',singular:'Fish',emoji:'🐟',food:'🦐',foodType:'jar',qty:5,names:['Bubbles','Goldie','Ripple'],price:0,playable:true},
   pufferfish:{label:'Pufferfish Tank',singular:'Pufferfish',emoji:'🐡',food:'🦐',foodType:'jar',qty:5,names:['Puff','Pebble','Sunny'],price:90,playable:false},
   dog:{label:'Dog Play Yard',singular:'Dog',emoji:'🐶',food:'🥣',foodType:'bowl',qty:1,names:['Scout','Mochi','Rex'],price:120,playable:true},
   cat:{label:'Cat Room',singular:'Cat',emoji:'🐱',food:'🥣',foodType:'bowl',qty:1,names:['Mittens','Clover','Luna'],price:120,playable:true},
   pig:{label:'Pig Pen',singular:'Pig',emoji:'🐷',food:'🫘',foodType:'jar',qty:5,names:['Biscuit','Peaches','Mochi'],price:160,playable:true},
   cow:{label:'Cow Barn',singular:'Cow',emoji:'🐮',food:'🌾',foodType:'jar',qty:5,names:['Daisy','Muffin','Bramble'],price:180,playable:true},
-  frog:{label:'Frog Pond',singular:'Frog',emoji:'🐸',food:'🪲',foodType:'jar',qty:4,names:['Pip','Lily','Juniper'],price:170,playable:false},
-  turtle:{label:'Turtle Tank',singular:'Turtle',emoji:'🐢',food:'🌿',foodType:'jar',qty:4,names:['Shelly','Maple','Pebble'],price:170,playable:false},
-  snake:{label:'Snake Terrarium',singular:'Snake',emoji:'🐍',food:'🐭',foodType:'jar',qty:4,names:['Slinky','Clover','Nova'],price:200,playable:false},
-  spider:{label:'Spider Enclosure',singular:'Spider',emoji:'🕷️',food:'🐛',foodType:'jar',qty:4,names:['Silk','Nova','Luna'],price:220,playable:false},
+  frog:{label:'Frog Pond',singular:'Frog',emoji:'🐸',food:'🪲',foodType:'jar',qty:4,names:['Pip','Lily','Juniper'],price:170,playable:true},
+  turtle:{label:'Turtle Tank',singular:'Turtle',emoji:'🐢',food:'🌿',foodType:'jar',qty:4,names:['Shelly','Maple','Pebble'],price:170,playable:true},
+  snake:{label:'Snake Terrarium',singular:'Snake',emoji:'🐍',food:'🐭',foodType:'jar',qty:4,names:['Slinky','Clover','Nova'],price:200,playable:true},
+  spider:{label:'Spider Enclosure',singular:'Spider',emoji:'🕷️',food:'🐛',foodType:'jar',qty:4,names:['Silk','Nova','Luna'],price:220,playable:true},
   monkey:{label:'Monkey Habitat',singular:'Monkey',emoji:'🐵',food:'🍌',foodType:'jar',qty:3,names:['Koko','Mango','George'],price:150,playable:true},
   gorilla:{label:'Gorilla Enclosure',singular:'Gorilla',emoji:'🦍',food:'🍌',foodType:'jar',qty:3,names:['Silver','Kong','Bramble'],price:300,playable:true},
   orangutan:{label:'Orangutan Habitat',singular:'Orangutan',emoji:'🦧',food:'🍌',foodType:'jar',qty:3,names:['Raja','Marmalade','Juice'],price:280,playable:true},
@@ -602,11 +602,11 @@ const TYPES={
   chicken:{label:'Chicken Coop',singular:'Chicken',emoji:'🐔',food:'🌻',foodType:'jar',qty:3,names:['Henrietta','Cluck','Nugget'],price:150,playable:true},
   duck:{label:'Duck Pond',singular:'Duck',emoji:'🦆',food:'🦐',foodType:'jar',qty:3,names:['Quackers','Daffy','Puddles'],price:170,playable:true},
   penguin:{label:'Penguin Cove',singular:'Penguin',emoji:'🐧',food:'🦐',foodType:'jar',qty:3,names:['Mumble','Ice','Tux'],price:240,playable:true},
-  dolphin:{label:'Dolphin Pool',singular:'Dolphin',emoji:'🐬',food:'🦐',foodType:'jar',qty:5,names:['Flipper','Splash','Winter'],price:300,playable:false},
-  orca:{label:'Orca Lagoon',singular:'Orca',emoji:'🐋',food:'🦐',foodType:'jar',qty:5,names:['Shamu','Killer','Tide'],price:400,playable:false},
-  seal:{label:'Seal Shore',singular:'Seal',emoji:'🦭',food:'🦐',foodType:'jar',qty:5,names:['Sandy','Sebastian','Splash'],price:270,playable:false},
-  shark:{label:'Shark Tank',singular:'Shark',emoji:'🦈',food:'🦐',foodType:'jar',qty:5,names:['Bruce','Jaws','Fin'],price:350,playable:false},
-  octopus:{label:'Octopus Den',singular:'Octopus',emoji:'🐙',food:'🦐',foodType:'jar',qty:5,names:['Inky','Tentacle','Squid'],price:330,playable:false}
+  dolphin:{label:'Dolphin Pool',singular:'Dolphin',emoji:'🐬',food:'🦐',foodType:'jar',qty:5,names:['Flipper','Splash','Winter'],price:300,playable:true},
+  orca:{label:'Orca Lagoon',singular:'Orca',emoji:'🐋',food:'🦐',foodType:'jar',qty:5,names:['Shamu','Killer','Tide'],price:400,playable:true},
+  seal:{label:'Seal Shore',singular:'Seal',emoji:'🦭',food:'🦐',foodType:'jar',qty:5,names:['Sandy','Sebastian','Splash'],price:270,playable:true},
+  shark:{label:'Shark Tank',singular:'Shark',emoji:'🦈',food:'🦐',foodType:'jar',qty:5,names:['Bruce','Jaws','Fin'],price:350,playable:true},
+  octopus:{label:'Octopus Den',singular:'Octopus',emoji:'🐙',food:'🦐',foodType:'jar',qty:5,names:['Inky','Tentacle','Squid'],price:330,playable:true}
 };
 
 const FOODS = {
