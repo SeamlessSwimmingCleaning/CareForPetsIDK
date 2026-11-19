@@ -391,7 +391,7 @@ button:focus-visible{outline:3px solid #65a982;outline-offset:2px}
     <div><h3>Your habitats</h3><p>Each animal wanders independently. Care actions reset each day at local midnight.</p></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="button primary" id="feed-all" type="button">🍽️ Feed all pets</button>
-      <button class="button" id="play-all" type="button">🎾 Play with all (no fish)</button>
+      <button class="button" id="play-all" type="button">🎾 Play with all</button>
     </div>
   </div>
   <div id="alert" class="alert" role="status" aria-live="polite"></div>
@@ -546,8 +546,9 @@ const RARITIES = [
   { name:'Godly', emoji:'☄️', color:'#ff8b42', weight:1, bonus:5 }
 ];
 
-const MOVEABLE_FURNITURE_KINDS = new Set(['hamster','bird','fish','pufferfish','dog','cat']);
-
+// Furniture is movable in every habitat.
+const MOVEABLE_FURNITURE_KINDS = new Set(Object.keys(TYPES));
+      
 const HABITAT_THEMES = {
   hamster:{primary:'#f6e8c5', secondary:'#caa178', accent:'#8f5f2c'},
   bird:{primary:'#d9f1d1', secondary:'#8dbb6d', accent:'#3a7d47'},
@@ -704,13 +705,16 @@ const COLOR_SWATCHES = [
   '#dfeef3','#d9f1d1','#f6e8c5','#e9e1ef','#bfeaf3','#f9d7d0','#d6e8d9','#d7d9ef'
 ];
 
-/* Each upgrade starts at x1 and gains +0.5x per level. Cost grows per level. */
-const UPGRADES=[
+/* Each upgrade starts at x1 and gains +0.5x per level. Cost grows per level. */const UPGRADES=[
   {id:'feeding',name:'Feeding multiplier',emoji:'🍽️',desc:'Earn more coins every time a pet finishes a meal.',base:30},
   {id:'cleaning',name:'Cleaning multiplier',emoji:'🧼',desc:'Earn more coins each time you clean a dirty habitat.',base:40},
   {id:'playing',name:'Playtime multiplier',emoji:'🎾',desc:'Earn more coins every time you play with a pet.',base:35},
   {id:'whack',name:'Whack multiplier',emoji:'🔨',desc:'Earn more coins for every whack in Whack-A-Mole.',base:60},
-  {id:'pipes',name:'Pipe multiplier',emoji:'🟩',desc:'Earn more coins for every pipe you clear in Flappy Bird.',base:50}
+  {id:'pipes',name:'Pipe multiplier',emoji:'🟩',desc:'Earn more coins for every pipe you clear in Flappy Bird.',base:50},
+
+  {id:'fullFeed',name:'One-click full feeding',emoji:'🥣',desc:'One feeding click uses one portion and makes that pet 100% full.',base:250},
+  {id:'whackSlow',name:'Slower moles',emoji:'⏱️',desc:'Moles stay visible longer. Maximum: 5 seconds per mole.',base:50},
+  {id:'whackMulti',name:'More moles at once',emoji:'🐾',desc:'More moles can appear simultaneously. Maximum: 8.',base:75}
 ];
 
 const $=id=>document.getElementById(id),
@@ -910,8 +914,9 @@ function setHabitatTheme(kind, theme){
   save();
 }
 
-function canMoveFurniture(kind){
-  return MOVEABLE_FURNITURE_KINDS.has(kind);
+function canMoveFurniture(_kind){
+  // Every habitat supports movable decorations.
+  return true;
 }
 
 function getDecorPos(kind, itemId, index){
@@ -1354,23 +1359,38 @@ function renderShop(){
     root.append(card);
   }
 
+function countDecorCopies(kind, decorId){
+  const items = state.decor[kind] || [];
+  return items.filter(id => id === decorId).length;
+}
+  
   const decorRoot=$('decor-shop');
   decorRoot.replaceChildren();
   for(const d of DECOR){
-    const owned=(state.decor[d.kind]||[]).includes(d.id);
+    const owned = countDecorCopies(d.kind, d.id);
+
+card.innerHTML =
+  `<div class="emoji">${d.emoji}</div>` +
+  `<h4>${d.name}</h4>` +
+  `<p>For your ${TYPES[d.kind].label.toLowerCase()}.</p>` +
+  `<p>Owned: ${owned}</p>`;
+    
     const card=document.createElement('article');
     card.className='store-card';
-    card.innerHTML=`<div class="emoji">${d.emoji}</div><h4>${d.name}</h4><p>For your ${TYPES[d.kind].label.toLowerCase()}.</p>`;
-    const btn=document.createElement('button');
-    btn.className='button gold';
-    btn.type='button';
-    btn.textContent=owned?'✓ In habitat':`🪙 ${d.price} — Add`;
-    btn.disabled=owned || state.coins<d.price;
-    btn.addEventListener('click',()=>buyDecor(d));
-    card.append(btn);
+    card.innerHTML=`<div class="emoji">${d.emoji}</div><h4>${d.name}</h4><p>For your ${TYPES[d.kind].label.toLowerCase()}.</const btn = document.createElement('button');
+btn.className = 'button gold';
+btn.type = 'button';
+btn.textContent = `🪙 ${d.price} — Buy another`;
+btn.disabled = state.coins < d.price;
+
+btn.addEventListener('click', () => buyDecor(d));
+card.append(btn);
     decorRoot.append(card);
   }
 }
+
+
+      
 function renderFoodShop(){
   const root=$('food-shop');
   root.replaceChildren();
@@ -1398,16 +1418,33 @@ function buyFood(id){
   render();
   toast(`Bought 15 portions of ${f.name}!`);
 }
+
 function upgradeLevel(id){
-  return clamp(Math.round(Number(state.upgrades[id]) || 1), 1, 999);
+  const savedLevel = Number(state.upgrades[id]);
+
+  if(!Number.isFinite(savedLevel)){
+    return 1;
+  }
+
+  return Math.max(1, Math.floor(savedLevel));
 }
 
 function upgradeMultiplier(id){
   return 1 + 0.5 * (upgradeLevel(id) - 1);
 }
 
+function purchasedUpgradeLevels(id){
+  // Upgrade levels start at 1 in this game, so subtract 1
+  // to get the number of times the player bought it.
+  return Math.max(0, upgradeLevel(id) - 1);
+}
+      
 function upgradeCost(u){
-  return Math.round(u.base * Math.pow(1.6, upgradeLevel(u.id) - 1));
+  const level = upgradeLevel(u.id) - 1;
+  const calculated = u.base * Math.pow(1.6, level);
+
+  // Prevent a JavaScript overflow and impractical enormous prices.
+  return Math.min(999999999, Math.max(u.base, Math.round(calculated)));
 }
 
 function renderUpgrades(){
@@ -1592,10 +1629,6 @@ function maybeDirtyHabitat(){
 function playPet(id){
   const p=state.pets.find(x=>x.id===id), t = p && TYPES[p.kind];
   if(!p) return;
-  if(!t.playable){
-    toast(`${t.singular}s enjoy exploring their habitat—try decorating it!`);
-    return;
-  }
   if(isHappyEnough(p)){toast(`${p.name} is happy enough for now!`); return;}
 
   const reward = Math.round(2 * upgradeMultiplier('playing'));
@@ -1674,6 +1707,12 @@ function renderFeedProgress(){
       : 'Serve one bowl of food.';
     instruction.textContent = typeText;
 
+    const fullness = Math.round(100 - clamp(p.hunger, 0, 100));
+const hungerPercent = document.createElement('div');
+hungerPercent.className = 'feed-instruction';
+hungerPercent.textContent = `Fullness: ${fullness}%`;
+info.append(hungerPercent);
+    
     info.append(name, instruction);
 const cage = document.createElement('div');
 cage.className = 'feed-cage';
@@ -1867,7 +1906,11 @@ function feedAction(id){
     state.food[foodId] -= 1;
     dayCare().meals[id] = (dayCare().meals[id]||0) + 1;
     dayCare().feeding[id] = 0;
-    p.hunger = clamp(p.hunger - 18, 0, 100);
+    if(purchasedUpgradeLevels('fullFeed') > 0){
+  p.hunger = 0;
+}else{
+  p.hunger = clamp(p.hunger - 18, 0, 100);
+};
     p.mood = clamp(p.mood + 4, 0, 100);
     p.health = clamp(p.health + 1, 0, 100);
     const reward = Math.round(1 * upgradeMultiplier('feeding'));
@@ -2236,14 +2279,32 @@ function buildWhackBoard(){
   }
 }
 
+function whackVisibleMs(){
+  const levels = purchasedUpgradeLevels('whackSlow');
+  return Math.min(5000, 820 + levels * 500);
+}
+
+function whackMaxVisible(){
+  const levels = purchasedUpgradeLevels('whackMulti');
+  return Math.min(8, 1 + levels);
+}
+      
 function whackTick(){
+  const visibleCount = whack.holes.filter(
+  hole => hole.classList.contains('up')
+).length;
+
+if(visibleCount >= whackMaxVisible()) return;
   const free = whack.holes.filter(h=>!h.classList.contains('up'));
   if(!free.length) return;
   const hole = free[Math.floor(Math.random()*free.length)];
   hole.querySelector('span').textContent = WHACK_ANIMALS[Math.floor(Math.random()*WHACK_ANIMALS.length)];
   hole.classList.add('up');
   clearTimeout(hole._hide);
-  hole._hide = setTimeout(()=>hole.classList.remove('up'), 820);
+  hole._hide = setTimeout(
+  () => hole.classList.remove('up'),
+  whackVisibleMs()
+);
 }
 
 function whackHit(hole){
