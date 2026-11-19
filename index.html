@@ -715,10 +715,7 @@ const $=id=>document.getElementById(id),
 clamp=(n,a,b)=>Math.max(a,Math.min(b,Number.isFinite(Number(n))?Number(n):a)),
 today=()=>{const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 
-function canMoveFurniture(kind){
-  return true;
-}
-      
+
 function rollRarity(){
   const roll = Math.random() * RARITIES.reduce((sum,r)=>sum+r.weight,0);
   let total = 0;
@@ -913,7 +910,7 @@ function setHabitatTheme(kind, theme){
 }
 
 function canMoveFurniture(kind){
-  return MOVEABLE_FURNITURE_KINDS.has(kind);
+  return true;
 }
 
 function getDecorPos(kind, itemId, index){
