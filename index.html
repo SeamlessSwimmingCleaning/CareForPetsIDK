@@ -709,6 +709,8 @@ const UPGRADES=[
   {id:'playing',name:'Playtime multiplier',emoji:'🎾',desc:'Earn more coins every time you play with a pet.',base:35},
   {id:'whack',name:'Whack multiplier',emoji:'🔨',desc:'Earn more coins for every whack in Whack-A-Mole.',base:60},
   {id:'pipes',name:'Pipe multiplier',emoji:'🟩',desc:'Earn more coins for every pipe you clear in Flappy Bird.',base:50}
+  {id:'instantFeed',name:'One-click feeding',emoji:'⚡',desc:'One click fills a pet to 100% fullness.',base:150,oneTime:true},
+  {id:'instantFeed', name:'One-click feeding', emoji:'⚡',desc:'Unlock one-click filling for every pet.', base:150}
 ];
 
 const $=id=>document.getElementById(id),
@@ -860,8 +862,7 @@ function pruneCare(){
 function mealsLeft(id){ return 999; }
 
 function isTooFull(p){
-  const fullness = 100 - p.hunger;
-  return fullness >= 90;
+  return p.hunger <= 0;
 }
 
 function isHappyEnough(p){
@@ -1463,6 +1464,30 @@ function renderUpgrades(){
     btn.disabled = state.coins < cost;
     btn.addEventListener('click',()=>buyUpgrade(u.id));
 
+if (u.id === 'instantFeed') {
+  const unlocked = upgradeLevel(u.id) >= 2;
+
+  levels.replaceChildren();
+  const status = document.createElement('span');
+  status.className = 'boost';
+  status.textContent = unlocked ? '✅ Unlocked' : '🔒 Locked';
+  levels.append(status);
+
+  bar.replaceChildren();
+  const fill = document.createElement('span');
+  fill.style.width = unlocked ? '100%' : '0%';
+  bar.append(fill);
+
+  btn.textContent = unlocked
+    ? '✅ Already unlocked'
+    : `🪙 ${cost} — Unlock`;
+  btn.disabled = unlocked || state.coins < cost;
+  btn.addEventListener('click', () => buyUpgrade(u.id));
+  card.append(top, desc, levels, bar, btn);
+  root.append(card);
+  continue;
+}
+    
     card.append(top,desc,levels,bar,btn);
     root.append(card);
   }
@@ -1473,13 +1498,15 @@ function renderUpgrades(){
 function buyUpgrade(id){
   const u = UPGRADES.find(x=>x.id===id);
   if(!u) return;
+
+  // One-click feeding is a one-time upgrade.
+  if(id === 'instantFeed' && upgradeLevel(id) >= 2){
+    toast('One-click feeding is already unlocked.');
+    return;
+  }
+
   const cost = upgradeCost(u);
-  if(state.coins < cost){ toast('Not enough coins yet — win some in the mini games.'); return; }
-  state.coins -= cost;
-  state.upgrades[id] = upgradeLevel(id) + 1;
-  save();
-  render();
-  toast(`${u.name} is now ×${upgradeMultiplier(id).toFixed(1)}!`);
+  // Rest of existing buyUpgrade code...
 }
 
 function updateGamePayouts(){
