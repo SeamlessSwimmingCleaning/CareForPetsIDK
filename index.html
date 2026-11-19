@@ -546,8 +546,6 @@ const RARITIES = [
   { name:'Godly', emoji:'☄️', color:'#ff8b42', weight:1, bonus:5 }
 ];
 
-const MOVEABLE_FURNITURE_KINDS = new Set(['hamster','bird','fish','pufferfish','dog','cat']);
-
 const HABITAT_THEMES = {
   hamster:{primary:'#f6e8c5', secondary:'#caa178', accent:'#8f5f2c'},
   bird:{primary:'#d9f1d1', secondary:'#8dbb6d', accent:'#3a7d47'},
@@ -717,6 +715,10 @@ const $=id=>document.getElementById(id),
 clamp=(n,a,b)=>Math.max(a,Math.min(b,Number.isFinite(Number(n))?Number(n):a)),
 today=()=>{const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 
+function canMoveFurniture(kind){
+  return true;
+}
+      
 function rollRarity(){
   const roll = Math.random() * RARITIES.reduce((sum,r)=>sum+r.weight,0);
   let total = 0;
