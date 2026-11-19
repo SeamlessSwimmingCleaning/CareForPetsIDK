@@ -1398,15 +1398,15 @@ function buyFood(id){
   toast(`Bought 15 portions of ${f.name}!`);
 }
 function upgradeLevel(id){
-  return clamp(Math.round(Number(state.upgrades[id]) || 1), 1, 999);
+  return Math.max(1, Math.round(Number(state.upgrades[id]) || 1));
 }
-
+      
 function upgradeMultiplier(id){
   return 1 + 0.5 * (upgradeLevel(id) - 1);
 }
 
 function upgradeCost(u){
-  return Math.round(u.base * Math.pow(1.6, upgradeLevel(u.id) - 1));
+  return Math.round(u.base * upgradeLevel(u.id));
 }
 
 function renderUpgrades(){
