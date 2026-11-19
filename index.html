@@ -1042,27 +1042,28 @@ function renderHabitats(){
       world.appendChild(panel);
     }
 
-    (state.decor[kind] || []).forEach((placed,index)=>{
-  const d = DECOR.find(x => x.id === placed.decorId);
-  if(!d) return;
+    const layer = document.createElement('div');
+    layer.className='decor-layer';
 
-  const pos = getDecorPos(kind, placed.instanceId, index);
-  const item = document.createElement('span');
-  item.className = 'decor';
-  item.dataset.decorId = placed.decorId;
-  item.dataset.instanceId = placed.instanceId;
-  item.dataset.kind = kind;
-  item.textContent = d.emoji;
-  item.style.left = `${pos.left}%`;
-  item.style.top = `${pos.top}%`;
+    (state.decor[kind] || []).forEach((id,index)=>{
+      const d = DECOR.find(x=>x.id===id);
+      if(!d) return;
+      const pos = getDecorPos(kind, id, index);
+      const item = document.createElement('span');
+      item.className='decor';
+      item.dataset.decorId = id;
+      item.dataset.kind = kind;
+      item.textContent = d.emoji;
+      item.style.left = `${pos.left}%`;
+      item.style.top = `${pos.top}%`;
 
-  if(canMoveFurniture(kind) && state.habitatEditMode[kind]){
-    item.classList.add('editable');
-    item.addEventListener('pointerdown', onDecorPointerDown);
-  }
+      if(canMoveFurniture(kind) && state.habitatEditMode[kind]){
+        item.classList.add('editable');
+        item.addEventListener('pointerdown', onDecorPointerDown);
+      }
 
-  layer.append(item);
-});
+      layer.append(item);
+    });
 
     if(state.habitatDirty[kind]){
       const dirt = document.createElement('div');
@@ -1158,20 +1159,16 @@ function onDecorPointerDown(event){
   const world = item.parentElement?.parentElement;
   if(!world) return;
 
-const layer = document.createElement('div');
-layer.className = 'decor-layer';
-world.appendChild(layer);
-  
   const rect = world.getBoundingClientRect();
   dragState = {
-  kind,
-  id: item.dataset.instanceId,
-  startX: event.clientX,
-  startY: event.clientY,
-  startLeft: parseFloat(item.style.left),
-  startTop: parseFloat(item.style.top),
-  rect
-};
+    kind,
+    id: item.dataset.decorId,
+    startX: event.clientX,
+    startY: event.clientY,
+    startLeft: parseFloat(item.style.left),
+    startTop: parseFloat(item.style.top),
+    rect
+  };
 
   item.classList.add('dragging');
   event.preventDefault();
@@ -1179,9 +1176,9 @@ world.appendChild(layer);
 
 document.addEventListener('pointermove', (event)=>{
   if(!dragState) return;
-  const item = document.querySelector(
-  `.decor[data-kind="${CSS.escape(dragState.kind)}"][data-instance-id="${CSS.escape(dragState.id)}"]`
-);
+  const item = document.querySelector(`.decor[data-kind="${CSS.escape(dragState.kind)}"][data-decor-id="${CSS.escape(dragState.id)}"]`);
+  if(!item) return;
+
   const dx = event.clientX - dragState.startX;
   const dy = event.clientY - dragState.startY;
 
@@ -1192,7 +1189,7 @@ document.addEventListener('pointermove', (event)=>{
   item.style.top = `${newTop}%`;
 
   if(!state.decorPositions[dragState.kind]) state.decorPositions[dragState.kind] = {};
-state.decorPositions[dragState.kind][dragState.id] = { left:newLeft, top:newTop };
+  state.decorPositions[dragState.kind][dragState.id] = { left:newLeft, top:newTop };
 });
 
 document.addEventListener('pointerup', ()=>{
@@ -1577,17 +1574,12 @@ function buyDecor(d){
   }
   state.coins -= d.price;
   state.decor[d.kind] ??= [];
-
-  state.decor[d.kind].push({
-    instanceId: `decor-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
-    decorId: d.id
-  });
-
+  state.decor[d.kind].push(d.id);
   save();
   render();
   toast(`${d.name} added to the habitat!`);
 }
-      
+
 function cleanHabitat(kind){
   const dirty = !!state.habitatDirty[kind];
   if(!dirty){
