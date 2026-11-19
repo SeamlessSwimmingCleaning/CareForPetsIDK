@@ -1158,6 +1158,10 @@ function onDecorPointerDown(event){
   const world = item.parentElement?.parentElement;
   if(!world) return;
 
+const layer = document.createElement('div');
+layer.className = 'decor-layer';
+world.appendChild(layer);
+  
   const rect = world.getBoundingClientRect();
   dragState = {
   kind,
