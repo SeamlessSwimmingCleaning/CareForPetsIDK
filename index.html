@@ -937,15 +937,6 @@ function getDecorPos(kind, instanceId, index, legacyItemId = null) {
     top: isWater ? 12 + (index % 3) * 16 : 8 + (index % 3) * 13
   };
 }
-  const isWater = kind==='fish'||kind==='pufferfish'||kind==='frog'||kind==='turtle'||kind==='snake'||kind==='spider'||kind==='pig'||kind==='cow'||KIND_BIOME[kind]==='water';
-  const topValue = isWater
-    ? `${12+(index%3)*16}%`
-    : `${8+(index%3)*13}%`;
-  return {
-    left: 7 + ((index * 23) % 82),
-    top: parseFloat(topValue)
-  };
-}
 
 function render(){
   pruneCare();
