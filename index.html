@@ -1881,7 +1881,7 @@ function triggerFeedingEffect(petId, foodType){
   setTimeout(dropFood, foodType === 'scoop' ? 420 : 180);
 }
 function feedAction(id){
-  const p = state.pets.find(x=>x.id===id);
+  const p = state.pets.find(x => x.id === id);
   if(!p) return;
 
   if(isTooFull(p)){
@@ -1891,27 +1891,46 @@ function feedAction(id){
 
   const t = TYPES[p.kind];
   const foodId = KIND_FOOD[p.kind];
-  if((state.food[foodId]||0) <= 0){
+
+  if((state.food[foodId] || 0) <= 0){
     toast(`No ${FOODS[foodId].name} left — buy some in the food shop.`);
     return;
   }
+
   dayCare().feeding[id] ??= 0;
+
+  if(upgradeLevel('instantFeed') >= 2){
+    state.food[foodId] -= 1;
+    dayCare().meals[id] = (dayCare().meals[id] || 0) + 1;
+    dayCare().feeding[id] = 0;
+
+    p.hunger = 0; // 100% full
+    p.mood = clamp(p.mood + 4, 0, 100);
+    p.health = clamp(p.health + 1, 0, 100);
+
+    const reward = Math.round(upgradeMultiplier('feeding'));
+    state.coins += reward;
+
+    save();
+    render();
+    renderFeedProgress();
+    toast(`${p.name} is full! +${reward} coin${reward === 1 ? '' : 's'}`);
+    return;
+  }
+
   dayCare().feeding[id] = Math.min(t.qty, dayCare().feeding[id] + 1);
 
   if(dayCare().feeding[id] >= t.qty){
     state.food[foodId] -= 1;
-    dayCare().meals[id] = (dayCare().meals[id]||0) + 1;
+    dayCare().meals[id] = (dayCare().meals[id] || 0) + 1;
     dayCare().feeding[id] = 0;
     p.hunger = clamp(p.hunger - 18, 0, 100);
     p.mood = clamp(p.mood + 4, 0, 100);
     p.health = clamp(p.health + 1, 0, 100);
-    const reward = Math.round(1 * upgradeMultiplier('feeding'));
+
+    const reward = Math.round(upgradeMultiplier('feeding'));
     state.coins += reward;
-    if(isTooFull(p)){
-      toast(`${p.name} is full! +${reward} coin${reward===1?'':'s'}`);
-    } else {
-      toast(`${p.name} enjoyed a meal. +${reward} coin${reward===1?'':'s'}`);
-    }
+    toast(`${p.name} enjoyed a meal. +${reward} coin${reward === 1 ? '' : 's'}`);
   }
 
   save();
