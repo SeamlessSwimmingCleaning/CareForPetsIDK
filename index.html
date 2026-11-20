@@ -1518,10 +1518,6 @@ function buyUpgrade(id){
   toast(`${u.name} upgraded to level ${level + 1}!`);
 }
 
-  const cost = upgradeCost(u);
-  // Rest of existing buyUpgrade code...
-}
-
 function updateGamePayouts(){
   const w = $('whack-payout');
   if(w) w.textContent = `${Math.round(10 * upgradeMultiplier('whack'))} coins`;
