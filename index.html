@@ -1382,13 +1382,6 @@ function renderShop(){
     const ownedCount = (state.decor[d.kind] || []).filter(entry =>
   (typeof entry === 'string' ? entry : entry.itemId) === d.id
 ).length;
-
-const btn = document.createElement('button');
-btn.className = 'button gold';
-btn.type = 'button';
-btn.textContent = `🪙 ${d.price} — Add${ownedCount ? ` (${ownedCount} owned)` : ''}`;
-btn.disabled = state.coins < d.price;
-btn.addEventListener('click', () => buyDecor(d));
     
     const card=document.createElement('article');
     card.className='store-card';
