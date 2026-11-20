@@ -1481,7 +1481,6 @@ if (u.id === 'instantFeed') {
     ? '✅ Already unlocked'
     : `🪙 ${cost} — Unlock`;
   btn.disabled = unlocked || state.coins < cost;
-  btn.addEventListener('click', () => buyUpgrade(u.id));
   card.append(top, desc, levels, bar, btn);
   root.append(card);
   continue;
@@ -1495,14 +1494,29 @@ if (u.id === 'instantFeed') {
 }
 
 function buyUpgrade(id){
-  const u = UPGRADES.find(x=>x.id===id);
+  const u = UPGRADES.find(x => x.id === id);
   if(!u) return;
 
-  // One-click feeding is a one-time upgrade.
-  if(id === 'instantFeed' && upgradeLevel(id) >= 2){
+  const level = upgradeLevel(id);
+
+  // One-click feeding can only be purchased once.
+  if(id === 'instantFeed' && level >= 2){
     toast('One-click feeding is already unlocked.');
     return;
   }
+
+  const cost = upgradeCost(u);
+  if(state.coins < cost){
+    toast(`You need ${cost} coins for this upgrade.`);
+    return;
+  }
+
+  state.coins -= cost;
+  state.upgrades[id] = level + 1;
+  save();
+  render();
+  toast(`${u.name} upgraded to level ${level + 1}!`);
+}
 
   const cost = upgradeCost(u);
   // Rest of existing buyUpgrade code...
