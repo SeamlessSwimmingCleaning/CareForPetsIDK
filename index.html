@@ -1389,8 +1389,8 @@ function renderShop(){
     const btn=document.createElement('button');
     btn.className='button gold';
     btn.type='button';
-    btn.textContent=owned?'✓ In habitat':`🪙 ${d.price} — Add`;
-    btn.disabled=owned || state.coins<d.price;
+    btn.textContent = `🪙 ${d.price} — Add${ownedCount ? ` (${ownedCount} owned)` : ''}`;
+btn.disabled = state.coins < d.price;
     btn.addEventListener('click',()=>buyDecor(d));
     card.append(btn);
     decorRoot.append(card);
