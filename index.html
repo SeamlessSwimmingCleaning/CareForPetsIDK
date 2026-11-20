@@ -913,11 +913,30 @@ function canMoveFurniture(kind){
   return true;
 }
 
-function getDecorPos(kind, itemId, index){
-  const stored = state.decorPositions?.[kind]?.[itemId];
-  if(stored && Number.isFinite(stored.left) && Number.isFinite(stored.top)){
-    return { left: clamp(stored.left, 5, 82), top: clamp(stored.top, 8, 72) };
+function getDecorPos(kind, instanceId, index, legacyItemId = null) {
+  const stored =
+    state.decorPositions?.[kind]?.[instanceId] ||
+    (legacyItemId
+      ? state.decorPositions?.[kind]?.[legacyItemId]
+      : null);
+
+  if (stored && Number.isFinite(stored.left) && Number.isFinite(stored.top)) {
+    return {
+      left: clamp(stored.left, 5, 82),
+      top: clamp(stored.top, 8, 72)
+    };
   }
+
+  const isWater =
+    kind === 'fish' || kind === 'pufferfish' || kind === 'frog' ||
+    kind === 'turtle' || kind === 'snake' || kind === 'spider' ||
+    kind === 'pig' || kind === 'cow' || KIND_BIOME[kind] === 'water';
+
+  return {
+    left: 7 + ((index * 23) % 82),
+    top: isWater ? 12 + (index % 3) * 16 : 8 + (index % 3) * 13
+  };
+}
   const isWater = kind==='fish'||kind==='pufferfish'||kind==='frog'||kind==='turtle'||kind==='snake'||kind==='spider'||kind==='pig'||kind==='cow'||KIND_BIOME[kind]==='water';
   const topValue = isWater
     ? `${12+(index%3)*16}%`
@@ -1045,25 +1064,38 @@ function renderHabitats(){
     const layer = document.createElement('div');
     layer.className='decor-layer';
 
-    (state.decor[kind] || []).forEach((id,index)=>{
-      const d = DECOR.find(x=>x.id===id);
-      if(!d) return;
-      const pos = getDecorPos(kind, id, index);
-      const item = document.createElement('span');
-      item.className='decor';
-      item.dataset.decorId = id;
-      item.dataset.kind = kind;
-      item.textContent = d.emoji;
-      item.style.left = `${pos.left}%`;
-      item.style.top = `${pos.top}%`;
+   (state.decor[kind] || []).forEach((entry, index) => {
+  const itemId = typeof entry === 'string' ? entry : entry.itemId;
+  // Stable ID for existing saves that stored just the catalog item ID.
+  const instanceId = typeof entry === 'string'
+    ? `legacy-${kind}-${index}-${itemId}`
+    : entry.instanceId;
 
-      if(canMoveFurniture(kind) && state.habitatEditMode[kind]){
-        item.classList.add('editable');
-        item.addEventListener('pointerdown', onDecorPointerDown);
-      }
+  const d = DECOR.find(x => x.id === itemId);
+  if (!d) return;
 
-      layer.append(item);
-    });
+  const pos = getDecorPos(
+    kind,
+    instanceId,
+    index,
+    typeof entry === 'string' ? itemId : null
+  );
+
+  const item = document.createElement('span');
+  item.className = 'decor';
+  item.dataset.decorId = instanceId;
+  item.dataset.kind = kind;
+  item.textContent = d.emoji;
+  item.style.left = `${pos.left}%`;
+  item.style.top = `${pos.top}%`;
+
+  if (canMoveFurniture(kind) && state.habitatEditMode[kind]) {
+    item.classList.add('editable');
+    item.addEventListener('pointerdown', onDecorPointerDown);
+  }
+
+  layer.append(item);
+});
 
     if(state.habitatDirty[kind]){
       const dirt = document.createElement('div');
@@ -1356,7 +1388,17 @@ function renderShop(){
   const decorRoot=$('decor-shop');
   decorRoot.replaceChildren();
   for(const d of DECOR){
-    const owned=(state.decor[d.kind]||[]).includes(d.id);
+    const ownedCount = (state.decor[d.kind] || []).filter(entry =>
+  (typeof entry === 'string' ? entry : entry.itemId) === d.id
+).length;
+
+const btn = document.createElement('button');
+btn.className = 'button gold';
+btn.type = 'button';
+btn.textContent = `🪙 ${d.price} — Add${ownedCount ? ` (${ownedCount} owned)` : ''}`;
+btn.disabled = state.coins < d.price;
+btn.addEventListener('click', () => buyDecor(d));
+    
     const card=document.createElement('article');
     card.className='store-card';
     card.innerHTML=`<div class="emoji">${d.emoji}</div><h4>${d.name}</h4><p>For your ${TYPES[d.kind].label.toLowerCase()}.</p>`;
@@ -1584,7 +1626,13 @@ function buyDecor(d){
   }
   state.coins -= d.price;
   state.decor[d.kind] ??= [];
-  state.decor[d.kind].push(d.id);
+  state.decor[d.kind] ??= [];
+const instanceId = `decor-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+state.decor[d.kind].push({
+  itemId: d.id,
+  instanceId
+});
   save();
   render();
   toast(`${d.name} added to the habitat!`);
